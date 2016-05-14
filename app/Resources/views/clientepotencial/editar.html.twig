@@ -1,0 +1,205 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block css %}
+    {{parent()}}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+            <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
+
+    <style>
+        .form-group.required .control-label:after {
+            content:"*";
+            color:red;
+        }
+        
+    </style>
+{% endblock css%}
+{% block js %}
+     {{parent()}}
+    <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
+    <script src="{{ asset('Resources/js/clientepotencial/clientepotencial.js') }}"></script>
+    <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
+{% endblock %}
+
+
+{% block descripcion_y_acciones %}
+
+    
+ <div class="row">
+ {% block descripcion %}
+        <div class="col-md-8">
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Cliente Potencial</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de clientes potenciales</p>
+        </div>
+ {% endblock%}
+ {% block acciones %}
+     
+     	<div class="col-md-4" style="margin-top: 50px;">
+                                <!-- Boton Modificacion -->
+	
+                               
+                               
+                              
+                                <!-- Botones del ingreso -->
+                                
+                                
+				<!-- Boton con Dropdown -->
+				<div class="btn-group pull-right" >
+                                                                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
+				    Menu <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li>
+				    	<a href="#">Action</a>
+				    </li>
+				    <li>
+				    	<a href="#">Action</a>
+				    </li>
+				    <li>
+				    	<a href="#">Action</a>
+				    </li>
+				  </ul>
+				</div> 
+				<!-- Small button -->
+	</div>
+     
+ {% endblock %}
+		
+		</div>
+
+{% endblock %}
+{% block navegacion_Y_body %}
+    	<div class="row">
+        {% block navegacion %}
+		<hr style="margin-top: 0px !important;">
+                <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+                    <!-- Left Navigation -->
+                    <ul style="list-style: none; padding: 0;">
+                      
+                        <a href="{{ path('admin_clientepotencial_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="" class="leftnava"><li class="leftnav left ">Configuraci&oacute;n</li></a>
+
+                    </ul>
+                </div>	
+       
+            
+            
+       {% endblock %}
+
+{% block cuerpo %}
+    
+<div class="col-md-10">
+
+         <div class="row">
+             {% for data in clientePotencial %}
+                 <div class="form-column col-md-6">
+                     <div class="form-group required">
+                         <input type="hidden" id="idClienteP" value="{{data.id}}">
+                         <label for="fecha inicio" class="control-label">Nombre</label>
+                         <input type="text" class="form-control" id="nombreCp" 
+                                placeholder="Nombre del contacto" name="txtcontacto"  required value="{{data.nombre}}">
+                     </div>
+                     </div>
+                     <div class="form-column col-md-6">
+                            <div class="form-group required">
+                 <label for="fecha inicio" class="control-label">Direccion</label>
+                    <input type="text" class="form-control" id="direccionCp" 
+                           placeholder="Direccion" name="direccionCp"  required value="{{data.direccion}}">
+                </div>
+                     </div>
+                    
+                     
+                     <div class="clearfix"></div>
+
+                 <div class="col-md-3">
+                     <div class="form-group required">
+                    <label for="fecha inicio" class="control-label">Telefono</label>
+                    <input type="text" class="form-control telefono" id="telefonoCp" 
+                           placeholder="0000-0000" name="txtrelacion" required value="{{data.telefono}}">
+                </div>
+                 </div>
+                   
+                 <div class="col-md-3">
+                    <div class="form-group">
+                       <label for="fecha inicio">Telefono Movil</label>
+                           <input type="text" class="form-control telefono" id="telefonoMCp" 
+                                 value="{{data.movil}}"  >
+                   </div>
+                 </div>
+                 <div class="col-md-3">
+                       <div class="form-group">
+                           <label for="fecha inicio">NRC</label>
+                           <input type="text" class="form-control" id="nrcCP" 
+                                  placeholder="0000-000000-000-0" name="nrcCP" value="{{data.nrc}}">
+                       </div>
+                   </div>
+                  
+                   {#<div class="clearfix"></div>   #}
+                   <div class="col-md-3">
+                       <div class="form-group">
+                           <label for="fecha inicio">NIT</label>
+                           <input type="text" class="form-control" id="nitCP" 
+                                  placeholder="0000-000000-000-0" name="nitCP" value="{{data.nit}}" >
+                       </div>
+                   </div>
+                   
+                   <div class="col-md-4">
+                    <div class="form-group">
+                    <label for="fecha inicio">Correo Electronico</label>
+                    <input type="text" class="form-control" id="correoCp" 
+                           placeholder="example@yourdomian.com" name="correoCp" value="{{data.correoelectronico}}">
+                    </div>
+                 </div>  
+                  
+                   <div class="col-md-4">
+                       <div class="form-group">
+                           <label for="fecha inicio">Pagina Web</label>
+                           <input type="text" class="form-control" id="paginaWebCp" 
+                                  placeholder="Direccion web de contacto" name="paginaWebCp" value="{{data.paginaWeb}}">
+                       </div>
+                   </div>
+                    <div class="col-md-4">
+                       <div class="form-group">
+                           <label for="fecha inicio">Referido por</label>
+                           <input type="text" class="form-control" id="referidoPor" 
+                                  placeholder="Quien refirio al posible cliente" name="referidoPor" value="{{data.referidoPor}}">
+                       </div>
+                   </div>
+                   <div class="clearfix"></div> 
+                    <div class="col-md-8">
+                      <div class="form-group">
+                          <label for="fecha inicio">Descripcion</label>
+                          <textarea class="form-control" id="descripcionCp" >{{data.descripcion}}</textarea>
+                      </div>   
+                    </div>
+                   <div class="col-md-4" style="margin-top: 65px;">
+                       <div class="btn-group pull-right">
+                           <button class="btn btn-default  btn-sm " style="margin-left: 5px;" id="cancelarEdicionCp">Cancelar</button>
+                       </div>
+                       <div class="btn-group pull-right">
+                           <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="editarCp">Guardar</button>
+                       </div>
+                       
+                  </div>
+             {% endfor %}
+                   
+                 </div>
+    {#row1#}
+                 
+             
+ </div>
+ 
+    
+    
+{% endblock %}
+
+       </div>
+{% endblock %}
+ 
+ {% block js_extend %}
+
+  {% endblock %} 
+
+
+
