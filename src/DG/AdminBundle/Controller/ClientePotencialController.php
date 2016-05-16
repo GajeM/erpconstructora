@@ -193,6 +193,7 @@ class ClientePotencialController extends Controller
             $objeto->setEstado(1);
             $em->persist($objeto);
             $em->flush();
+          
             
             $data['estado']=true;
                        
