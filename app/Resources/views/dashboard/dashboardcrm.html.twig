@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+  
+
 {% endblock css%}
 {% block js %}
      {{parent()}}
@@ -63,11 +65,11 @@
     	<div class="row">
         {% block navegacion %}
 		<hr style="margin-top: 0px !important;">
-                <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+                <div class="col-md-2 colorAnclas" style="border-right: 1px solid #f3f3f3;">
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
-                        <a href="" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
-                        <a href="" class="leftnava"><li class="leftnav left ">Configuraci&oacute;n</li></a>
+                        <a href="{{ path('dashboard_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="" class="leftnava colorAnclas"><li class="leftnav left ">Configuraci&oacute;n</li></a>
 
                     </ul>
                 </div>	
@@ -81,27 +83,32 @@
    	<div class="col-md-10">
 				<!-- Incio de Opcion de Modulo -->
 				<div class="row module first">
-					<div class="row">
-						<div class="col-md-10">
+					<div class="row" >
+                                            <a href="{{ path('admin_cliente_index') }}">
+						<div class="col-md-10 colorAnclas">
+                                                   
 							<p class="text-left" style="font-size: 17px; margin-top: 10px; margin-bottom: 0px;"><strong>Clientes</strong></p>
 							<p class="text-left" style="font-size: 12px; #8D99A6 !important;">Agregar clientes a una base de datos.</p>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 colorAnclas">
 							<p class="text-right" style="padding-right: 20px; padding-top: 10px; #8D99A6 !important;">Hace 2 horas</p>
 						</div>
+                                             </a>
 					</div>
 				</div>
 				<!-- Fin de Opcion de Modulo -->
 				<!-- Incio de Opcion de Modulo -->
 				<div class="row module">
 					<div class="row">
-						<div class="col-md-10">
+                                            <a href="{{ path('admin_contacto_index') }}">
+						<div class="col-md-10 colorAnclas">
 							<p class="text-left" style="font-size: 17px; margin-top: 10px; margin-bottom: 0px;"><strong>Contactos</strong></p>
 							<p class="text-left" style="font-size: 12px; #8D99A6 !important;">Agregar clientes a una base de datos.</p>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 colorAnclas">
 							<p class="text-right" style="padding-right: 20px; padding-top: 10px; #8D99A6 !important;">Hace 2 horas</p>
 						</div>
+                                            </a>   
 					</div>
 				</div>
 				<!-- Fin de Opcion de Modulo -->
@@ -110,11 +117,11 @@
 					<div class="row">
                                             <a href="{{ path('admin_clientepotencial_index') }}">
                                                
-						<div class="col-md-10">
+						<div class="col-md-10 colorAnclas">
 							<p class="text-left" style="font-size: 17px; margin-top: 10px; margin-bottom: 0px;"><strong>Clientes potenciales</strong></p>
 							<p class="text-left" style="font-size: 12px; #8D99A6 !important;">Agregar clientes potenciales a una base de datos.</p>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 colorAnclas">
 							<p class="text-right" style="padding-right: 20px; padding-top: 10px; #8D99A6 !important;">Hace 2 horas</p>
 						</div>
                                             </a> 
@@ -124,13 +131,15 @@
 				<!-- Incio de Opcion de Modulo -->
 				<div class="row module">
 					<div class="row">
-						<div class="col-md-10">
+                                            <a href="{{ path('admin_proveedor_index') }}">
+						<div class="col-md-10 colorAnclas">
 							<p class="text-left" style="font-size: 17px; margin-top: 10px; margin-bottom: 0px;"><strong>Proveedores</strong></p>
 							<p class="text-left" style="font-size: 12px; #8D99A6 !important;">Agregar clientes a una base de datos.</p>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 colorAnclas">
 							<p class="text-right" style="padding-right: 20px; padding-top: 10px; #8D99A6 !important;">Hace 2 horas</p>
 						</div>
+                                            </a>
 					</div>
 				</div>
 				<!-- Fin de Opcion de Modulo -->

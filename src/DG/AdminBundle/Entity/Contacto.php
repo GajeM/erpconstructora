@@ -90,6 +90,12 @@ class Contacto
      * @ORM\Column(name="direccion", type="string", length=100, nullable=true)
      */
     private $direccion;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
 
 
 
@@ -332,4 +338,38 @@ class Contacto
     {
         return $this->direccion;
     }
+    
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+   
+    public function __toString() {
+        
+         return $this->nombre;
+    }  
+    
+    
+    
+    
 }

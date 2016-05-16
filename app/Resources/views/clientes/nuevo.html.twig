@@ -18,7 +18,7 @@
 {% block js %}
      {{parent()}}
     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
-    <script src="{{ asset('Resources/js/clientepotencial/clientepotencial.js') }}"></script>
+    <script src="{{ asset('Resources/js/cliente/cliente.js') }}"></script>
     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
 {% endblock %}
 
@@ -29,8 +29,8 @@
  <div class="row">
  {% block descripcion %}
         <div class="col-md-8">
-            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Cliente Potencial</p>
-            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de clientes potenciales</p>
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Cliente</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de clientes</p>
         </div>
  {% endblock%}
  {% block acciones %}
@@ -46,7 +46,7 @@
                                 
 				<!-- Boton con Dropdown -->
 				<div class="btn-group pull-right" >
-                                                                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
+                                   <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
 				    Menu <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
@@ -77,7 +77,7 @@
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
                       
-                        <a href="{{ path('admin_clientepotencial_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="{{ path('admin_cliente_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
                         <a href="" class="leftnava colorAnclas"><li class="leftnav left ">Configuraci&oacute;n</li></a>
 
                     </ul>
@@ -173,7 +173,7 @@
                     </div>
                    <div class="col-md-4" style="margin-top: 65px;">
                        <div class="btn-group pull-right">
-                           <a class="btn btn-default  btn-sm " style="margin-left: 5px;" id="cancelarNuevoCp">Cancelar</a>
+                           <a class="btn btn-default  btn-sm " style="margin-left: 5px;" id="cancelarNuevoCliente">Cancelar</a>
                        </div>
                        <div class="btn-group pull-right">
                            <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoCp">Guardar</button>

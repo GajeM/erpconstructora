@@ -100,6 +100,12 @@ class Cliente
      * })
      */
     private $clientePotencial;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
 
 
 
@@ -365,4 +371,39 @@ class Cliente
     {
         return $this->clientePotencial;
     }
+    
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+   
+    public function __toString() {
+        
+         return $this->nombre;
+    }  
+    
+    
+    
+    
+    
 }

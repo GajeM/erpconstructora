@@ -31,9 +31,9 @@ class Proveedor
     /**
      * @var string
      *
-     * @ORM\Column(name="telfono", type="string", length=25, nullable=false)
+     * @ORM\Column(name="telefono", type="string", length=25, nullable=false)
      */
-    private $telfono;
+    private $telefono;
 
     /**
      * @var string
@@ -90,6 +90,12 @@ class Proveedor
      * @ORM\Column(name="direccion", type="string", length=100, nullable=true)
      */
     private $direccion;
+    
+     /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
 
 
 
@@ -129,24 +135,24 @@ class Proveedor
     /**
      * Set telfono
      *
-     * @param string $telfono
+     * @param string $telefono
      * @return Proveedor
      */
-    public function setTelfono($telfono)
+    public function setTelefono($telefono)
     {
-        $this->telfono = $telfono;
+        $this->telefono = $telefono;
 
         return $this;
     }
 
     /**
-     * Get telfono
+     * Get telefono
      *
      * @return string 
      */
-    public function getTelfono()
+    public function getTelefono()
     {
-        return $this->telfono;
+        return $this->telefono;
     }
 
     /**
@@ -332,4 +338,36 @@ class Proveedor
     {
         return $this->direccion;
     }
+    
+    
+     /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+   
+    public function __toString() {
+        
+         return $this->nombre;
+    }  
+    
 }

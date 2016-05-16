@@ -19,8 +19,8 @@
  <div class="row">
  {% block descripcion %}
         <div class="col-md-8">
-            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Cliente Potencial</p>
-            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de clientes potenciales</p>
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Proveedor</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de proveedores</p>
         </div>
  {% endblock%}
  {% block acciones %}
@@ -29,7 +29,7 @@
                                 <!-- Boton Modificacion -->
 	
                                 <div class="btn-group pull-right">
-                                  <a href="{{ path('nuevoclientepotencial') }}" class="admin-menu-navi">
+                                  <a href="{{ path('nuevoproveedor') }}" class="admin-menu-navi">
                                         <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoCp">Nuevo</button>
                                      </a>
                                 </div>
@@ -159,7 +159,7 @@
                                         "processing": true,
                                         "serverSide": true,
                                         "ajax": {
-                                            "url": '{{path('clientepotencial_data')}}',
+                                            "url": '{{path('proveedor_data')}}',
                                             "type": 'GET'
                                         },
                                         "columns": [
@@ -190,7 +190,7 @@
             $(document).on("click",".CP",function() {
                     
                   var numero = $(this).attr("id");
-                  var url=Routing.generate('editarClientePotencial',{id:numero});
+                  var url=Routing.generate('editarProveedor',{id:numero});
                   window.open(url,"_self"); 
                  
                     
@@ -206,6 +206,7 @@
            }else{
                 $("#eliminarCP").hide();
            }
+        
 
    });
    

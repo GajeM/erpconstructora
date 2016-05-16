@@ -19,8 +19,8 @@
  <div class="row">
  {% block descripcion %}
         <div class="col-md-8">
-            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Cliente Potencial</p>
-            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de clientes potenciales</p>
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Contactos</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de contactos</p>
         </div>
  {% endblock%}
  {% block acciones %}
@@ -29,7 +29,7 @@
                                 <!-- Boton Modificacion -->
 	
                                 <div class="btn-group pull-right">
-                                  <a href="{{ path('nuevoclientepotencial') }}" class="admin-menu-navi">
+                                  <a href="{{ path('nuevocontacto') }}" class="admin-menu-navi">
                                         <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoCp">Nuevo</button>
                                      </a>
                                 </div>
@@ -70,10 +70,8 @@
 {% block navegacion_Y_body %}
     	<div class="row">
         {% block navegacion %}
-		
-       {% include ':dashboard:navegacionCRM.html.twig' %}
-            
-            
+            {% include ':dashboard:navegacionCRM.html.twig' %}
+
        {% endblock %}
 
 {% block cuerpo %}
@@ -84,7 +82,7 @@
               
  <div >
      
-      <table id="listaClientesPotenciales" class="mdl-data-table" cellspacing="0" width="100%">
+      <table id="listaClientes" class="mdl-data-table" cellspacing="0" width="100%">
            
 				        <thead>
                                                                             <tr>
@@ -144,7 +142,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
                     $("#eliminarCP").hide();
-		    $('#listaClientesPotenciales').DataTable( {
+		    $('#listaClientes').DataTable( {
                                     
 		        columnDefs: [
 		            {
@@ -159,7 +157,7 @@
                                         "processing": true,
                                         "serverSide": true,
                                         "ajax": {
-                                            "url": '{{path('clientepotencial_data')}}',
+                                            "url": '{{path('contacto_data')}}',
                                             "type": 'GET'
                                         },
                                         "columns": [
@@ -190,8 +188,8 @@
             $(document).on("click",".CP",function() {
                     
                   var numero = $(this).attr("id");
-                  var url=Routing.generate('editarClientePotencial',{id:numero});
-                  window.open(url,"_self"); 
+                  var url=Routing.generate('editarContacto',{id:numero});
+                  window.open(url,"_self");
                  
                     
           
@@ -201,7 +199,7 @@
        
      $("#select_all").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
-        if($(this).prop("checked")){
+       if($(this).prop("checked")){
                 $("#eliminarCP").show();
            }else{
                 $("#eliminarCP").hide();
@@ -209,7 +207,7 @@
 
    });
    
-      $(document).on("click",".idClientePotencial",function() {
+      $(document).on("click",".idContacto",function() {
             if($(this).prop("checked")){
                 $("#eliminarCP").show();
            }else{
@@ -221,7 +219,7 @@
     
                
                var valor = new Array();
-               $(".idClientePotencial").each(function (index,value){
+               $(".idContacto").each(function (index,value){
                    
                    if($(this).prop("checked")){
                       num = $(this).attr("id");
@@ -237,7 +235,7 @@
               
 //Funcion del POST que me permite inabilitar un Proveedor
 
-                    $.post( "{{path('eliminarclientePotencial')}}", { idclientepotencial: valor }, function( data ) {
+                    $.post( "{{path('eliminarcontacto')}}", { idcontacto: valor }, function( data ) {
                         var par = new Array();
                         par = data.query;
 
@@ -245,7 +243,7 @@
                       
                         if(data.flag === 0) {
                             
-                            var table = $('#listaClientesPotenciales').DataTable();
+                            var table = $('#listaClientes').DataTable();
                                  $("#eliminarCP").hide();
                             table.ajax.reload( function ( json ) {
                                
