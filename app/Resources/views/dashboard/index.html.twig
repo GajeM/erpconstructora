@@ -12,9 +12,7 @@
                             <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
                             <!-- Stylesheet Personales -->
                             <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
-                            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-                            <link href="{{ asset('Resources/datatable/css/datatable.css')}}" rel="stylesheet">
-
+                          
                             
                        
                             <script type="text/javascript" src="{{ asset('Resources/jquery/jquery-1.11.3.min.js') }}"></script>
@@ -22,15 +20,18 @@
                                         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
                             <link rel="shortcut icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
                             <link rel="icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
-       {#                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
-                            
-                        
+                    
                        
 
 
     
     </head>
     <body>
+        <style>
+            .tamanhoFuente{
+                font-size: 12px !important;
+            }
+        </style>
  
         
         <!-- Barra de Navegacion con Breadcrumb -->
@@ -48,7 +49,7 @@
 					<div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;">
 						<a href="{{ path('dashboard_indexCRM') }}" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
 							<p style="margin-botttom: 0px; padding-bottom: 0px;"><img src="{{ asset('Resources/src/img/icon5.png')}}"></p>
-							<p style="padding-top: 5px; margin-top: 0px;"><strong>CRM</strong></p>
+                                                                                                                <p style="padding-top: 5px; margin-top: 0px;" ><strong>CRM</strong></p>
 						</span></a>
 					</div>
 					<!-- Fin de Icono de Notificaciones -->

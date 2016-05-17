@@ -10,14 +10,17 @@
                       
                         {% block css %}
                             <!-- Stylesheet de Bootstrap -->
-                            <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
+                            
+                           <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
+                           <link rel="stylesheet" href="{{ asset('Resources/Zebra/css/bootstrap.css') }}">
                             <!-- Stylesheet Personales -->
                             <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
                             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-                            <link href="{{ asset('Resources/datatable/css/datatable.css')}}" rel="stylesheet">
+                        
                             <style>
                                 .colorAnclas{
-                                    color: black !important;
+                                    color: black;
+                                    
                                 }
 
                             </style>
@@ -25,8 +28,11 @@
                         {% endblock css%}
                         {% block js %}
                             <script type="text/javascript" src="{{ asset('Resources/jquery/jquery-1.11.3.min.js') }}"></script>
-                                    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-                                        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+                            <script src="{{ asset('Resources/Zebra/javascript/zebra_datepicker.js') }}"></script>
+                            <script src="{{ asset('Resources/Zebra/inicializacioncalendarios.js') }}"></script>
+                            
+                            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
                             <link rel="shortcut icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
                             <link rel="icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
        {#                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
