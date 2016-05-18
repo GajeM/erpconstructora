@@ -79,7 +79,7 @@ class MaquinaController extends Controller
    /**
      * 
      *
-     * @Route("/cliente/data", name="cliente_data")
+     * @Route("/cliente/data", name="maquina_data")
      */
     public function DataClientePotencialAction(Request $request)
     {

@@ -9,7 +9,14 @@
 {% block js %}
      {{parent()}}
      
-    
+     <style>
+            .mdl-data-table th{
+            text-align: center !important;
+        }
+            .mdl-data-table td{
+            text-align: center !important;
+        }
+     </style>
 {% endblock %}
 
 
@@ -77,37 +84,34 @@
 {% block cuerpo %}
      
     <div class="col-md-10">
-      
-              
+     
               
  <div >
      
       <table id="listaClientes" class="mdl-data-table" cellspacing="0" width="100%">
            
 				        <thead>
-                                                                            <tr>
-                                                                            <label for="select_all" style="margin-bottom: -60px;margin-top:3%;">Seleccionar Todos</label>
-                                                                            <input type="checkbox" name="select_all" id="select_all" style="margin-bottom: -60px;margin-top:4%; margin-left: 0.25%;">
-                                                                               
-                                                                            </tr>
+                                                                            
 				            <tr>
-                                                                               <th> 
+                                                                                <th style="display: none;"> 
                                                                                   Seleccion  
                                                                                 </th>
-                                                                                <th>Nombre</th>
+                                                                                <th>ID Cliente</th>
+                                                                                <th>Nombre de Empresa</th>
+                                                                                <th>Nombre de Contacto</th>
                                                                                   <th>Telefono Fijo</th>
-				                <th>Direccion</th>
-                                                                               <th>Accion</th>
-                                                    
+	
 				            </tr>
 				        </thead>
 				        <tfoot>
 				            <tr>
-                                                                                 <th>Selecciona</th>
-				                <th>Nombre</th>
+                                                                                <th style="display: none;"> 
+                                                                                  Seleccion  
+                                                                                </th>
+                                                                                <th>Nombre de Empresa</th>
+                                                                                <th>Nombre de Contacto</th>
                                                                                 <th>Telefono Fijo</th>
-				                <th>Direccion</th>
-                                                                                 <th>Accion</th>
+                                                                               
                                                                                
 				            </tr>
 				        </tfoot>
@@ -141,7 +145,11 @@
 	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-                    $("#eliminarCP").hide();
+         
+
+                    
+                    
+                                    $("#eliminarCP").hide();
 		    $('#listaClientes').DataTable( {
                                     
 		        columnDefs: [
@@ -161,11 +169,12 @@
                                             "type": 'GET'
                                         },
                                         "columns": [
-                                             { "data":"link" },
+                                             
+                                              { "data":"id" },
                                              { "data":"nombre" },
+                                             {"data":"contacto"},
                                              {"data":"telefono"},
-                                             {"data":"direccion"},
-                                             { "data":"link2" },
+                                            
                                              
                               ],
                                             "language": {
@@ -185,54 +194,41 @@
 		    } );
                   
               //Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
-            $(document).on("click",".CP",function() {
-                    
-                  var numero = $(this).attr("id");
+         
+       var idEliminar=0;
+       
+       $(document).on("click","tr",function() {
+       
+             var idCliente =  $(this).children().html();
+            $("tr").css('background-color', 'white');
+            $(this).css('background-color', '#E9E6E6');
+            
+            
+             $("#eliminarCP").show();   
+             idEliminar=idCliente;
+             $("#valorSeleccionado").val(nombreCliente);
+                
+       });
+         
+       $(document).on("dblclick","tr",function() {
+             var idCliente =  $(this).children().html();
+             
+               var numero = idCliente;
                   var url=Routing.generate('editarClientes',{id:numero});
                   window.open(url,"_self"); 
-                 
-                    
-          
-            
-        });   
-        
-       
-     $("#select_all").change(function () {
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
-       if($(this).prop("checked")){
-                $("#eliminarCP").show();
-           }else{
-                $("#eliminarCP").hide();
-           }
-
-   });
-   
-      $(document).on("click",".idCliente",function() {
-            if($(this).prop("checked")){
-                $("#eliminarCP").show();
-           }else{
-                $("#eliminarCP").hide();
-           }
-         
+             $("#eliminarCP").hide();   
+                
        });
+     
+ 
    $("#eliminarCP").on("click",function (){
     
-               
                var valor = new Array();
-               $(".idCliente").each(function (index,value){
-                   
-                   if($(this).prop("checked")){
-                      num = $(this).attr("id");
+          
                             
-                          valor.push(num);
-                        }
-                       
-                        
-                   
-                   
-               });
-               
-              
+                  valor.push(idEliminar);
+
+
 //Funcion del POST que me permite inabilitar un Proveedor
 
                     $.post( "{{path('eliminarcliente')}}", { idcliente: valor }, function( data ) {
@@ -278,7 +274,7 @@
         
         
                     
-} );
+});
 
 
 

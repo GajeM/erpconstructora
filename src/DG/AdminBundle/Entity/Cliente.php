@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Cliente
  *
- * @ORM\Table(name="cliente", indexes={@ORM\Index(name="fk_cliente_cliente_potencial1_idx", columns={"cliente_potencial_id"})})
+ * @ORM\Table(name="cliente", indexes={@ORM\Index(name="fk_cliente_cliente_potencial1_idx", columns={"cliente_potencial_id"}), @ORM\Index(name="fk_cliente_contacto1", columns={"contacto_id"})})
  * @ORM\Entity
  */
 class Cliente
@@ -106,8 +106,16 @@ class Cliente
      * @ORM\Column(name="estado", type="integer", nullable=false) 
      */
     private $estado;
-
-
+    
+     /**
+     * @var \Contacto
+     *
+     * @ORM\ManyToOne(targetEntity="Contacto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="contacto_id", referencedColumnName="id")
+     * })
+     */
+    private $contactoId;
 
     /**
      * Get id
@@ -371,6 +379,32 @@ class Cliente
     {
         return $this->clientePotencial;
     }
+    
+    
+    /**
+     * Set contactoId
+     *
+     * @param \DG\AdminBundle\Entity\Contacto $contactoId
+     * @return Contacto
+     */
+    public function setContactoId(\DG\AdminBundle\Entity\Contacto $contactoId = null)
+    {
+        $this->contactoId = $contactoId;
+
+        return $this;
+    }
+    
+     /**
+     * Get contactoId
+     *
+     * @return \DG\AdminBundle\Entity\ContactoId
+     */
+    public function getContactoId()
+    {
+        return $this->contactoId;
+    }
+    
+    
     
     /**
      * Set estado

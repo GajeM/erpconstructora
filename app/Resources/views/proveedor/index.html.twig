@@ -210,7 +210,7 @@
 
    });
    
-      $(document).on("click",".idClientePotencial",function() {
+      $(document).on("click",".idProveedor",function() {
             if($(this).prop("checked")){
                 $("#eliminarCP").show();
            }else{
@@ -222,7 +222,7 @@
     
                
                var valor = new Array();
-               $(".idClientePotencial").each(function (index,value){
+               $(".idProveedor").each(function (index,value){
                    
                    if($(this).prop("checked")){
                       num = $(this).attr("id");
@@ -238,7 +238,7 @@
               
 //Funcion del POST que me permite inabilitar un Proveedor
 
-                    $.post( "{{path('eliminarclientePotencial')}}", { idclientepotencial: valor }, function( data ) {
+                    $.post( "{{path('eliminarproveedor')}}", { idproveedor: valor }, function( data ) {
                         var par = new Array();
                         par = data.query;
 
@@ -257,7 +257,7 @@
                         else{
                                 Lobibox.notify("error", {
                                           size: 'mini',
-                                          msg: 'Error al elmonar los datos, espere un momento e intenta de nuevo'
+                                          msg: 'Error al elimonar los datos, espere un momento e intenta de nuevo'
                                       });
                                             location.reload();
                         }
