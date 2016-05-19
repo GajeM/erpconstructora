@@ -82,31 +82,34 @@
             <section class="col-lg-12 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <ul class="nav nav-tabs  ui-sortable-handle">
-                        <li class="active"><a href="#divDatosGenerales" data-toggle="tab" class="colorAnclas colorPestanhas">Datos Generales</a></li>
-                        <li><a href="#divdatosMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas">Datos del mantenimiento</a></li>
-                        <li><a href="#divExpedienteMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas">Expediente Mantenimiento</a></li>
-                        <li><a href="#divImagenesMaquina" data-toggle="tab" class="colorAnclas colorPestanhas">Imagenes</a></li>
+                        <li class="active"><a href="#divDatosGenerales" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosGenerales">Datos Generales</a></li>
+                        <li><a href="#divdatosMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas disabled" id="datosMantenimiento">Datos del mantenimiento</a></li>
+                        <li><a href="#divExpedienteMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosExpedienteMantenimiento">Expediente Mantenimiento</a></li>
+                        <li><a href="#divImagenesMaquina" data-toggle="tab" class="colorAnclas colorPestanhas" id="imagenesMaquinas">Imagenes</a></li>
                         <li class="pull-left header">
                     </ul>
+                    
                     <div class="tab-content no-padding">
-
+                       
                         <div class="chart tab-pane active colorDiv" id="divDatosGenerales" >
                             <div class="row" style="margin-left: 2%; ">
+                                <input type="hidden" name="idMaquina" id="idMaquina">
+                                
                                 <div class="form-column col-md-4">
                                     <div class="form-group">
                                         <label for="numeroSerie" class="control-label" style="padding-top: 1.5%;">Numero Serie</label>
                                         <input type="text" class="form-control" id="numeroSerie" 
-                                               placeholder="N°  de serie" name="numeroSerie" >
+                                               placeholder="N°  de serie" name="numeroSerie" required >
                                     </div>
                                 </div>
-                    
-                                 <div class="form-column col-md-4">
+                                <div class="form-column col-md-4">
                                     <div class="form-group" >
                                         <label for="numeroEquipo" class="control-label" style="padding-top: 1.5%;">N° de equipo</label>
                                         <input type="text" class="form-control" id="numeroEquipo" 
-                                               placeholder="Numero de Equipo" name="numeroEquipo" >
+                                               placeholder="Numero de Equipo" name="numeroEquipo" required >
                                     </div>
                                 </div>
+
                                   <div class="form-column col-md-4" style="padding-top: 3.2%;">
                                     <div class="form-group">
                                         <label for="anhoMaquina" class="control-label">Año</label>
@@ -150,7 +153,7 @@
                                     <div class="form-group" >
                                         <label for="placa   " class="control-label">Placa</label>
                                         <input type="text" class="form-control" id="placa" 
-                                               placeholder="N° de placa" name="placa" >
+                                               placeholder="N° de placa" name="placa" required >
                                     </div>
                                 </div>
                                  <div class="form-column col-md-4">
@@ -193,7 +196,7 @@
                                 <div class="form-column col-md-6">
                                     <div class="form-group" >
                                         <label for="marca" class="control-label" >Descripción</label>
-                                        <textarea name="descripcionMaquina" class="form-control">
+                                        <textarea name="descripcionMaquina" id="descripcionMaquina" class="form-control">
                                             
                                         </textarea>
                                     </div>
@@ -211,6 +214,7 @@
                                 
                             </div>                          
                         </div>
+                         
                         
                         
                         <div class="chart tab-pane" id="divdatosMantenimiento" style=" padding: 15px;" >

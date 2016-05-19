@@ -54,6 +54,221 @@ $('#anhoMaquina').Zebra_DatePicker({
            
        }); 
      
+    $(document).on("click","#guargarDatosGeneralesMaquina",function() {
+       var idPrincipal = $("#idMaquina").val();
+      
+        
+        if (idPrincipal==""){
+        
+    //Insercion de los datos generales de la empresa
+        var numeroSerie, numeroEquipo, anho, alias, modelo, tipoEquipo,
+                vin, placa, color, tamanho, capacidad, marca, descripcion;
+      
+            numeroSerie=$("#numeroSerie").val();
+            numeroEquipo=$("#numeroEquipo").val();
+            anho=$("#anhoMaquina").val();
+            alias=$("#alias").val();
+            modelo=$("#modelo").val();
+            tipoEquipo=$("#tipoEquipo").val();
+            vin=$("#vin").val();
+            placa=$("#placa").val();
+            color=$("#color").val();
+            tamanho=$("#tamanho").val();
+            capacidad=$("#capacidad").val();
+            marca=$("#marca").val();
+            descripcion=$("#descripcionMaquina").val();
+             
+       $.ajax({
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: 'json',
+                                    data: {numeroSerie:numeroSerie,numeroEquipo:numeroEquipo,
+                                        placa:placa},
+                                    url: Routing.generate('validarMaquina'),
+                                    success: function (data)
+                                    {
+                                    
+                                     if (data.estado==true){
+                                         
+
+                                            $.ajax({
+                                                type: 'POST',
+                                                async: false,
+                                                dataType: 'json',
+                                                data: {numeroSerie: numeroSerie, numeroEquipo: numeroEquipo, anho: anho, alias: alias, modelo: modelo, tipoEquipo: tipoEquipo,
+                                                    vin: vin, placa: placa, color: color, tamanho: tamanho, capacidad: capacidad, marca: marca, descripcion: descripcion},
+                                                url: Routing.generate('insertarMaquina'),
+                                                success: function (data)
+                                                {
+                                                   
+                                                    if (data.estado == true) {
+                                                            $("#idMaquina").val(data.idMaquina);
+                                                             Lobibox.notify("success", {
+                                                                size: 'mini',
+                                                                msg: 'Registro exitoso, espere un momento'
+                                                            });
+                                                       
+                                                       
+
+                                                    }
+
+                                                },
+                                                error: function (xhr, status)
+                                                {
+
+                                                }
+                                            });
+                                         
+                  
+                                     }
+                                     else if(data.estado=="equipo"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de equipo ya existente, intente con otro.'
+                                    });
+                                     }
+                                     else if(data.estado=="placa"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de pĺaca ya existente, intente con otro.'
+                                    });
+                                     }
+                                     else if(data.estado=="serie"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de serie ya existente, intente con otro.'
+                                    });
+                                     }
+                                       
+                                             
+                                    },
+                                    error: function (xhr, status)
+                                    {
+                      
+                    }
+            });
+      
+
+              
+        }else{
+            var idMaquina = $("#idMaquina").val();
+//Edicion de los datos generales de la empresa desde el formulario de insercion
+             var numeroSerie, numeroEquipo, anho, alias, modelo, tipoEquipo,
+                vin, placa, color, tamanho, capacidad, marca, descripcion;
+      
+            numeroSerie=$("#numeroSerie").val();
+            numeroEquipo=$("#numeroEquipo").val();
+            anho=$("#anhoMaquina").val();
+            alias=$("#alias").val();
+            modelo=$("#modelo").val();
+            tipoEquipo=$("#tipoEquipo").val();
+            vin=$("#vin").val();
+            placa=$("#placa").val();
+            color=$("#color").val();
+            tamanho=$("#tamanho").val();
+            capacidad=$("#capacidad").val();
+            marca=$("#marca").val();
+            descripcion=$("#descripcionMaquina").val();
+             
+ 
+
+                                            $.ajax({
+                                                type: 'POST',
+                                                async: false,
+                                                dataType: 'json',
+                                                data: {numeroSerie: numeroSerie, numeroEquipo: numeroEquipo, anho: anho, alias: alias, modelo: modelo, tipoEquipo: tipoEquipo,
+                                                    vin: vin, placa: placa, color: color, tamanho: tamanho, capacidad: capacidad, marca: marca, descripcion: descripcion,idMaquina:idMaquina},
+                                                url: Routing.generate('modificarMaquina'),
+                                                success: function (data)
+                                                {
+                                                    
+                                                    if (data.estado == true) {
+                                                            $("#idMaquina").val(data.idMaquina);
+                                                             Lobibox.notify("success", {
+                                                                size: 'mini',
+                                                                msg: 'Datos modificados con  exito!'
+                                                            });
+                                                       
+                                                       
+
+                                                    }
+
+                                                },
+                                                error: function (xhr, status)
+                                                {
+
+                                                }
+                                            });
+                                         
+                  
+                                     }
+
+     });    
+  
+  
+  
+  
+  
+     $(document).on("click","#datosMantenimiento",function() {
+            var valor = $("#idMaquina").val();
+            
+            
+            
+            if (valor==""){
+                 
+                 $("#datosGenerales").click();
+                 
+                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: 'Ingrese los datos generales de la maquina, por favor.'
+                                    });
+                
+            }
+            
+            
+            
+        });     
+      $(document).on("click","#datosExpedienteMantenimiento",function() {
+            var valor = $("#idMaquina").val();
+            
+            
+            
+            if (valor==""){
+                 
+                 $("#datosGenerales").click();
+                 
+                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: 'Ingrese los datos generales de la maquina, por favor.'
+                                    });
+                
+            }
+            
+            
+            
+        });     
+        
+        $(document).on("click","#imagenesMaquinas",function() {
+            var valor = $("#idMaquina").val();
+            
+            
+            
+            if (valor==""){
+                 
+                 $("#datosGenerales").click();
+                 
+                    Lobibox.notify("warning", {
+                                        size: 'mini',
+                                        msg: 'Ingrese los datos generales de la maquina, por favor.'
+                                    });
+                
+            }
+            
+            
+            
+        });     
+     
+     
      
      
 
@@ -79,3 +294,5 @@ $('#anhoMaquina').Zebra_DatePicker({
                 return "Seleccione un tipo de equipo";
             }   
         }
+        
+       

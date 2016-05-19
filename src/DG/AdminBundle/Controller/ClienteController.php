@@ -198,8 +198,6 @@ class ClienteController extends Controller
           
             $em->persist($objeto);
             $em->flush();
-          
-            
             $data['estado']=true;
                        
             

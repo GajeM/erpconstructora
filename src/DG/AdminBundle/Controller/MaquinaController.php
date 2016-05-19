@@ -35,6 +35,8 @@ class MaquinaController extends Controller
         ));
     }
 
+    
+    
     /**
      * Lists all MaMaquina entities.
      *
@@ -74,91 +76,225 @@ class MaquinaController extends Controller
        
         return new Response(json_encode($abogado));
     }
-
     
-   /**
-     * 
-     *
-     * @Route("/cliente/data", name="maquina_data")
+    /**
+     * @Route("/insertarMaquina/", name="insertarMaquina", options={"expose"=true})
+     * @Method("POST")
      */
-    public function DataClientePotencialAction(Request $request)
-    {
+    
+    
+      public function InsertarMaquinaAction(Request $request) {
         
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * Easy set variables
-	 */
-	
-	/* Array of database columns which should be read and sent back to DataTables. Use a space where
-	 * you want to insert a non-database field (for example a counter or static image)
-	 */
-        $entity = new MaMaquina();
-        $start = $request->query->get('start');
-        $draw = $request->query->get('draw');
-        $longitud = $request->query->get('length');
-        $busqueda = $request->query->get('search');
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+             
+            $em = $this->getDoctrine()->getManager();
+
+            $numeroSerie = $request->get('numeroSerie');
+            $numeroEquipo = $request->get('numeroEquipo');
+            $anho = $request->get('anho');
+            $alias = $request->get('alias');
+            $modelo = $request->get('modelo');
+            $tipoEquipo = $request->get('tipoEquipo');
+            $vin = $request->get('vin');
+            $placa = $request->get('placa');
+            $color = $request->get('color');
+            $tamanho = $request->get('tamanho');
+            $capacidad = $request->get('capacidad');
+            $marca = $request->get('marca');
+            $descripcion = $request->get('descripcion');
+
+            $objeto = new MaMaquina();
+            $objeto->setNumeroSerie($numeroSerie);
+            $objeto->setNombre($numeroEquipo);
+            $objeto->setAnho(new \DateTime($anho));
+            $objeto->setAlias($alias);
+            $objeto->setModelo($modelo);
+            
+            
+            if ($tipoEquipo !=""){
+                  $idTipoEquipo = $this->getDoctrine()->getRepository('DGAdminBundle:MaTipoEquipo')->findById($tipoEquipo);
+                  $objeto->setTipoEquipo($idTipoEquipo[0]);
+             }else{
+                 $objeto->setTipoEquipo(null);
+             }
+             
+             $objeto->setVin($vin);
+             $objeto->setPlaca($placa);
+             $objeto->setColor($color);
+             $objeto->setTamaño($tamanho);
+             $objeto->setCapacidad($capacidad);
+             $objeto->setMarca($marca);
+             $objeto->setDecripcion($descripcion);
+
+            $em->persist($objeto);
+            $em->flush();
+
+            $idMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->find($objeto->getId());
+            $data['estado']=true;
+            $data['idMaquina']=$idMaquina->getId();
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
         
-        $em = $this->getDoctrine()->getEntityManager();
-        $territoriosTotal = $em->getRepository('DGAdminBundle:Cliente')->findAll();
-        $territorio['draw']=$draw++;  
-        $territorio['recordsTotal'] = count($territoriosTotal);
-        $territorio['recordsFiltered']= count($territoriosTotal);
-        
-        $territorio['data']= array();
-        //var_dump($busqueda);
-        //die();
-        $arrayFiltro = explode(' ',$busqueda['value']);
         
         
-        //echo count($arrayFiltro);
-        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
-        if($busqueda['value']!=''){
-        
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idCliente\" id=\"',cp.id), '\">' as link "
-                            . ", concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Cliente cp  "
-                        . "WHERE upper(cp.nombre)  LIKE upper(:busqueda) AND cp.estado=1 "
-                        . "ORDER BY cp.nombre DESC ";
-                    
-                    //Aqui estas trabjando
-                   $territorio['data'] = $em->createQuery($dql)
-                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-                            ->getResult();
-                    
-                   $territorio['recordsFiltered']= count($territorio['data']);
-                    
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idCliente\" id=\"',cp.id), '\">' as link"
-                            . ", concat('<a class=\"btn btn-success CP \" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Cliente cp  "
-                        . "WHERE upper(cp.nombre)  LIKE upper(:busqueda)  AND cp.estado=1 "
-                        . "ORDER BY cp.nombre DESC ";
-                   
-                   $territorio['data'] = $em->createQuery($dql)
-                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-                            ->setFirstResult($start)
-                            ->setMaxResults($longitud)
-                            ->getResult();
-       
-        }
-        else{
-            $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idCliente\" id=\"',cp.id), '\">' as link,"
-                    . " concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Cliente cp  "
-                    . " WHERE  cp.estado=1"
-                    . " ORDER BY cp.nombre  DESC ";
-                    $territorio['data'] = $em->createQuery($dql)
-                    ->setFirstResult($start)
-                    ->setMaxResults($longitud)
-                    ->getResult();
-        }
-     
-        
-        return new Response(json_encode($territorio));
     }
     
-   
-    
- 
     
     
+     /**
+     * @Route("/validarMaquina/", name="validarMaquina", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ValidarMaquinaAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+           
+          
+            $numeroSerie = $request->get('numeroSerie');
+            $numeroEquipo = $request->get('numeroEquipo');
+            $placa = $request->get('placa');
+            
+
+            $dqlPlaca = "SELECT COUNT(ma.id) AS resP FROM DGAdminBundle:MaMaquina ma WHERE"
+                   . " ma.placa = :placa ";
+
+            $resultadoPlaca = $em->createQuery($dqlPlaca)
+                        ->setParameters(array('placa'=>$placa))
+                        ->getResult();
+            $rPlaca=$resultadoPlaca[0]['resP'];
+            
+             $dqlEquipo = "SELECT COUNT(ma.id) AS resE FROM DGAdminBundle:MaMaquina ma WHERE"
+                   . " ma.nombre = :numeroEquipo ";
+
+            $resultadoEquipo = $em->createQuery($dqlEquipo)
+                        ->setParameters(array('numeroEquipo'=>$numeroEquipo))
+                        ->getResult();
+            
+            
+            $rEquipo=$resultadoEquipo[0]['resE'];
+            
+             $dqlSerie = "SELECT COUNT(ma.id) AS resS FROM DGAdminBundle:MaMaquina ma WHERE"
+                   . " ma.numeroSerie = :numeroSerie ";
+
+            $resultadoSerie = $em->createQuery($dqlSerie)
+                        ->setParameters(array('numeroSerie'=>$numeroSerie))
+                        ->getResult();
+            $rSerie=$resultadoSerie[0]['resS'];
+            
+            $suma= $rEquipo+$rPlaca+$rSerie;
+            if ($suma==0){
+                
+                $data['estado']=true;
+                
+            }else if($rEquipo!=0){
+                $data['estado']="equipo";
+            }else if($rPlaca!=0){
+                $data['estado']="placa";
+            }else if($rSerie!=0){
+                $data['estado']="serie";
+            }
+            
+            
+            
+    
+                
+             return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+    
+    /**
+     * @Route("/modificarMaquina/", name="modificarMaquina", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ModificarMaquinaAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+             
+            $em = $this->getDoctrine()->getManager();
+            
+            $numeroSerie = $request->get('numeroSerie');
+            $numeroEquipo = $request->get('numeroEquipo');
+            $anho = $request->get('anho');
+            $alias = $request->get('alias');
+            $modelo = $request->get('modelo');
+            $tipoEquipo = $request->get('tipoEquipo');
+            $vin = $request->get('vin');
+            $placa = $request->get('placa');
+            $color = $request->get('color');
+            $tamanho = $request->get('tamanho');
+            $capacidad = $request->get('capacidad');
+            $marca = $request->get('marca');
+            $descripcion = $request->get('descripcion');
+            $idMaquina = $request->get('idMaquina');
+
+            $objeto= $em->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
+          
+            
+            $objeto[0]->setNumeroSerie($numeroSerie);
+            $objeto[0]->setNombre($numeroEquipo);
+            $objeto[0]->setAnho(new \DateTime($anho));
+            $objeto[0]->setAlias($alias);
+            $objeto[0]->setModelo($modelo);
+            
+            
+            
+            if ($tipoEquipo !=""){
+                  $idTipoEquipo = $this->getDoctrine()->getRepository('DGAdminBundle:MaTipoEquipo')->findById($tipoEquipo);
+                  $objeto[0]->setTipoEquipo($idTipoEquipo[0]);
+             }else{
+                 $objeto[0]->setTipoEquipo(null);
+             }
+             
+             $objeto[0]->setVin($vin);
+             $objeto[0]->setPlaca($placa);
+             $objeto[0]->setColor($color);
+             $objeto[0]->setTamaño($tamanho);
+             $objeto[0]->setCapacidad($capacidad);
+             $objeto[0]->setMarca($marca);
+             $objeto[0]->setDecripcion($descripcion);
+
+            $em->merge($objeto[0]);
+            $em->flush();
+
+            $idMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->find($objeto[0]->getId());
+            $data['estado']=true;
+            $data['idMaquina']=$idMaquina->getId();
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
     
     
     
+
+    
+
     
 }
