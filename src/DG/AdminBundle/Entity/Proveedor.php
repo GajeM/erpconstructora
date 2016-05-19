@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Proveedor
  *
- * @ORM\Table(name="proveedor")
+ * @ORM\Table(name="proveedor", indexes={@ORM\Index(name="fk_proveedor_contacto1", columns={"contacto_id"})})
  * @ORM\Entity
  */
 class Proveedor
@@ -96,7 +96,16 @@ class Proveedor
      * @ORM\Column(name="estado", type="integer", nullable=false) 
      */
     private $estado;
-
+    
+        /**
+     * @var \Contacto
+     *
+     * @ORM\ManyToOne(targetEntity="Contacto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="contacto_id", referencedColumnName="id")
+     * })
+     */
+    private $contactoId;
 
 
     /**
@@ -361,6 +370,29 @@ class Proveedor
     public function getEstado()
     {
         return $this->estado;
+    }
+    
+       /**
+     * Set contactoId
+     *
+     * @param \DG\AdminBundle\Entity\Contacto $contactoId
+     * @return Contacto
+     */
+    public function setContactoId(\DG\AdminBundle\Entity\Contacto $contactoId = null)
+    {
+        $this->contactoId = $contactoId;
+
+        return $this;
+    }
+    
+     /**
+     * Get contactoId
+     *
+     * @return \DG\AdminBundle\Entity\ContactoId
+     */
+    public function getContactoId()
+    {
+        return $this->contactoId;
     }
     
     

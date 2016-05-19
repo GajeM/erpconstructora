@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
 {% endblock css%}
 {% block js %}
      {{parent()}}
@@ -84,33 +85,20 @@
      
       <table id="listaClientes" class="mdl-data-table" cellspacing="0" width="100%">
            
-				        <thead>
-                                                                            <tr>
-                                                                            <label for="select_all" style="margin-bottom: -60px;margin-top:3%;">Seleccionar Todos</label>
-                                                                            <input type="checkbox" name="select_all" id="select_all" style="margin-bottom: -60px;margin-top:4%; margin-left: 0.25%;">
-                                                                               
-                                                                            </tr>
+				          <thead>
+                                                                            
 				            <tr>
-                                                                               <th> 
+                                                                                <th style="display: none;"> 
                                                                                   Seleccion  
                                                                                 </th>
-                                                                                <th>Nombre</th>
-                                                                                  <th>Telefono Fijo</th>
-				                <th>Direccion</th>
-                                                                               <th>Accion</th>
-                                                    
+                                                                                <th>ID Contacto</th>
+                                                                                <th>Nombre de Contacto</th>
+                                                                                <th>Correo</th>
+                                                                                <th>Telefono Fijo</th>
+	
 				            </tr>
 				        </thead>
-				        <tfoot>
-				            <tr>
-                                                                                 <th>Selecciona</th>
-				                <th>Nombre</th>
-                                                                                <th>Telefono Fijo</th>
-				                <th>Direccion</th>
-                                                                                 <th>Accion</th>
-                                                                               
-				            </tr>
-				        </tfoot>
+				        
 				        {#<tbody>
 				            <tr>
 				                <td>Guillermo Jandres</td>
@@ -161,11 +149,10 @@
                                             "type": 'GET'
                                         },
                                         "columns": [
-                                             { "data":"link" },
+                                               { "data":"id" },
                                              { "data":"nombre" },
+                                             {"data":"contacto"},
                                              {"data":"telefono"},
-                                             {"data":"direccion"},
-                                             { "data":"link2" },
                                              
                               ],
                                             "language": {
@@ -184,55 +171,42 @@
  
 		    } );
                   
-              //Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
-            $(document).on("click",".CP",function() {
-                    
-                  var numero = $(this).attr("id");
-                  var url=Routing.generate('editarContacto',{id:numero});
-                  window.open(url,"_self");
-                 
-                    
-          
-            
-        });   
-        
-       
-     $("#select_all").change(function () {
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
-       if($(this).prop("checked")){
-                $("#eliminarCP").show();
-           }else{
-                $("#eliminarCP").hide();
-           }
-
-   });
-   
-      $(document).on("click",".idContacto",function() {
-            if($(this).prop("checked")){
-                $("#eliminarCP").show();
-           }else{
-                $("#eliminarCP").hide();
-           }
+//Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
          
+       var idEliminar=0;
+       
+       $(document).on("click","tr",function() {
+       
+             var idCliente =  $(this).children().html();
+            $("tr").css('background-color', 'white');
+            $(this).css('background-color', '#E9E6E6');
+            
+            
+             $("#eliminarCP").show();   
+             idEliminar=idCliente;
+   
+                
        });
+         
+       $(document).on("dblclick","tr",function() {
+             var idCliente =  $(this).children().html();
+             
+               var numero = idCliente;
+                  var url=Routing.generate('editarContacto',{id:numero});
+                  window.open(url,"_self"); 
+             $("#eliminarCP").hide();   
+                
+       });
+     
+ 
    $("#eliminarCP").on("click",function (){
     
-               
                var valor = new Array();
-               $(".idContacto").each(function (index,value){
-                   
-                   if($(this).prop("checked")){
-                      num = $(this).attr("id");
+          
                             
-                          valor.push(num);
-                        }
-                       
-                        
-                   
-                   
-               });
-               
-              
+                  valor.push(idEliminar);
+
+
 //Funcion del POST que me permite inabilitar un Proveedor
 
                     $.post( "{{path('eliminarcontacto')}}", { idcontacto: valor }, function( data ) {
@@ -248,7 +222,10 @@
                             table.ajax.reload( function ( json ) {
                                
                             } );
-                          
+                           Lobibox.notify("error", {
+                                          size: 'mini',
+                                          msg: 'Registro eliminado con exito'
+                                      });
                             
                         }
                         else{
@@ -278,7 +255,7 @@
         
         
                     
-} );
+});
 
 
 

@@ -19,7 +19,7 @@
                paginaWeb=$("#paginaWebCp").val();
                descripcion=$("#descripcionCp").val();
                referidoPor=$("#referidoPor").val();
-                contactoId=$("#contactoDirecto").val();
+               contactoId=$("#contactoDirecto").val();
                
                       $.ajax({
                                     type: 'POST',

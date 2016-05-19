@@ -112,7 +112,7 @@ class ClientePotencialController extends Controller
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
         if($busqueda['value']!=''){
         
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link "
+                    $dql = "SELECT cp.id as id, cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link "
                             . ", concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:ClientePotencial cp  "
                         . "WHERE upper(cp.nombre)  LIKE upper(:busqueda) AND cp.estado=1 "
                         . "ORDER BY cp.nombre DESC ";
@@ -124,7 +124,7 @@ class ClientePotencialController extends Controller
                     
                    $territorio['recordsFiltered']= count($territorio['data']);
                     
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link"
+                    $dql = "SELECT cp.id as id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link"
                             . ", concat('<a class=\"btn btn-success CP \" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:ClientePotencial cp  "
                         . "WHERE upper(cp.nombre)  LIKE upper(:busqueda)  AND cp.estado=1 "
                         . "ORDER BY cp.nombre DESC ";
@@ -137,7 +137,7 @@ class ClientePotencialController extends Controller
        
         }
         else{
-            $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link,"
+            $dql = "SELECT cp.id as id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idClientePotencial\" id=\"',cp.id), '\">' as link,"
                     . " concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:ClientePotencial cp  "
                     . " WHERE  cp.estado=1"
                     . " ORDER BY cp.nombre  DESC ";

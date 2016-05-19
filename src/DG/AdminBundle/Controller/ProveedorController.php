@@ -105,42 +105,40 @@ class ProveedorController extends Controller
         
         //echo count($arrayFiltro);
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
-        if($busqueda['value']!=''){
-        
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idProveedor\" id=\"',cp.id), '\">' as link "
-                            . ", concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Proveedor cp  "
-                        . "WHERE upper(cp.nombre)  LIKE upper(:busqueda) AND cp.estado=1 "
-                        . "ORDER BY cp.nombre DESC ";
-                    
-                    //Aqui estas trabjando
-                   $territorio['data'] = $em->createQuery($dql)
-                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-                            ->getResult();
-                    
-                   $territorio['recordsFiltered']= count($territorio['data']);
-                    
-                    $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idProveedor\" id=\"',cp.id), '\">' as link"
-                            . ", concat('<a class=\"btn btn-success CP \" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Proveedor cp  "
-                        . "WHERE upper(cp.nombre)  LIKE upper(:busqueda)  AND cp.estado=1 "
-                        . "ORDER BY cp.nombre DESC ";
-                   
-                   $territorio['data'] = $em->createQuery($dql)
-                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
-                            ->setFirstResult($start)
-                            ->setMaxResults($longitud)
-                            ->getResult();
+         if($busqueda['value']!=''){
+          $value = $busqueda['value'];  
+           
+          $sql = "SELECT cp.id as id, cp.nombre as nombre,cp.telefono as telefono, contac.nombre as contacto FROM proveedor cp"
+                    . " LEFT OUTER JOIN contacto contac on cp.contacto_id=contac.id "
+                    . "WHERE upper(cp.nombre)  LIKE '%".strtoupper($value)."%' AND cp.estado=1 "
+                    . "ORDER BY cp.nombre ASC";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+                 
        
         }
         else{
-            $dql = "SELECT cp.id , cp.nombre as nombre,cp.telefono as telefono, cp.direccion as direccion, concat(concat('<input type=\"checkbox\" class=\"checkbox idProveedor\" id=\"',cp.id), '\">' as link,"
-                    . " concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Proveedor cp  "
-                    . " WHERE  cp.estado=1"
-                    . " ORDER BY cp.nombre  DESC ";
-                    $territorio['data'] = $em->createQuery($dql)
-                    ->setFirstResult($start)
-                    ->setMaxResults($longitud)
-                    ->getResult();
+              $sql = "SELECT cp.id as id, cp.nombre as nombre,cp.telefono as telefono, contac.nombre as contacto FROM proveedor cp"
+                    . " LEFT OUTER JOIN contacto contac on cp.contacto_id=contac.id "
+                    . "WHERE cp.estado=1 "
+                    . "ORDER BY cp.nombre ASC";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+
+
+//            $dql = "SELECT cp.id as id, cp.nombre as nombre,cp.telefono as telefono, contac.nombre as contacto, concat(concat('<input type=\"checkbox\" class=\"checkbox idCliente\" id=\"',cp.id), '\">' as link,"
+//                    . " concat('<a class=\"btn btn-success CP\" id=\"',cp.id, '\">Ver mas</a>') as link2 FROM DGAdminBundle:Cliente cp  "
+//                    . " JOIN cp.contactoId contac "
+//                    . "WHERE  cp.estado=1"
+//                    . " ORDER BY cp.nombre  ASC ";
+//                    $territorio['data'] = $em->createQuery($dql)
+//                    ->setFirstResult($start)
+//                    ->setMaxResults($longitud)
+//                    ->getResult();
         }
+     
      
         
         return new Response(json_encode($territorio));
@@ -172,9 +170,17 @@ class ProveedorController extends Controller
             $paginaWeb = $request->get('paginaWeb');
             $descripcion = $request->get('descripcion');
             $referidoPor = $request->get('referidoPor'); 
-
-              
+            $contactoId = $request->get('contactoId');
+             
             $objeto = new Proveedor();
+              if ($contactoId !=""){
+                  $idContacto = $this->getDoctrine()->getRepository('DGAdminBundle:Contacto')->findById($contactoId);
+                  $objeto->setContactoId($idContacto[0]);
+             }else{
+                 $objeto->setContactoId(null);
+             }
+            
+         
             $objeto->setNombre($nombre);
             $objeto->setDireccion($direccion);
             $objeto->setTelefono($telefono);
@@ -233,6 +239,15 @@ class ProveedorController extends Controller
             $descripcion = $request->get('descripcion');
         
             $referidoPor = $request->get('referidoPor'); 
+            
+              $contactoId = $request->get('contactoId');
+   
+              if ($contactoId !=""){
+                  $idContacto = $this->getDoctrine()->getRepository('DGAdminBundle:Contacto')->findById($contactoId);
+                  $objeto[0]->setContactoId($idContacto[0]);
+             }else{
+                 $objeto[0]->setContactoId(null);
+             }
 
             $objeto[0]->setNombre($nombre);
             $objeto[0]->setDireccion($direccion);
