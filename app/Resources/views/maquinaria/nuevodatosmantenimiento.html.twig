@@ -1,0 +1,64 @@
+<div class="row" style="margin-left: 2%; ">
+    
+        <div class="col-md-12">
+            
+            <table id="listaDatosMantenimientos" class="mdl-data-table" cellspacing="0" width="100%">
+
+                <thead>
+
+                    <tr>
+                      
+                        <th>Nombre</th>
+                        <th>Numero</th>
+                        <th>Descripcion</th>
+                      
+
+                    </tr>
+                </thead>
+
+                {#<tbody>
+                    <tr>
+                        <td>Guillermo Jandres</td>
+                        <td>Chiltiupan, La Libertad</td>
+                        <td>Edinburgh</td>
+                        <td><input type="button" value="Ver mas"></td>
+                      
+                    </tr>
+                    
+                </tbody>#}
+                
+                <tfoot>
+                <th colspan="3" style="color: blue;">
+                    <img src="{{ asset('Resources/src/img/add.png') }}" title="Nuevo" class="addDatosMantenimiento" style="margin-left: -600px;">
+                    <b class="addDatosMantenimiento">Agregar nuevo</b>
+                </th>
+                        
+                </tfoot>
+            </table>
+            
+            
+        </div>
+
+    <div class="clearfix"></div>
+    <div id="contenidoDatosMantenimiento">
+            
+        
+        
+     </div>
+    <div id="almacenarFormularioDatosMantenimieto">
+        <div class="form-column col-md-4" style="margin-left: -120px;">
+            <div class="form-group" >
+                <div class="btn-group pull-right">
+                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarFormularioDatoManetenimiento">Cancelar</a>
+                </div>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarFormularioDatoManetenimiento">Guardar</button>
+                </div>                                                                              
+            </div>
+        </div>
+        
+    </div>
+
+  </div>
+        
+    

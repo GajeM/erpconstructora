@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DG\AdminBundle\Entity\MaMaquina;
+use DG\AdminBundle\Entity\MaDatosMantenimiento;
 use DG\AdminBundle\Form\MaMaquinaType;
 use Symfony\Component\HttpKernel\Exception;
 
@@ -290,6 +291,140 @@ class MaquinaController extends Controller
         
         
     }
+    
+    
+    /**
+     * 
+     * @Route("/datosmantenimientodata/{idMaquina}", name="datosmantenimientodata", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function DatosMantinimientoDataAction(Request $request,$idMaquina)
+    {
+        
+         /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Easy set variables
+         */
+
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        
+
+        if ($idMaquina!=0){
+            
+            $idMa=$idMaquina;
+            
+        }else{
+            $idMa=0;
+        }    
+       
+        $entity = new MaDatosMantenimiento();
+        
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $territoriosTotal = $em->getRepository('DGAdminBundle:MaDatosMantenimiento')->findAll();
+        $territorio['draw']=$draw++;  
+        $territorio['recordsTotal'] = count($territoriosTotal);
+        $territorio['recordsFiltered']= count($territoriosTotal);
+        
+        $territorio['data']= array();
+       
+        $arrayFiltro = explode(' ',$busqueda['value']);
+        
+        
+        //echo count($arrayFiltro);
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        
+        
+        //SQL Nativo
+
+        if($busqueda['value']!=''){
+          $value = $busqueda['value'];  
+           
+          $sql = "SELECT da.id as id ,da.numero as numero, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da " 
+                    ."WHERE  da.ma_maquina_id=".$idMa
+                    ." AND (da.descripcion like '%".$value."%' or da.numero like '%".$value."%') ORDER BY da.descripcion limit 1";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+               $territorio['recordsFiltered']= count($territorio['data']);
+                          
+       
+        }
+        else{
+            
+            
+              $sql = "SELECT da.id as id, da.numero as numero, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da "
+                     . "WHERE da.ma_maquina_id=" . $idMa
+                    . " ORDER BY da.descripcion ASC";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+
+
+
+        }
+     
+        
+        return new Response(json_encode($territorio));
+    }
+    
+    
+    
+     /**
+     * @Route("/insertarDatosMantenimiento/", name="insertarDatosMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function InsertarDatosMantenimientoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $idMaquina = $request->get('idMaquina');
+            $numeros = $request->get('numeros');
+            $nombres = $request->get('nombres');
+            $descripciones = $request->get('descripciones');
+            $maquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
+            $n=count($nombres);
+    
+        
+            for ($i=0;$i<$n;$i++){
+                
+              $objeto = new MaDatosMantenimiento();
+              $objeto->setNombre($nombres[$i]);
+              $objeto->setNumero($numeros[$i]);
+              $objeto->setDescripcion($descripciones[$i]);
+              $objeto->setMaMaquina($maquina[0]);
+              $em->persist($objeto);
+              $em->flush();
+              
+              
+            }
+           
+            $data['estado']=true;
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
+    
+    
+    
+    
+    
     
     
     
