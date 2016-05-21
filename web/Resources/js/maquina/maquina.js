@@ -104,7 +104,7 @@ $('#anhoMaquina').Zebra_DatePicker({
                                                    $("#idMaquina").val(data.idMaquina);
                                                    
                                                     if (data.estado == true) {
-                                                       alert(data.idMaquina);
+                                                   
                                                        
                                                         
                                                 swal({
@@ -202,7 +202,8 @@ $('#anhoMaquina').Zebra_DatePicker({
                                                 url: Routing.generate('modificarMaquina'),
                                                 success: function (data)
                                                 {
-                                                    
+                                                     $("#idMaquina").val(data.idMaquina);
+                                                     llamarDataTable();
                                                     if (data.estado == true) {
                                                         
                                                 swal({
@@ -219,7 +220,7 @@ $('#anhoMaquina').Zebra_DatePicker({
                                                         function (isConfirm) {
                                                             if (isConfirm) {
                                                                     
-                                                                     $("#idMaquina").val(data.idMaquina);
+                                                                    
                                       
                                                             } else {
                                                                     var url=Routing.generate('dashboard_index');
@@ -264,6 +265,8 @@ $('#anhoMaquina').Zebra_DatePicker({
                                         msg: 'Primero tienes que ingresar los datos generales de la maquina.'
                                     });
                 
+            }else{
+                llamarDataTable();
             }
             
             
@@ -308,9 +311,10 @@ $('#anhoMaquina').Zebra_DatePicker({
      
      
    //Donde se llena el data table que contiene los datos de mantenimientos
-   var idMaqui= $("#idMaquina").val();
+    
+    function llamarDataTable(){
+              var idMaqui= $("#idMaquina").val();
 
-         
             var url = Routing.generate('datosmantenimientodata',{idMaquina: idMaqui});
             
             $('#listaDatosMantenimientos').DataTable({
@@ -333,7 +337,7 @@ $('#anhoMaquina').Zebra_DatePicker({
                 "columns": [
                     {"data": "nombre"},
                     {"data": "numero"},
-                    {"data": "descripcion"},
+                    {"data": "descripcion"}
                 ],
                 "language": {
                     "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -351,6 +355,8 @@ $('#anhoMaquina').Zebra_DatePicker({
 
             });
 
+    }
+          
 
   $("#almacenarFormularioDatosMantenimieto").hide();
   
@@ -412,7 +418,15 @@ $('#anhoMaquina').Zebra_DatePicker({
             success: function (data)
             {
                 if (data.estado==true){
-                     
+                              $("#almacenarFormularioDatosMantenimieto").hide();
+
+                                        $('#contenidoDatosMantenimiento').html('');
+                                        
+                                        var table = $('#listaDatosMantenimientos').DataTable();
+                                        
+                                                table.ajax.reload(function (json) {
+
+                                                });
                             
                   swal({
                         title: "Datos de mantenimiento ingresados con exito",
@@ -427,14 +441,7 @@ $('#anhoMaquina').Zebra_DatePicker({
                     },
                             function (isConfirm) {
                                 if (isConfirm) {
-                                      $("#almacenarFormularioDatosMantenimieto").hide();
-
-                                        $('#contenidoDatosMantenimiento').html('');
-                                        
-                                        var table = $('#listaDatosMantenimientos').DataTable();
-                                              table.ajax.reload(function () {
-
-                                        });
+                                
 
                                 } else {
                                     var url = Routing.generate('dashboard_index');

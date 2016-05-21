@@ -318,6 +318,7 @@ class MaquinaController extends Controller
             $idMa=0;
         }    
        
+     
         $entity = new MaDatosMantenimiento();
         
         $start = $request->query->get('start');
@@ -351,7 +352,7 @@ class MaquinaController extends Controller
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
-               $territorio['recordsFiltered']= count($territorio['data']);
+            $territorio['recordsFiltered']= count($territorio['data']);
                           
        
         }
@@ -364,7 +365,7 @@ class MaquinaController extends Controller
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
-
+            $territorio['recordsFiltered']= count($territorio['data']);
 
 
         }
