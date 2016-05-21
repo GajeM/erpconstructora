@@ -1,4 +1,7 @@
  $(document).ready(function(){
+ var idDetalle =0;
+     $("#eliminarDatoMantenimiento").hide();
+     
      
      
 $('#anhoMaquina').Zebra_DatePicker({
@@ -313,7 +316,7 @@ $('#anhoMaquina').Zebra_DatePicker({
    //Donde se llena el data table que contiene los datos de mantenimientos
     
     function llamarDataTable(){
-              var idMaqui= $("#idMaquina").val();
+            var idMaqui= $("#idMaquina").val();
 
             var url = Routing.generate('datosmantenimientodata',{idMaquina: idMaqui});
             
@@ -335,6 +338,7 @@ $('#anhoMaquina').Zebra_DatePicker({
                   
                 },
                 "columns": [
+                    {"data": "id"},
                     {"data": "nombre"},
                     {"data": "numero"},
                     {"data": "descripcion"}
@@ -357,6 +361,8 @@ $('#anhoMaquina').Zebra_DatePicker({
 
     }
           
+          
+//Donde se me crean los campos que llenan el detalle de Datos de Mantenimiento          
 
   $("#almacenarFormularioDatosMantenimieto").hide();
   
@@ -378,18 +384,26 @@ $('#anhoMaquina').Zebra_DatePicker({
                               <label for="descripcion" class="control-label">Descripcion</label>\n\
                               <textarea class="form-control descripcionDato" id="descripcion" placeholder="Descripcion del producto" name="descripcion" ></textarea>\n\
                              </div>\n\
-                            </div><hr style="color:black;"><div class="clearfix"></di>';
+                            </div><hr style="color:black;"><div class="clearfix"></di>\n\
+                              <div id="almacenarEdicion">\n\
+                                    <div class="form-column col-md-4" style="margin-left: -120px;"><div class="form-group" >\n\
+                                <div class="btn-group pull-right">\n\
+                                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarFormularioDatoManetenimiento">Cancelar</a>\n\
+                                </div>\n\
+                                <div class="btn-group pull-right"><button class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarFormularioDatoManetenimiento">Guardar</button>\n\
+                                </div></div>\n\
+                                </div> </div>';
       
       
        $("#contenidoDatosMantenimiento").append(formulario);
        
        $("#almacenarFormularioDatosMantenimieto").show();
-      
+      $("#nombre").focus();
       
   });
   
  
-  
+  //Donde se envian los valores de que se quieren registrar
    $(document).on("click","#guardarFormularioDatoManetenimiento",function() {
         var nombres = new Array();
         var numeros = new Array();
@@ -449,11 +463,7 @@ $('#anhoMaquina').Zebra_DatePicker({
 
                                 }
                             });
-                    
-                    
-                    
-                    
-                    
+
                 }
 
 
@@ -465,14 +475,234 @@ $('#anhoMaquina').Zebra_DatePicker({
                
             }
         });
-             
-             
-             
-             
+               
+   });
+   
+   
+  //seleccion de un Tr para una eliminacion
+   $(document).on("click","tr",function() {
        
+             var idCliente =  $(this).children().html();
+             idDetalle=idCliente;
+     
+             if (idCliente!="ID Mantenimiento"){
+                    $("tr").css('background-color', 'white');
+                    $(this).css('background-color', '#E9E6E6');
+
+                    $("#eliminarDatoMantenimiento").show();   
+             }
+          
+           
+           
+                
+       });
+       
+   //Construccion del div que me genera las cajas de edicion de un campo.
+   
+   $(document).on("dblclick","tr",function() {
+             var idDatoMantenimiento =  $(this).children().html();
+             idDetalle =idDatoMantenimiento;
+             $("#eliminarDatoMantenimiento").hide();   
+             
+             
+          $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {idDatoMantenimiento: idDatoMantenimiento},
+            url: Routing.generate('seleccionarDatosMantenimientoEdicion'),
+            success: function (data)
+            {
+                if (data.estado == true) {
+                     var form="";
+      
+        form = '<div class="form-column col-md-3"><div class="form-group" >\n\
+                            <label for="nombre" class="control-label">Nombre</label>\n\
+                                <input type="text" class="form-control nombreDatoE" id="nombre" placeholder="Nombre del producto" name="nombre" value="'+data.nombre+'" >\n\
+                                </div>\n\
+                           </div>\n\
+                            <div class="form-column col-md-3"><div class="form-group" >\n\
+                            <label for="numero" class="control-label">Numero</label>\n\
+                                <input type="text" class="form-control numeroDatoE" id="numero" placeholder="# del producto" name="numero" value="'+data.numero+'">\n\
+                                </div>\n\
+                           </div>\n\
+                            <div class="form-column col-md-6"><div class="form-group" >\n\
+                              <label for="descripcion" class="control-label">Descripcion</label>\n\
+                              <textarea class="form-control descripcionDatoE" id="descripcion" placeholder="Descripcion del producto" name="descripcion" >'+data.descripcion+'</textarea>\n\
+                             </div>\n\
+                            </div><hr style="color:black;"><div class="clearfix"></di>\n\
+                                  <div id="almacenarEdicion">\n\
+                                    <div class="form-column col-md-4" style="margin-left: -120px;"><div class="form-group" >\n\
+                                <div class="btn-group pull-right">\n\
+                                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarEdicionDatoManetenimiento">Cancelar</a>\n\
+                                </div>\n\
+                                <div class="btn-group pull-right"><button class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarEdicionDatoManetenimiento">Guardar</button>\n\
+                                </div></div>\n\
+                                </div> </div>';
+      
+      
+       $("#edicionDatosMantenimiento").append(form);
+     
+     
+                }
+
+
+            },
+            error: function (xhr, status)
+            {
+
+
+
+            }
+        });
+             
+   
+});     
+       
+  $(document).on("click","#guardarEdicionDatoManetenimiento",function() {
+           
+            var nombres = new Array();
+        var numeros = new Array();
+        var descripciones = new Array();
+
+        $(".nombreDatoE").each(function (k, va) {
+            nombres.push($(this).val());
+        });
+
+        $(".numeroDatoE").each(function (k, va) {
+            numeros.push($(this).val());
+        });
+
+        $(".descripcionDatoE").each(function (k, va) {
+            descripciones.push($(this).val());
+        });
+      
+      
+      
+      $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {idDatoMantenimiento: idDetalle,nombres:nombres,numeros:numeros,descripciones:descripciones},
+            url: Routing.generate('editarDatosMantenimientoEdicion'),
+            success: function (data)
+            {
+                if (data.estado == true) {
+
+                          
+
+                                        $('#edicionDatosMantenimiento').html('');
+                                        
+                                        var table = $('#listaDatosMantenimientos').DataTable();
+                                        
+                                                table.ajax.reload(function (json) {
+
+                                                });
+                            
+                  swal({
+                        title: "Datos de mantenimiento ingresados con exito",
+                        text: "¿Quieres seguir gestionando  datos de mantenimiento?",
+                        type: "success",
+                        showCancelButton: true,
+                        cancelButtonText: "Despues",
+                        confirmButtonText: "Seguir",
+                        confirmButtonColor: "#00A59D",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                
+
+                                } else {
+                                    var url = Routing.generate('dashboard_index');
+                                    window.open(url, "_self");
+
+                                }
+                            });
+                    
+
+
+                }
+
+
+            },
+            error: function (xhr, status)
+            {
+
+
+
+            }
+        });
+
+
+
+    });  
+  
+  
+   $(document).on("click","#eliminarDatoMantenimiento",function() {
+       
+            $.ajax({
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            data: {idDatoMantenimiento: idDetalle},
+            url: Routing.generate('eliminarDatosMantenimientoEdicion'),
+            success: function (data)
+            {
+                if (data.estado == true) {
+                                        $("#eliminarDatoMantenimiento").hide();
+                                        var table = $('#listaDatosMantenimientos').DataTable();
+                                        
+                                                table.ajax.reload(function (json) {
+
+                                                });
+                            
+                  swal({
+                        title: "Datos de mantenimiento eliminados con exito",
+                        text: "¿Quieres seguir  gestionando datos de mantenimiento?",
+                        type: "success",
+                        showCancelButton: true,
+                        cancelButtonText: "Despues",
+                        confirmButtonText: "Seguir",
+                        confirmButtonColor: "#00A59D",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                
+
+                                } else {
+                                    var url = Routing.generate('dashboard_index');
+                                    window.open(url, "_self");
+
+                                }
+                            });
+                    
+
+
+                }
+
+
+            },
+            error: function (xhr, status)
+            {
+
+
+
+            }
+        });
+                        
    });
   
-  
+    $(document).on("click","#cancelarFormularioDatoManetenimiento",function() {
+        
+            $('#contenidoDatosMantenimiento').html('');
+                                     
+        
+        
+    });
   
   
   

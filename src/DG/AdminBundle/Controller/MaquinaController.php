@@ -425,12 +425,126 @@ class MaquinaController extends Controller
     
     
     
+     /**
+     * @Route("/seleccionarDatosMantenimientoEdicion/", name="seleccionarDatosMantenimientoEdicion", options={"expose"=true})
+     * @Method("POST")
+     */
     
     
-    
-    
+      public function SeleccionarDatosMantenimientoEdicionAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
 
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idDatoMantenimiento = $request->get('idDatoMantenimiento');
+            
+            $detalleDatoMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findById($idDatoMantenimiento);
+            
+            $nombre=$detalleDatoMantenimiento[0]->getNombre();
+            $numero =$detalleDatoMantenimiento[0]->getNumero();
+            $descripcion =$detalleDatoMantenimiento[0]->getDescripcion();
+            
+            $data['estado']=true;
+            $data['nombre']=$nombre;
+            $data['numero']=$numero;
+            $data['descripcion']=$descripcion;
+            
+            
+            
+        
+          
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
     
+      /**
+     * @Route("/editarDatosMantenimientoEdicion/", name="editarDatosMantenimientoEdicion", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function EditarDatosMantenimientoEdicionAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
 
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idDatoMantenimiento = $request->get('idDatoMantenimiento');
+            $nombres = $request->get('nombres');
+            $numeros = $request->get('numeros');
+            $descripciones = $request->get('descripciones');
+            
+            
+    
+            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findById($idDatoMantenimiento);
+            $objeto[0]->setNombre($nombres[0]);
+            $objeto[0]->setNumero($numeros[0]);
+            $objeto[0]->setDescripcion($descripciones[0]);
+            
+            $em->merge($objeto[0]);
+            $em->flush();
+
+            $data['estado']=true;
+
+
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
+    
+     /**
+     * @Route("/eliminarDatosMantenimientoEdicion/", name="eliminarDatosMantenimientoEdicion", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function EliminarDatosMantenimientoEdicionAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idDatoMantenimiento = $request->get('idDatoMantenimiento');
+            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findById($idDatoMantenimiento);
+            
+            $em->remove($objeto[0]);
+            $em->flush();
+
+            $data['estado']=true;
+
+
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
     
 }
