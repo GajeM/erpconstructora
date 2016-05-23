@@ -703,8 +703,7 @@ $('#anhoMaquina').Zebra_DatePicker({
         
         
     });
-  
-  
+
   
 
  });

@@ -535,7 +535,72 @@ class MaquinaController extends Controller
         
     } 
     
-    
+  /**
+     * 
+     *
+     * @Route("/maquina/data", name="maquina_data")
+     */
+    public function DataMaquinalAction(Request $request)
+    {
+        
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Easy set variables
+	 */
+	
+	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+	 * you want to insert a non-database field (for example a counter or static image)
+	 */
+        $entity = new MaMaquina();
+        
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $territoriosTotal = $em->getRepository('DGAdminBundle:MaMaquina')->findAll();
+        $territorio['draw']=$draw++;  
+        $territorio['recordsTotal'] = count($territoriosTotal);
+        $territorio['recordsFiltered']= count($territoriosTotal);
+        
+        $territorio['data']= array();
+        //var_dump($busqueda);
+        //die();
+        $arrayFiltro = explode(' ',$busqueda['value']);
+        
+        
+        //echo count($arrayFiltro);
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        
+        //SQL Nativo
+       
+
+
+        if($busqueda['value']!=''){
+          $value = $busqueda['value'];  
+           
+          $sql = "SELECT cp.id as id, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
+                    . " WHERE upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%".$value."%' "
+                    . "ORDER BY cp.nombre ASC";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+                 
+       
+        }
+        else{
+              $sql = "SELECT cp.id as id, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
+                    . " ORDER BY cp.nombre ASC";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+
+
+        }
+     
+        
+        return new Response(json_encode($territorio));
+    }   
     
     
     
