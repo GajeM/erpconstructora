@@ -13,6 +13,20 @@
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css')}}">
      <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
      <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+     <style>
+         
+         .Zebra_DatePicker_Icon{
+             
+             top: 7px !important;
+         }
+         .error{
+             color: red !important;
+             font-family: cursive !important;
+             font-size: 10px !important;
+             
+         }
+       
+     </style>
     {#  <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
      #}
 
@@ -30,6 +44,7 @@
      <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
      <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
      <script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     
 {% endblock %}
 
@@ -45,21 +60,13 @@
         </div>
  {% endblock%}
  {% block acciones %}
-     
-     	<div class="col-md-4" style="margin-top: 50px;">
+     <div class="col-md-4" style="margin-top: 50px;">
                                 <!-- Boton Modificacion -->
-                                   <div class="btn-group pull-right">
-                                        <button class="btn btn-danger  btn-sm " style="margin-left: 5px;" id="eliminarDatoMantenimiento">Eliminar</button>
-                                    </div>
-                               
-                               
+                                {{parent()}}
+	
                               
-                                <!-- Botones del ingreso -->
-                                
-                                
-				<!-- Boton con Dropdown -->
-
-	</div>
+                                  	
+    </div>
      
  {% endblock %}
 		
@@ -74,14 +81,12 @@
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
                       
-                        <a href="{{ path('admin_cliente_index') }}" class="leftnava"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
-                        <a href="" class="leftnava colorAnclas"><li class="leftnav left ">Configuraci&oacute;n</li></a>
+                        <a href="{{ path('admin_cliente_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="" class="leftnava colorAnclas"><li class="leftnav left colorAnclas">Configuraci&oacute;n</li></a>
 
                     </ul>
                 </div>	
-       
-            
-            
+
        {% endblock %}
 
 {% block cuerpo %}
@@ -111,10 +116,10 @@
                         <div class="chart tab-pane colorDiv" id="divdatosMantenimiento" style=" padding: 15px;" >
                               {% include ':maquinaria:nuevodatosmantenimiento.html.twig' %}          
                         </div>
-                         <div class="chart tab-pane" id="divExpedienteMantenimiento" style=" padding: 15px;" >
-                            
+                         <div class="chart tab-pane colorDiv" id="divExpedienteMantenimiento" style=" padding: 15px;" >
+                             {% include ':maquinaria:nuevoexpedientemantenimiento.html.twig' %}          
                         </div>
-                         <div class="chart tab-pane" id="divImagenesMaquina" style=" padding: 15px;" >
+                         <div class="chart tab-pane colorDiv" id="divImagenesMaquina" style=" padding: 15px;" >
                             
                         </div>
                     </div>

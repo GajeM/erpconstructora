@@ -380,4 +380,10 @@ class Proyecto
     {
         return $this->encargadoProyecto;
     }
+    
+     public function __toString() {
+  return $this->nombre;
+}
+    
+    
 }

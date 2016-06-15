@@ -2,13 +2,10 @@
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
     <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
 
-    <style>
+  {#  <style>
         .form-group.required .control-label:after {
             content:"*";
             color:red;
@@ -16,7 +13,7 @@
             
         }
      
-    </style>
+    </style>#}
 {% endblock css%}
 {% block js %}
      {{parent()}}

@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DG\AdminBundle\Entity\MaMaquina;
 use DG\AdminBundle\Entity\MaDatosMantenimiento;
+use DG\AdminBundle\Entity\MaExpedienteMantenimiento;
+use DG\AdminBundle\Entity\ImagenesDetalleMantenimiento;
 use DG\AdminBundle\Form\MaMaquinaType;
 use Symfony\Component\HttpKernel\Exception;
 
@@ -543,13 +545,13 @@ class MaquinaController extends Controller
     public function DataMaquinalAction(Request $request)
     {
         
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * Easy set variables
-	 */
-	
-	/* Array of database columns which should be read and sent back to DataTables. Use a space where
-	 * you want to insert a non-database field (for example a counter or static image)
-	 */
+        /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Easy set variables
+         */
+
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
         $entity = new MaMaquina();
         
         $start = $request->query->get('start');
@@ -573,20 +575,17 @@ class MaquinaController extends Controller
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
         
         //SQL Nativo
-       
-
 
         if($busqueda['value']!=''){
           $value = $busqueda['value'];  
            
           $sql = "SELECT cp.id as id, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
-                    . " WHERE upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%".$value."%' "
+                    . " WHERE upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%" . $value . "%' "
                     . "ORDER BY cp.nombre ASC";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
-                 
-       
+            $territorio['recordsFiltered'] = count($territorio['data']);
         }
         else{
               $sql = "SELECT cp.id as id, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
@@ -594,13 +593,324 @@ class MaquinaController extends Controller
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
-
-
+            $territorio['recordsFiltered'] = count($territorio['data']);
         }
      
         
         return new Response(json_encode($territorio));
     }   
+    
+     /**
+     * 
+     *
+     * @Route("/datosexpedientesmantenimientodata/{idMaquina}", name="datosexpedientesmantenimientodata", options={"expose"=true})
+     */
+    public function DatosExpedientesMantenimientoAction(Request $request, $idMaquina)
+    {
+        
+        /*         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Easy set variables
+         */
+
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        if ($idMaquina!=0){
+            
+            $idMa=$idMaquina;
+            
+        }else{
+            $idMa=0;
+        }    
+       
+        
+        $entity = new MaExpedienteMantenimiento();
+        
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $territoriosTotal = $em->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findAll();
+        $territorio['draw']=$draw++;  
+        $territorio['recordsTotal'] = count($territoriosTotal);
+        $territorio['recordsFiltered']= count($territoriosTotal);
+        
+        $territorio['data']= array();
+        //var_dump($busqueda);
+        //die();
+        $arrayFiltro = explode(' ',$busqueda['value']);
+        
+        
+        //echo count($arrayFiltro);
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        
+        //SQL Nativo
+       
+
+
+        if($busqueda['value']!=''){
+          $value = $busqueda['value'];  
+           
+          $sql = "SELECT ma.id as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
+                    . "INNER JOIN ma_tipo_mantenimiento tm on ma.ma_mantenimiento_id=tm.id"  
+                    . " LEFT OUTER JOIN proyecto pro on ma.proyecto_id=pro.id "
+                    ." WHERE ma.ma_maquina_id=".$idMa
+                    ." AND (ma.fecha like '%".$value."%' or ma.serie like '%".$value."%') AND ma.estado=1 ORDER BY ma.fecha ";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+              $territorio['recordsFiltered']= count($territorio['data']);
+                 
+       
+        }
+        else{
+            $sql = "SELECT ma.id as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
+                     . "INNER JOIN ma_tipo_mantenimiento tm on ma.ma_mantenimiento_id=tm.id"
+                    . " LEFT OUTER JOIN proyecto pro on ma.proyecto_id=pro.id "
+                    . "WHERE ma.ma_maquina_id=" . $idMa
+                    . " AND ma.estado=1 ORDER BY ma.fecha ";
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $territorio['data'] = $stmt->fetchAll();
+            $territorio['recordsFiltered'] = count($territorio['data']);
+        }
+     
+        
+        return new Response(json_encode($territorio));
+    }
+    
+    /**
+    * Ajax utilizado para buscar informacion de abogados
+    * 
+    * @Route("/buscarTipoMantenimiento", name="buscarTipoMantenimiento",options={"expose"=true})
+    */
+    public function BuscarTipoMantenimientoAction(Request $request)
+    {
+        $busqueda = $request->query->get('q');
+        $page = $request->query->get('page');
+       
+        $em = $this->getDoctrine()->getEntityManager();
+        $dql = "SELECT abo.id abogadoid, abo.nombre  "
+                        . "FROM DGAdminBundle:MaTipoMantenimiento abo "
+                        . "WHERE upper(abo.nombre) LIKE upper(:busqueda)"
+                        . " AND abo.estado=1 "
+                        . "ORDER BY abo.nombre ASC ";
+       
+        $abogado['data'] = $em->createQuery($dql)
+                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
+                ->setMaxResults( 10 )
+                ->getResult();
+       
+        return new Response(json_encode($abogado));
+    }
+       
+   /**
+    * Ajax utilizado para buscar informacion de abogados
+    * 
+    * @Route("/buscarProyecto", name="buscarProyecto",options={"expose"=true})
+    */
+    public function BuscarProyectoAction(Request $request)
+    {
+        $busqueda = $request->query->get('q');
+        $page = $request->query->get('page');
+       
+        $em = $this->getDoctrine()->getEntityManager();
+        $dql = "SELECT abo.id abogadoid, abo.nombre  "
+                        . "FROM DGAdminBundle:Proyecto abo "
+                        . "WHERE upper(abo.nombre) LIKE upper(:busqueda)"
+                        . " AND abo.estadoProyecto=1 "
+                        . "ORDER BY abo.nombre ASC ";
+       
+        $abogado['data'] = $em->createQuery($dql)
+                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
+                ->setMaxResults( 10 )
+                ->getResult();
+       
+        return new Response(json_encode($abogado));
+    }
+         
+    
+    //Insercion de nuevo expediente datos de mantenimiento
+    
+      /**
+     * @Route("/insertarExpedienteMantenimiento/", name="insertarExpedienteMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function InsertarExpedienteMantenimientoAction(Request $request) {
+           $em = $this->getDoctrine()->getEntityManager();
+           $pathContenedor = $this->container->getParameter('photo.expediente');
+
+        $idMaquina = $_POST["idMaquinaNuevoExpedienteMantenimiento"]; 
+        $tipoMantenimiento=$_POST["tipoMantenimiento"];
+        
+        $fechaDE=$_POST["fechaDE"];
+        $serie =$_POST["serie"];
+        $costo=$_POST["costo"];
+        $numeroFactura=$_POST["numeroFactura"];
+        $descripcionDatoExpediente=$_POST["descripcionDatoExpediente"];
+        
+        if(isset($_POST["proyecto"])){
+            $proyecto=$_POST["proyecto"];
+         
+        }else{
+            $proyecto = NULL;
+        }
+        
+        if(isset($_POST["proveedor"])){
+             $proveedor=$_POST["proveedor"];
+             
+        }else{
+            $proveedor = NULL;
+        }
+
+        $idMaquinaria = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
+        $tipoMantenimientoObj = $this->getDoctrine()->getRepository('DGAdminBundle:MaTipoMantenimiento')->findById($tipoMantenimiento);
+        
+        $objetoM = new MaExpedienteMantenimiento();
+        $objetoM->setMaMantenimiento($tipoMantenimientoObj[0]);
+        $objetoM->setFecha(new \DateTime($fechaDE));
+        $objetoM->setSerie($serie);
+        $objetoM->setCosto($costo);
+        $objetoM->setNumeroFactura($numeroFactura);
+        $objetoM->setDescripcion($descripcionDatoExpediente);
+        $objetoM->setMaMaquina($idMaquinaria[0]);
+        $objetoM->setEstado(1);
+        
+        
+         if ($proyecto!=NULL){
+             $proyectoObj = $this->getDoctrine()->getRepository('DGAdminBundle:Proyecto')->findById($proyecto);
+            
+             $objetoM->setProyecto($proyectoObj[0]);
+        }else{
+             $objetoM->setProyecto($proyecto);
+
+        }
+         
+            
+        
+          if ($proveedor!=NULL){
+             $proveedorObj = $this->getDoctrine()->getRepository('DGAdminBundle:Proveedor')->findById($proveedor);
+             $objetoM->setProveedor($proveedorObj[0]);
+
+        }else{
+             $objetoM->setProyecto($proveedor);
+
+        }
+
+          $em->persist($objetoM);
+          $em->flush();
+
+        //Insercion de la imagen
+          $nombreimagen=$_FILES['fotoFactura']['name'];    
+          
+
+          if ($nombreimagen!=""){
+          $tipo = $_FILES['fotoFactura']['type']; 
+          $extension= explode('/',$tipo);
+        
+          $fecha = date('Y-m-d His');
+          $nombreArchivo =$fecha.".".$extension[1];;
+          $nombreArchivo =str_replace(" ","", $nombreArchivo);
+          
+       
+          
+          $resultados = move_uploaded_file($_FILES["fotoFactura"]["tmp_name"], $pathContenedor.$nombreArchivo);
+       
+          if ($resultados){
+              chmod($pathContenedor.$nombreArchivo, 755);
+               $idExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->find($objetoM->getId());
+               
+               $objetoImagen = new ImagenesDetalleMantenimiento();
+               $objetoImagen->setTipo(1);
+               $objetoImagen->setSrc($nombreArchivo);
+               $objetoImagen->setMaExpedienteMantenimiento($idExpedienteMantenimiento);
+               $em->persist($objetoImagen);
+               $em->flush();
+               
+          }
+          
+              
+              
+          }
+
+         $data["estado"]=true;
+
+         
+         return new Response(json_encode($data)); 
+            
+
+    } 
+    
+    //Eliminar un registro de expediente de mantenimiento
+    
+    
+    
+       /**
+     * @Route("/eliminarExpedienteMantenimiento/", name="eliminarExpedienteMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+
+      public function EliminarExpedienteMantenimientoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idDetalleExpeMantenimiento = $request->get('idDetalleExpeMantenimiento');
+            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findById($idDetalleExpeMantenimiento);
+            $objeto[0]->setEstado(0);
+            
+            $em->merge($objeto[0]);
+            $em->flush();
+
+            $data['estado']=true;
+
+
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
+    
+      
+     /**
+     * @Route("/seleccionarDatosExpedienteMantenimiento/", name="seleccionarDatosExpedienteMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function SeleccionarDatosExpedienteMantenimientoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idRegistro = $request->get('idRegistro');
+            
+            $detalleDatoExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findById($idRegistro);
+             $data['datos']=$detalleDatoExpedienteMantenimiento;
+             $data['estado']=true;
+            
+            
+        
+          
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    } 
     
     
     

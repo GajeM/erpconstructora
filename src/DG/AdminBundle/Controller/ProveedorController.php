@@ -311,6 +311,32 @@ class ProveedorController extends Controller
     }   
     
     
+     /**
+    * Ajax utilizado para buscar informacion de abogados
+    * 
+    * @Route("/buscarProveedor", name="buscarProveedor",options={"expose"=true})
+    */
+    public function BuscarProveedorAction(Request $request)
+    {
+        $busqueda = $request->query->get('q');
+        $page = $request->query->get('page');
+       
+        $em = $this->getDoctrine()->getEntityManager();
+        $dql = "SELECT abo.id abogadoid, abo.nombre  "
+                        . "FROM DGAdminBundle:Proveedor abo "
+                        . "WHERE upper(abo.nombre) LIKE upper(:busqueda)"
+                        . " AND abo.estado=1 "
+                        . "ORDER BY abo.nombre ASC ";
+       
+        $abogado['data'] = $em->createQuery($dql)
+                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
+                ->setMaxResults( 10 )
+                ->getResult();
+       
+        return new Response(json_encode($abogado));
+    }
+       
+    
     
     
     

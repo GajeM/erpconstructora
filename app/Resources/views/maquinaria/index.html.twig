@@ -28,37 +28,14 @@
      
      	<div class="col-md-4" style="margin-top: 50px;">
                                 <!-- Boton Modificacion -->
+                                {{parent()}}
 	
                                 <div class="btn-group pull-right">
                                   <a href="{{path('nuevamaquina')}}" class="admin-menu-navi">
                                         <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevaMaquina">Nuevo</button>
                                      </a>
                                 </div>
-                                  
-                                        
-                               
-                              
-                                <!-- Botones del ingreso -->
-                                
-                                
-				<!-- Boton con Dropdown -->
-				<div class="btn-group pull-right" >
-                                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
-				    Menu <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				  </ul>
-				</div> 
-				<!-- Small button -->
+                                  	
 	</div>
      
  {% endblock %}
@@ -73,7 +50,7 @@
                 <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
-                        <a href="{{ path('dashboard_indexCRM') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="{{ path('admin_maquina_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
                         <a href="" class="leftnava colorAnclas" style="text-decoration: none;"><li class="leftnav left ">Configuraci&oacute;n</li></a>
 
                     </ul>
@@ -82,7 +59,7 @@
        {% endblock %}
 
 {% block cuerpo %}
-     
+    {{ parent()}}
     <div class="col-md-10">
      
               
@@ -101,16 +78,7 @@
 				            </tr>
 				        </thead>
 				     
-				        {#<tbody>
-				            <tr>
-				                <td>Guillermo Jandres</td>
-				                <td>Chiltiupan, La Libertad</td>
-				                <td>Edinburgh</td>
-				                <td><input type="button" value="Ver mas"></td>
-				              
-				            </tr>
-				            
-				        </tbody>#}
+                                        
 				    </table>
 
     

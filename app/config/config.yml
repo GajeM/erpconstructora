@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    photo.expediente: %kernel.root_dir%/../web/Photos/expediente/
 
 framework:
     #esi:             ~
