@@ -1,8 +1,13 @@
+
+ 
  $(document).ready(function(){
  var idDetalle =0;
   var idDetalleExpeMantenimiento =0;
   var xPermisoTablaDatosMantenimiento =0;
   var xPermisoTablaDatosExpedientesMant=0;
+  
+
+  
   
     $("#formularioEdicionExpedienteMaquinaria").hide()
     $("#almacenarInsersion").hide();
@@ -231,7 +236,9 @@ $('#fechaDE').Zebra_DatePicker({
                                                 {
                                                    $("#idMaquina").val(data.idMaquina);
                                                    $("#idMaquinaNuevoExpedienteMantenimiento").val(data.idMaquina);
-                                                   
+                                                   $("#idMaquinaInsercionImagen").val(data.idMaquina);
+                                                   location.reload();
+                                                 
                                                     if (data.estado == true) {
                                                    
                                                        
@@ -373,13 +380,8 @@ $('#fechaDE').Zebra_DatePicker({
                                          
                   
                                      }
-                                     
-                                     
 
      });    
-  
-  
-  
   
   //Validacion para que tenga que completar los datos en un orden en especifico
   //Pestaña de Datos de Mantenimiento
@@ -737,6 +739,10 @@ $('#fechaDE').Zebra_DatePicker({
      
    //Construccion del div que me genera las cajas de edicion de un campo.
    
+    
+   
+   
+   
    $(document).on("dblclick","tbody>tr",function() {
        
        
@@ -755,10 +761,235 @@ $('#fechaDE').Zebra_DatePicker({
             success: function (data)
             {
                 if (data.estado == true) {
-                                      
-                       console.log(data.datos);        
+                        var imagenVisibilidad= '';
+                        if (data.imagen==null){
+                            imagenVisibilidad=' display:none; '
 
+                        }
+        var formulario = "";
+                            formulario=' <div class="row" id="formularioEdicionExpedienteMaquinaria" style="margin-top: 10px;">\n\
+                                                    <form action=""  id="formEdicionExpediente" enctype="multipart/form-data" method="POST">\n\
+                    <input type="hidden" name="idRegistro" id="idRegistro" value="'+data.registro+'" >\n\
+                     <input type="hidden" name="idMaquinaNuevoExpedienteMantenimientoE" id="idMaquinaNuevoExpedienteMantenimientoE" value="'+data.idMaquina+'" >\n\
+                    <div class="form-column col-md-4">\n\
+                        <div class="form-group required" style="margin-right: 2%;">\n\
+                       <label for="tipoMantenimiento" class="control-label">Tipo de Mantenimiento</label>\n\
+                        <select id="tipoMantenimientoE" name="tipoMantenimientoE" class="form-control requeridoINEMEn clerSelect" style="width: 100%" >\n\
+                            <option selected value="'+data.tipoMantenimientoId+'" selected>'+data.tipoMantenimientoNombre+'</option>\n\
+                            </select>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class="form-column col-md-4" style="padding-top: 0%;">\n\
+                         <div class="form-group required" >\n\
+                                <label for="fechaDE" class="control-label">Fecha</label>\n\
+                                </br><input type="text" name="fechaDEE" id="fechaDEE" class="requeridoINEME cler" value="'+data.fecha+'">\n\
+                            </div>\n\
+                           </div>\n\
+                           <div class="col-md-4"></div>\n\
+                     <div class="clearfix"></div>\n\
+                     <div class="form-column col-md-4">\n\
+                     <div class="form-group required" style="margin-right: 2%;" >\n\
+                <div class="form-group">\n\
+                        <label for="serie" class="control-label">Serie</label>\n\
+                    <div class="input-group">\n\
+                    <div class="input-group-addon">#</div>\n\
+                    <input type="text" class="form-control requeridoINEME cler" id="serieE"  name="serieE" value="'+data.serie+'">\n\
+                    </div>\n\
+                    </div>\n\
+                  </div>\n\
+            </div>\n\
+                 <div class="form-column col-md-4">\n\
+                    <div class="form-group required" style="margin-right: 2%;" >\n\
+                        <div class="form-group">\n\
+                        <label for="costo" class="control-label">Costo</label>\n\
+                                <div class="input-group">\n\
+                                <div class="input-group-addon">$</div>\n\
+                               <input type="text" class="form-control requeridoINEM cler" id="costoE"  name="costoE" value="'+data.costo+'">\n\
+                                <div class="input-group-addon">.00</div>\n\
+                                </div>\n\
+                            </div>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class="form-column col-md-4">\n\
+                          <div class="form-group required" style="margin-right: 2%;" >\n\
+                                <div class="form-group">\n\
+                                <label for="numeroFactura" class="control-label ">Numero Factura</label>\n\
+                                      <div class="input-group">\n\
+                                        <div class="input-group-addon">#</div>\n\
+                                      <input type="text   " class="form-control requeridoINEME cler" id="numeroFacturaE"  name="numeroFacturaE" value="'+data.numeroFactura+'">\n\
+                                </div>\n\
+                           </div>\n\
+                        </div>\n\
+                        </div><div class="clearfix"></div>\n\
+                            <div class="form-column col-md-4">\n\
+                                <div class="form-group" style="margin-right: 2%;">\n\
+                                    <label for="proyecto" class="control-label">Proyecto</label>\n\
+                                        <select id="proyectoE" name="proyectoE" class="form-control cler" style="width: 100%">\n\
+                                           <option selected value="'+data.proyectoId+'"  selected>'+data.proyectoNombre+'</option>\n\
+                                        </select>\n\
+                                     </div>\n\
+                             </div>\n\
+                                <div class="form-column col-md-4">\n\
+                                    <div class="form-group" style="margin-right: 2%;">\n\
+                                            <label for="proveedor" class="control-label">Proveedor</label>\n\
+                                            <select id="proveedorE" name="proveedorE" class="form-control clerSelect" style="width: 100%" >\n\
+                                                <option selected  value="'+data.proveedorId+'" selected>'+data.proveedorNombre+'</option>\n\
+                                              </select>\n\
+                                     </div>\n\
+                                </div>\n\
+                                  <div class="form-column col-md-4">\n\
+                                            <div class="form-group" style="margin-right: 2%;">\n\
+                                            <label for="fotoFactura" class="control-label">Foto de factura</label>\n\
+                                            <input type="file" class="clerSelect" id="fotoFacturaE"  name="fotoFacturaE">\n\
+                                    </div>\n\
+                                  </div> <div class="clearfix"></div>\n\
+                                        <div class="form-column col-md-8">\n\
+                                            <div class="form-group" >\n\
+                                                <label for="descripcionDatoExpediente" class="control-label" >Descripción</label>\n\
+                                                <textarea name="descripcionDatoExpedienteE" id="descripcionDatoExpedienteE" class="form-control cler" maxlength="250">'+data.descripcion+'</textarea>\n\
+                                            </div>\n\
+                                            <div class="form-group" >\n\
+                                                <div class="btn-group pull-left"><a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarInsercionExpeManetenimientoEdicion">Cancelar</a>\n\
+                                            </div>\n\
+                                            <div class="btn-group pull-left">\n\
+                                                    <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarExpedienteEdicion">Guardar</a>\n\
+                                                 </div>\n\
+                                                </div>\n\
+                                           </div>\n\
+                                    <div class="form-column col-md-4" >\n\
+                                            <div class="form-group" >\n\
+                                        <img src="/erpconstructora/web/Photos/expediente/'+data.imagen+'"  style="max-height: 300px;max-width: 300px;'+imagenVisibilidad+'" id="prevFacturaE">\n\
+                                        <input type="hidden" value='+data.imagenIdRegistro+' name="idRegistroImagen">\n\
+                                    </div>\n\
+                                    </div>\n\
+                                    </form>\n\
+                                </div>';
+                    
+                    
+                    
+                    $("#contenidoExpedienteMantenimiento").hide();
+                    $("#nuevoDestalleExpeMante").hide();
+                    $("#formularioInsercionExpedienteMaquinaria").hide();
+                    $("#eliminarDatoExpedienteMantenimiento").hide();
+                    $("#formularioEdicionExpedienteMaquinaria").append(formulario);
+
+$('#fechaDEE').Zebra_DatePicker({
+     format: 'M d, Y'
+});
+
+
+    //Select del tipo de mantenimiento
+   $('#tipoMantenimientoE').select2({
+                ajax: {
+                    url: Routing.generate('buscarTipoMantenimiento'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
                 }
+            });
+ 
+ 
+ //Select del proyecto
+  $('#proyectoE').select2({
+                ajax: {
+                    url: Routing.generate('buscarProyecto'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
+                }
+            });
+ 
+ //Select del proveedor
+  $('#proveedorE').select2({
+                ajax: {
+                    url: Routing.generate('buscarProveedor'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
+                }
+            });
+                    
+                    
+                    
+                  
+                        $("#formularioEdicionExpedienteMaquinaria").show();
+                
+               }
 
 
             },
@@ -830,16 +1061,30 @@ $('#fechaDE').Zebra_DatePicker({
         
                     
         }
-       
-       
-            
-             
+     
    
-});     
+});
+
+
+$(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() {
+        
+        
+       
+       $("#formularioEdicionExpedienteMaquinaria div").html("");
+       $("#cancelarInsercionExpeManetenimiento").click();
+       
+                   
+        
+        
+    });
+
+
+
+
    //Donde se almacenan los valores de la edicion de los datos del mantenimiento    
   $(document).on("click","#guardarEdicionDatoManetenimiento",function() {
            
-            var nombres = new Array();
+       var nombres = new Array();
         var numeros = new Array();
         var descripciones = new Array();
 
@@ -1061,7 +1306,7 @@ $('#fechaDE').Zebra_DatePicker({
       
   });
   
-  
+ //Guardar los datos del expediente 
   //Variable global
   
   var flag=true;
@@ -1122,6 +1367,11 @@ $('#fechaDE').Zebra_DatePicker({
         
         
         if (num==0){
+            
+            var costo = $("#costo").val();
+            
+            if (isNaN(costo)!=true){
+                
             
             var frm = new FormData($("#formInsercionExpediente")[0]);
             
@@ -1195,6 +1445,168 @@ $('#fechaDE').Zebra_DatePicker({
                                                     
                                                 }
                                             });
+       }else{
+      
+                    swal("Error!", "El costo de la factura no pueden ser letras", "error");
+                    
+      }   
+       
+       
+      }else{
+      
+                    swal("Error!", "No debes dejar campos ruqueridos vacios", "error");
+                    
+      }
+      
+       
+   });
+   
+ //termina ingresar los datos de expediente
+ 
+ 
+ 
+ 
+ 
+ //Empieza la insercion de los datos a editar dentro de un expediente
+//Variable global
+  
+  var flag=true;
+  var Extension="";
+  
+  //Seleccion de imagen
+   $(document).on("change","#fotoFacturaE",function()
+    {
+        
+        
+         //obtenemos un array con los datos del archivo
+        var file = $(this)[0].files[0];
+        //obtenemos el nombre del archivo
+        var fileName = file.name;
+        //obtenemos la extensión del archivo
+        Extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        //obtenemos el tamaño del archivo
+        var fileSize = file.size;
+        //obtenemos el tipo de archivo image/png ejemplo
+        var fileType = file.type;
+      
+        if ( Extension == "png" || Extension == "bmp"
+                    || Extension == "jpeg" || Extension == "jpg") {
+        	flag = true;
+                 readURLE(this);
+                 $("#prevFacturaE").show();
+                 
+             
+        }else{
+        	flag = false;
+                  swal("Error!", "Formato de archivo invalido", "error");
+                  $(this).val("");
+                     $("#prevFacturaE").hide();
+        }
+        
+
+        
+    });
+  
+  
+  
+  
+  //Insercion de nuevo expediente de mantenimiento
+    $(document).on("click","#guardarExpedienteEdicion",function() {
+        
+        
+                 var num=0;
+                $('.requeridoINEME').each( function (){
+            
+                       var x=$(this).val();
+            
+                       if(x=="" || x==null){
+                           num=num+1;
+                       }
+
+                       });
+           
+        
+        
+        
+        if (num==0){
+            
+            var costo = $("#costoE").val();
+            
+            if (isNaN(costo)!=true){
+                
+          
+
+            var frm = new FormData($("#formEdicionExpediente")[0]);
+            
+           
+             $.ajax({
+                                                type: 'POST',
+                                                async: false,
+                                                dataType: 'json',
+                                                data: frm,
+                                                url: Routing.generate('modificarExpedienteMantenimiento'),
+                                                 //necesario para subir archivos via ajax
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false,
+                                                //una vez finalizado correctamente
+                                                success: function (data)
+                                                {
+                                                     
+                                                
+                                                     if (data.estado == true) {
+                                                      
+                                                    
+
+                                                        swal({
+                                                            title: "Datos de mantenimiento modificados con exito",
+                                                            text: "¿Quieres seguir  modificando datos de expediente de mantenimiento?",
+                                                            type: "success",
+                                                            showCancelButton: true,
+                                                            cancelButtonText: "Despues",
+                                                            confirmButtonText: "Seguir",
+                                                            confirmButtonColor: "#00A59D",
+                                                            closeOnConfirm: true,
+                                                            closeOnCancel: false
+                                                        },
+                                                                function (isConfirm) {
+                                                                    if (isConfirm) {
+                                                                            
+                                                                                $("#formularioEdicionExpedienteMaquinaria div").html("");
+                                                                                $("#cancelarInsercionExpeManetenimiento").click();
+                                                                                
+                                                                                var tableExpedienteM = $('#listaExpedienteMantenimientos').DataTable();
+                                                                                var idMaqui = $("#idMaquina").val();
+                                                                                var url = Routing.generate('datosexpedientesmantenimientodata', {idMaquina: idMaqui});
+                                                                                tableExpedienteM.ajax.url(url).load();
+                                                                                
+                                                                             
+                                                                                
+                                                                                
+                                                                             
+                                                                             
+                                                                    } else {
+                                                                        
+                                                                        var url = Routing.generate('dashboard_index');
+                                                                        window.open(url, "_self");
+
+                                                                    }
+                                                                });
+
+
+
+                                                    }
+
+                                                },
+                                                error: function (xhr, status)
+                                                {
+                                                    
+                                                }
+                                            });
+                                            
+               }else{
+                    swal("Error!", "El costo de la factura no puedeb ser letras", "error");
+               }                               
                     
       }else{
       
@@ -1204,7 +1616,35 @@ $('#fechaDE').Zebra_DatePicker({
       
        
    });
-  
+   
+   
+    //Envio de imagenes de la maquinaria
+    
+    
+ 
+ var idMaquina=$("#idMaquina").val();
+ var correlativoDiv=0; 
+    var url = Routing.generate('insertarImagenesMaquinaria', {idMaquina: idMaquina});
+    $("#zonaDeImagenes").dropzone({
+        url: url,
+         success: function(file, response){
+          var obj = jQuery.parseJSON(response);
+          correlativoDiv=correlativoDiv+1;
+            
+            var formulario='<div class="col-md-4">\n\
+                                                <img src="" style="max-height: 300px;max-width: 300px;margin-top:10px;" id="imgPrueba-'+correlativoDiv+'">\n\
+                                            </div>'
+              $("#mostrarImagenes").append(formulario);
+             $("#imgPrueba-"+correlativoDiv).attr("src","/erpconstructora/web/Photos/maquinaria/"+obj.nombreImagen);
+           
+               
+
+    }
+
+    });
+
+
+   
   
   //Fin del document Ready
  });
@@ -1215,8 +1655,6 @@ $('#fechaDE').Zebra_DatePicker({
                              "<div class='select2-result-repository__meta'>" +
                              "<div class='select2-result-repository__title'>" + data.nombre+ "</div>" +
                              "</div></div>";
-            } else {
-                var markup = "Seleccione un tipo de equipo";
             }
 
             return markup;
@@ -1257,4 +1695,16 @@ $('#fechaDE').Zebra_DatePicker({
         $("#eliminarDatoExpedienteMantenimiento").hide();
 
         
+    }
+    
+      function readURLE(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#prevFacturaE').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }

@@ -85,7 +85,7 @@ class MaExpedienteMantenimiento
     private $ordenSuminstro;
 
     /**
-     * @var \MaTipoMantenimiento
+        * @var \MaTipoMantenimiento
      *
      * @ORM\ManyToOne(targetEntity="MaTipoMantenimiento")
      * @ORM\JoinColumns({

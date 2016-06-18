@@ -67,22 +67,40 @@
                     </div>
                     <div class="col-md-4"></div>
                     <div class="clearfix"></div>
-
+                    
                      <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
-                            <label for="serie" class="control-label">Serie</label>
-                            <input type="text" class="form-control requeridoINEM cler" id="serie"  name="serie" >
+                        <div class="form-group">
+                             <label for="serie" class="control-label">Serie</label>
+                             <div class="input-group">
+                            <div class="input-group-addon">#</div>
+                              <input type="text" class="form-control requeridoINEM cler" id="serie"  name="serie" >
                         </div>
-                    </div>
+                       </div>
+                     </div> 
+                 </div>
+                    
                      <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
-                            <label for="costo" class="control-label">Costo</label>
+                        <div class="form-group">
+                        <label class="control-label" for="exampleInputAmount">Costo</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
                             <input type="text" class="form-control requeridoINEM cler" id="costo"  name="costo" >
+                            <div class="input-group-addon">.00</div>
                         </div>
-                    </div>
-                    <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
-                            <label for="numeroFactura" class="control-label ">Numero Factura</label>
-                            <input type="text   " class="form-control requeridoINEM cler" id="numeroFactura"  name="numeroFactura">
+                       </div>
+                     </div> 
+                 </div>
+                    
+                     <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
+                            <div class="form-group">
+                              <label for="numeroFactura" class="control-label ">Numero Factura</label>
+                            <div class="input-group">
+                            <div class="input-group-addon">#</div>
+                             <input type="text   " class="form-control requeridoINEM cler" id="numeroFactura"  name="numeroFactura">
                         </div>
-                    </div>
+                       </div>
+                     </div> 
+                 </div>
                     <div class="clearfix"></div>
                     <div class="form-column col-md-4">
                                      <div class="form-group" style="margin-right: 2%;">
@@ -111,7 +129,7 @@
                     <div class="form-column col-md-8">
                                     <div class="form-group" >
                                         <label for="descripcionDatoExpediente" class="control-label" >Descripción</label>
-                                        <textarea name="descripcionDatoExpediente" id="descripcionDatoExpediente" class="form-control cler">
+                                        <textarea name="descripcionDatoExpediente" id="descripcionDatoExpediente" class="form-control cler" maxlength="250">
                                             
                                         </textarea>
                                     </div>
@@ -129,12 +147,11 @@
                             <img src=""  style="display: none; max-height: 300px;max-width: 300px;" id="prevFactura">
                         </div>
                     </div>
-{#                    <div class="clearfix"></div>#}
-                   
-                    </form>
+                   </form>
          </div>
         <div class="row" id="formularioEdicionExpedienteMaquinaria" style="margin-top: 10px;">
-    
+            
+            
         </div>
 
                 

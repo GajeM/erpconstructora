@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ImagenesDetalleMantenimiento
  *
- * @ORM\Table(name="imagenes_detalle_mantenimiento", indexes={@ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_expediente_mantenimien_idx", columns={"ma_expediente_mantenimiento_id"})})
+ * @ORM\Table(name="imagenes_detalle_mantenimiento", indexes={@ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_expediente_mantenimien_idx", columns={"ma_expediente_mantenimiento_id"}), @ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_maquina", columns={"id_maquina"})})
  * @ORM\Entity
  */
 class ImagenesDetalleMantenimiento
@@ -46,6 +46,18 @@ class ImagenesDetalleMantenimiento
     private $maExpedienteMantenimiento;
 
 
+     /**
+     * @var \MaMaquina
+     *
+     * @ORM\ManyToOne(targetEntity="MaMaquina")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_maquina", referencedColumnName="id")
+     * })
+     */
+    private $maMaquina;
+    
+    
+    
 
     /**
      * Get id
@@ -125,4 +137,32 @@ class ImagenesDetalleMantenimiento
     {
         return $this->maExpedienteMantenimiento;
     }
+    
+     /**
+     * Set maMaquina
+     *
+     * @param \DG\AdminBundle\Entity\MaMaquina $maMaquina
+     * @return MaDatosMantenimiento
+     */
+    public function setMaMaquina(\DG\AdminBundle\Entity\MaMaquina $maMaquina = null)
+    {
+        $this->maMaquina = $maMaquina;
+
+        return $this;
+    }
+
+    /**
+     * Get maMaquina
+     *
+     * @return \DG\AdminBundle\Entity\MaMaquina 
+     */
+    public function getMaMaquina()
+    {
+        return $this->maMaquina;
+    }
+    
+    
+    
+    
+    
 }

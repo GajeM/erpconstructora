@@ -821,7 +821,8 @@ class MaquinaController extends Controller
           $resultados = move_uploaded_file($_FILES["fotoFactura"]["tmp_name"], $pathContenedor.$nombreArchivo);
        
           if ($resultados){
-              chmod($pathContenedor.$nombreArchivo, 755);
+              
+              chmod($pathContenedor.$nombreArchivo, 777);
                $idExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->find($objetoM->getId());
                
                $objetoImagen = new ImagenesDetalleMantenimiento();
@@ -895,31 +896,255 @@ class MaquinaController extends Controller
             
             $em = $this->getDoctrine()->getManager();
             $idRegistro = $request->get('idRegistro');
+            $imagen = $this->getDoctrine()->getRepository('DGAdminBundle:ImagenesDetalleMantenimiento')->findByMaExpedienteMantenimiento($idRegistro);
+       
             
             $detalleDatoExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findById($idRegistro);
-             $data['datos']=$detalleDatoExpedienteMantenimiento;
+            $data['registro']=$idRegistro;
+             $data['tipoMantenimientoId']=$detalleDatoExpedienteMantenimiento[0]->getMaMantenimiento()->getId();
+             $data['tipoMantenimientoNombre']=$detalleDatoExpedienteMantenimiento[0]->getMaMantenimiento()->getNombre();
+             $data['idMaquina']=$detalleDatoExpedienteMantenimiento[0]->getMaMaquina()->getId();
+             
+             
+             
+             
+             $data['fecha']=(date_format($detalleDatoExpedienteMantenimiento[0]->getFecha(),'Y-m-d'));
+             
+             $data['serie']=$detalleDatoExpedienteMantenimiento[0]->getSerie();
+             $data['costo']=$detalleDatoExpedienteMantenimiento[0]->getCosto();
+             $data['numeroFactura']=$detalleDatoExpedienteMantenimiento[0]->getNumeroFactura();
+             
+             if ($detalleDatoExpedienteMantenimiento[0]->getProyecto() != NULL) {
+
+                $data['proyectoId'] = $detalleDatoExpedienteMantenimiento[0]->getProyecto()->getId();
+                $data['proyectoNombre'] = $detalleDatoExpedienteMantenimiento[0]->getProyecto()->getNombre();
+            } else {
+
+                $data['proyectoId'] =NULL;
+                $data['proyectoNombre'] = 'Seleccione un proyecto';
+            }
+
+
+
+
+            if ($detalleDatoExpedienteMantenimiento[0]->getProveedor() != NULL) {
+                
+                $data['proveedorId'] = $detalleDatoExpedienteMantenimiento[0]->getProveedor()->getId();
+                $data['proveedorNombre'] = $detalleDatoExpedienteMantenimiento[0]->getProveedor()->getNombre();
+                
+            }else{
+            $data['proveedorId'] = NULL;
+                $data['proveedorNombre'] = 'Seleccione un proveedor';
+
+            }
+
+
+            if ((count($imagen))!=0){
+                 $data['imagen']=$imagen[0]->getSrc();
+                 $data['imagenIdRegistro']=$imagen[0]->getId();
+              }else{
+                  $data['imagen']=null;
+                  $data['imagenIdRegistro']=null;
+              }
+
+             $data['descripcion']=$detalleDatoExpedienteMantenimiento[0]->getDescripcion();
              $data['estado']=true;
-            
-            
-        
-          
+
             return new Response(json_encode($data)); 
             
             
          }
         
+
+    }
+    
+    
+    
+       /**
+     * @Route("/modificarExpedienteMantenimiento/", name="modificarExpedienteMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function ModificarExpedienteMantenimientoAction(Request $request) {
+          
+         $em = $this->getDoctrine()->getEntityManager();
+         $pathContenedor = $this->container->getParameter('photo.expediente');
+         $idRegistro=$_POST['idRegistro'];
+         $idMaquina = $_POST["idMaquinaNuevoExpedienteMantenimientoE"]; 
+         $tipoMantenimiento=$_POST["tipoMantenimientoE"];
+        
+        $fechaDE=$_POST["fechaDEE"];
+        $serie =$_POST["serieE"];
+        $costo=$_POST["costoE"];
+        $numeroFactura=$_POST["numeroFacturaE"];
+        $descripcionDatoExpediente=$_POST["descripcionDatoExpedienteE"];
+        $proyecto=$_POST["proyectoE"];
+        $proveedor=$_POST["proveedorE"];
+
+     
+      
+
+        $idMaquinaria = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
+        $tipoMantenimientoObj = $this->getDoctrine()->getRepository('DGAdminBundle:MaTipoMantenimiento')->findById($tipoMantenimiento);
+        
+        $objetoM = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findById($idRegistro);
+        $objetoM[0]->setMaMantenimiento($tipoMantenimientoObj[0]);
+        $objetoM[0]->setFecha(new \DateTime($fechaDE));
+        $objetoM[0]->setSerie($serie);
+        $objetoM[0]->setCosto($costo);
+        $objetoM[0]->setNumeroFactura($numeroFactura);
+        $objetoM[0]->setDescripcion($descripcionDatoExpediente);
+        $objetoM[0]->setMaMaquina($idMaquinaria[0]);
+        $objetoM[0]->setEstado(1);
         
         
+         if ($proyecto!='null'){
+             $proyectoObj = $this->getDoctrine()->getRepository('DGAdminBundle:Proyecto')->findById($proyecto);
+             $objetoM[0]->setProyecto($proyectoObj[0]);
+        }else{
+             $objetoM[0]->setProyecto(NULL);
+        }
+         
+            
+        
+          if ($proveedor!='null'){
+             $proveedorObj = $this->getDoctrine()->getRepository('DGAdminBundle:Proveedor')->findById($proveedor);
+             $objetoM[0]->setProveedor($proveedorObj[0]);
+
+        }else{
+             $objetoM[0]->setProyecto(NULL);
+
+        }
+
+          $em->merge($objetoM[0]);
+          $em->flush();
+
+        //Insercion de la imagen
+          $nombreimagen=$_FILES['fotoFacturaE']['name'];    
+          $idRegistroImagen=$_POST['idRegistroImagen'];
+
+          
+       if ($nombreimagen!=""){
+                        $tipo = $_FILES['fotoFacturaE']['type']; 
+                        $extension= explode('/',$tipo);
+
+                        $fecha = date('Y-m-d His');
+                        $nombreArchivo =$fecha.".".$extension[1];;
+                        $nombreArchivo =str_replace(" ","", $nombreArchivo);
+
+            if ($idRegistroImagen!=NULL){
+                        $imagen = $this->getDoctrine()->getRepository('DGAdminBundle:ImagenesDetalleMantenimiento')->findById($idRegistroImagen);
+                        $rutaImagenvieja=$imagen[0]->getSrc();
+
+                        $resultadoEliminacion =unlink($pathContenedor.$rutaImagenvieja);
+                        
+                 if ($resultadoEliminacion){
+
+                             $resultados = move_uploaded_file($_FILES["fotoFacturaE"]["tmp_name"], $pathContenedor.$nombreArchivo);
+
+                        if ($resultados){
+
+                                  chmod($pathContenedor.$nombreArchivo, 777);
+
+
+                                   $imagen[0]->setSrc($nombreArchivo);
+
+                                   $em->merge($imagen[0]);
+                                   $em->flush();
+
+                          }
+              
+                 }
+            }else{
+                
+                
+                     $resultadosNuevoIngresoEdicion = move_uploaded_file($_FILES["fotoFactura"]["tmp_name"], $pathContenedor.$nombreArchivo);
+       
+                    if ($resultadosNuevoIngresoEdicion){
+
+                        chmod($pathContenedor.$nombreArchivo, 777);
+                       
+
+                         $objetoImagen = new ImagenesDetalleMantenimiento();
+                         $objetoImagen->setTipo(1);
+                         $objetoImagen->setSrc($nombreArchivo);
+                         $objetoImagen->setMaExpedienteMantenimiento($objetoM[0]);
+                         $em->persist($objetoImagen);
+                         $em->flush();
+
+                    }
+                
+            }
+            
+        }
+
+        $data["estado"]=true;
+
+         
+         return new Response(json_encode($data)); 
+            
+
     } 
     
     
     
     
+     //Insercion de la imagen
+    
+    
+       /**
+     * @Route("/insertarImagenesMaquinaria/{idMaquina}", name="insertarImagenesMaquinaria", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function InsertarImagenesMaquinariaAction(Request $request,$idMaquina) {
+          $em = $this->getDoctrine()->getEntityManager();
+          $nombreimagen=$_FILES['file']['name'];
+          $pathContenedor = $this->container->getParameter('photo.maquinaria');
+     
+          if ($nombreimagen!=""){
+          $tipo = $_FILES['file']['type']; 
+          $extension= explode('/',$tipo);
+        
+          $fecha = date('Y-m-d His');
+          $nombreArchivo =$fecha.".".$extension[1];;
+          $nombreArchivo =str_replace(" ","", $nombreArchivo);
+          
+       
+          
+          $resultados = move_uploaded_file($_FILES["file"]["tmp_name"], $pathContenedor.$nombreArchivo);
+       
+          if ($resultados){
+              
+               $x=chmod($pathContenedor.$nombreArchivo, 777);
+
+               
+               $objMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
+               
+               $objetoImagen = new ImagenesDetalleMantenimiento();
+               $objetoImagen->setTipo(2);
+               $objetoImagen->setSrc($nombreArchivo);
+               $objetoImagen->setMaExpedienteMantenimiento(null);
+               $objetoImagen->setMaMaquina($objMaquina[0]);
+               $em->persist($objetoImagen);
+               $em->flush();
+               
+               
+               $nombreImagen=$objetoImagen->getSrc();
+               $data['nombreImagen']=$nombreImagen;
+               $data['estado']=true;
+               
+                 }
+
+          }
+            return new Response(json_encode($data)); 
+    
+      }
     
     
     
-    
-    
-   
+
     
 }
