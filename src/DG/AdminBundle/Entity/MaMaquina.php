@@ -99,9 +99,9 @@ class MaMaquina
     private $capacidad;
 
     /**
-     * @var \DateTime
+     * @var \integer
      *
-     * @ORM\Column(name="anho", type="date", nullable=true)
+     * @ORM\Column(name="anho", type="integer", nullable=true)
      */
     private $anho;
 

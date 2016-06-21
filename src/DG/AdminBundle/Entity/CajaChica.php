@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CajaChica
  *
- * @ORM\Table(name="caja_chica", indexes={@ORM\Index(name="fk_caja_chica_estado_registro1_idx", columns={"estado_registro_id"})})
+ * @ORM\Table(name="caja_chica", indexes={@ORM\Index(name="fk_caja_chica_estado_registro1_idx", columns={"estado_registro_id"}), @ORM\Index(name="fk_caja_chica_empleado1", columns={"empleado_id"})})
  * @ORM\Entity
  */
 class CajaChica
@@ -67,6 +67,18 @@ class CajaChica
     private $estadoRegistro;
 
 
+    
+        /**
+     * @var \Empleado
+     *
+     * @ORM\ManyToOne(targetEntity="Empleado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empleado_id", referencedColumnName="id")
+     * })
+     */
+    private $empleadoId;
+    
+    
 
     /**
      * Get id
@@ -215,4 +227,30 @@ class CajaChica
     {
         return $this->estadoRegistro;
     }
+
+    /**
+     * Set empleadoId
+     *
+     * @param \DG\AdminBundle\Entity\Empleado $empleadoId
+     * @return CajaChica
+     */
+    public function setEmpleadoId(\DG\AdminBundle\Entity\Empleado $empleadoId = null)
+    {
+        $this->empleadoId = $empleadoId;
+
+        return $this;
+    }
+
+    /**
+     * Get empleadoId
+     *
+     * @return \DG\AdminBundle\Entity\Empleado 
+     */
+    public function getEmpleadoId()
+    {
+        return $this->empleadoId;
+    }
+    
+    
+    
 }

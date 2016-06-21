@@ -1,0 +1,163 @@
+<div class="row" style="margin-left: 2%; " >
+   
+      
+        <div class="col-md-2">
+            <button style="margin-bottom: -10px;" class="btn btn-primary  btn-sm " id="nuevoDestalleExpeMante" title="Nuevo expediente">Nuevo</button>
+        </div>
+    <div class="col-md-2">
+         <button class="btn btn-danger  btn-sm " style="margin-bottom: -10px; margin-left: -80px;" id="eliminarDatoExpedienteMantenimiento">Eliminar</button>
+    </div>
+
+   <div class="clearfix"></div>
+    <div class="col-md-12" id="contenidoExpedienteMantenimiento">
+          
+                
+            <table id="listaExpedienteMantenimientos" class="mdl-data-table" cellspacing="0" width="100%">
+
+                <thead>
+
+                    <tr>
+                        <th>ID Ex.Mantenimiento</th>
+                        <th>Fecha</th>
+                        <th>Tipo Mantenimiento</th>
+                        <th>Serie</th>
+                         <th>Costo</th>
+                         <th>Proyecto</th>
+                         
+
+                    </tr>
+                </thead>
+
+                {#<tbody>
+                    <tr>
+                        <td>Guillermo Jandres</td>
+                        <td>Chiltiupan, La Libertad</td>
+                        <td>Edinburgh</td>
+                        <td><input type="button" value="Ver mas"></td>
+                      
+                    </tr>
+                    
+                </tbody>#}
+
+            </table>
+            
+            
+        </div>
+                <div class="clearfix"></div>
+             
+                <div class="row" id="formularioInsercionExpedienteMaquinaria" style="margin-top: 10px;">
+                 <form action=""  id="formInsercionExpediente" enctype="multipart/form-data" method="POST">
+                     {% for data in datosGenerales%}
+                     <input type="hidden" name="idMaquinaNuevoExpedienteMantenimiento" id="idMaquinaNuevoExpedienteMantenimiento" value="{{data.id}}">
+                     <div class="form-column col-md-4">
+                                     <div class="form-group required" style="margin-right: 2%;">
+                                        <label for="tipoMantenimiento" class="control-label">Tipo de Mantenimiento</label>
+                                        <select id="tipoMantenimiento" name="tipoMantenimiento" class="form-control requeridoINEM clerSelect" style="width: 100%" >
+                                            <option value="0" disabled selected>Tipo de mantenimiento...</option>
+                                        </select>  
+                                            
+                                    </div>
+                      </div>
+                     {% endfor %}
+                    <div class="form-column col-md-4" style="padding-top: 0%;">
+                        <div class="form-group required" >
+                            <label for="fechaDE" class="control-label">Fecha</label></br>
+                            <input type="text" name="fechaDE" id="fechaDE" class="requeridoINEM cler" >
+
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="clearfix"></div>
+                    
+                     <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
+                        <div class="form-group">
+                             <label for="serie" class="control-label">Serie</label>
+                             <div class="input-group">
+                            <div class="input-group-addon">#</div>
+                              <input type="text" class="form-control requeridoINEM cler" id="serie"  name="serie" >
+                        </div>
+                       </div>
+                     </div> 
+                 </div>
+                    
+                     <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
+                        <div class="form-group">
+                        <label class="control-label" for="exampleInputAmount">Costo</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            <input type="text" class="form-control requeridoINEM cler" id="costo"  name="costo" >
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                       </div>
+                     </div> 
+                 </div>
+                    
+                     <div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >
+                            <div class="form-group">
+                              <label for="numeroFactura" class="control-label ">Numero Factura</label>
+                            <div class="input-group">
+                            <div class="input-group-addon">#</div>
+                             <input type="text   " class="form-control requeridoINEM cler" id="numeroFactura"  name="numeroFactura">
+                        </div>
+                       </div>
+                     </div> 
+                 </div>
+                    <div class="clearfix"></div>
+                    <div class="form-column col-md-4">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="proyecto" class="control-label">Proyecto</label>
+                                        <select id="proyecto" name="proyecto" class="form-control cler" style="width: 100%">
+                                            <option value="0" disabled selected>Proyecto del mantenimiento...</option>
+                                        </select>  
+                                    </div>
+                      </div>
+                      <div class="form-column col-md-4">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="proveedor" class="control-label">Proveedor</label>
+                                        <select id="proveedor" name="proveedor" class="form-control clerSelect" style="width: 100%" >
+                                            <option value="0" disabled selected>Proveedor...</option>
+                                        </select>  
+                                    </div>
+                      </div>
+                          <div class="form-column col-md-4">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="fotoFactura" class="control-label">Foto de factura</label>
+                                         <input type="file" class="clerSelect" id="fotoFactura"  name="fotoFactura">
+
+                         </div>
+                      </div>
+                    <div class="clearfix"></div>
+                    <div class="form-column col-md-8">
+                                    <div class="form-group" >
+                                        <label for="descripcionDatoExpediente" class="control-label" >Descripción</label>
+                                        <textarea name="descripcionDatoExpediente" id="descripcionDatoExpediente" class="form-control cler" maxlength="250">
+                                            
+                                        </textarea>
+                                    </div>
+                        <div class="form-group" >
+                            <div class="btn-group pull-left">
+                                <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarInsercionExpeManetenimiento">Cancelar</a>
+                            </div>
+                            <div class="btn-group pull-left">
+                                <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarExpediente">Guardar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-column col-md-4" >
+                        <div class="form-group" >
+                            <img src=""  style="display: none; max-height: 300px;max-width: 300px;" id="prevFactura">
+                        </div>
+                    </div>
+                   </form>
+         </div>
+        <div class="row" id="formularioEdicionExpedienteMaquinaria" style="margin-top: 10px;">
+            
+            
+        </div>
+
+                
+
+  </div>
+        
+    
+

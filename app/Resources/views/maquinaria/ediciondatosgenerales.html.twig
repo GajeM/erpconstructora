@@ -1,0 +1,194 @@
+<div class="row" style="margin-left: 2%; ">
+ {% for data in datosGenerales %}
+     
+       <input type="hidden" name="idMaquina" id="idMaquina" value="{{data.id}}">
+                                
+                                <div class="form-column col-md-4">
+                                    <div class="form-group">
+                                        <label for="numeroSerie" class="control-label" style="padding-top: 1.5%;">Numero Serie</label>
+                                        <input type="text" class="form-control" id="numeroSerie" 
+                                               placeholder="N°  de serie" name="numeroSerie" required value="{{data.numeroSerie}}">
+                                    </div>
+                                </div>
+                                <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="numeroEquipo" class="control-label" style="padding-top: 1.5%;">N° de equipo</label>
+                                        <input type="text" class="form-control" id="numeroEquipo" 
+                                               placeholder="Numero de Equipo" name="numeroEquipo" required value="{{data.nombre}}">
+                                    </div>
+                                </div>
+
+                                  <div class="form-column col-md-4" style="padding-top: 0%;">
+                                    <div class="form-group">
+                                        <label for="anhoMaquina" class="control-label">Año</label></br>
+                                        <input type="text" name="anhoMaquina" id="anhoMaquina" value="{{data.anho}}" >
+                                        
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="alias   " class="control-label">Alias</label>
+                                        <input type="text" class="form-control" id="alias" 
+                                               placeholder="Alias de la maquina" name="alias" value="{{data.alias}}">
+                                    </div>
+                                </div>
+                                <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="modelo   " class="control-label">Modelo</label>
+                                        <input type="text" class="form-control" id="modelo" 
+                                               placeholder="Modelo de la maquina" name="modelo" value="{{data.modelo}}" >
+                                    </div>
+                                </div>
+                                    {% if data.tipoEquipo is not null %}    
+                                    
+                                 <div class="form-column col-md-4">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="tipoEquipo" class="control-label">Tipo equipo</label>
+                                        <select id="tipoEquipo" name="tipoEquipo" class="form-control" style="width: 100%">
+                                            <option selected value="{{data.tipoEquipo.id}}"  selected>{{data.tipoEquipo}}</option>
+                                        </select>  
+                                            
+                                    </div>
+                                </div>
+                                   {% else %}
+                                       
+                                      <div class="form-column col-md-4">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="tipoEquipo" class="control-label">Tipo equipo</label>
+                                        <select id="tipoEquipo" name="tipoEquipo" class="form-control" style="width: 100%">
+                                            <option value="" disabled selected>Seleccione un tipo equipo ...</option>
+                                        </select>  
+                                            
+                                    </div>
+                                </div>
+                                 {% endif %}  
+                                 <div class="clearfix"></div>
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="vin   " class="control-label">VIN</label>
+                                        <input type="text" class="form-control" id="vin" 
+                                               placeholder="VIN de la maquina" name="vin" value="{{data.vin}}">
+                                    </div>
+                                </div>
+                                <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="placa   " class="control-label">Placa</label>
+                                        <input type="text" class="form-control" id="placa" 
+                                               placeholder="N° de placa" name="placa" required value="{{data.placa}}">
+                                    </div>
+                                </div>
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" style="margin-right: 2%;">
+                                        <label for="color   " class="control-label" >Color</label>
+                                        <select id="colorMaquina" name="colorMaquina" style="width: 100%">
+                                           
+                                         
+                                        {#
+                                            {% if data.color == 'Negro' %}
+                                                            <option value="{{data.color}}" >{{data.color}}</option>
+                                                            <option value="Naranja" >Naranja</option>
+                                                            <option value="Celeste" >Celeste</option>
+                                                            <option value="Azul" >Azul</option>
+                                                            <option value="Blanco" >Blanco</option>
+                                                            <option value="Cafe" >Cafe</option>
+                                                          {% else if data.color=='Naranja'  %}
+                                                             <option value="{{data.color}}" >{{data.color}}</option>
+                                                             <option value="Negro" >Negro</option>
+                                                            <option value="Celeste" >Celeste</option>
+                                                            <option value="Azul" >Azul</option>
+                                                            <option value="Blanco" >Blanco</option>
+                                                            <option value="Cafe" >Cafe</option>
+                                                            
+                                                             {% else if data.color=='Celeste'  %}
+                                                             <option value="{{data.color}}" >{{data.color}}</option>
+                                                             <option value="Negro" >Negro</option>
+                                                            <option value="Naranja" >Naranja</option>
+                                                            <option value="Azul" >Azul</option>
+                                                            <option value="Blanco" >Blanco</option>
+                                                            <option value="Cafe" >Cafe</option>
+                                                              
+                                                             {% else if data.color=='Azul'  %}
+                                                             <option value="{{data.color}}" >{{data.color}}</option>
+                                                             <option value="Negro" >Negro</option>
+                                                            <option value="Naranja" >Naranja</option>
+                                                            <option value="Celeste" >Celeste</option>
+                                                            <option value="Blanco" >Blanco</option>
+                                                            <option value="Cafe" >Cafe</option>
+                                                            
+                                                             {% else if data.color=='Blanco'  %}
+                                                                 <option value="{{data.color}}" >{{data.color}}</option>
+                                                                 <option value="Negro" >Negro</option>
+                                                                 <option value="Naranja" >Naranja</option>
+                                                                 <option value="Celeste" >Celeste</option>
+                                                                 <option value="Azul" >Azul</option>
+                                                                 <option value="Cafe" >Cafe</option>
+
+                                                               {% else if data.color=='Cafe'  %}
+                                                                 <option value="{{data.color}}" >{{data.color}}</option>
+                                                                 <option value="Negro" >Negro</option>
+                                                                 <option value="Naranja" >Naranja</option>
+                                                                 <option value="Celeste" >Celeste</option>
+                                                                 <option value="Azul" >Azul</option>
+                                                                 <option value="Blanco" >Blanco</option>
+                                                            {% else %}
+                                                                
+                                                                <option value="Negro" >Negro</option>
+                                                                <option value="Naranja" >Naranja</option>
+                                                                <option value="Celeste" >Celeste</option>
+                                                                <option value="Azul" >Azul</option>
+                                                                <option value="Blanco" >Blanco</option>
+                                                                <option value="Cafe" >Cafe</option>
+                                                              
+                                                        {% endif %}   #}
+                                           
+                                           
+                                        
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="tamanho" class="control-label">Tamaño</label>
+                                        <input type="text" class="form-control" id="tamanho" 
+                                               placeholder="Tamaño de la maquina" name="tamanho" value="{{data.tamaño}}" >
+                                    </div>
+                                </div>
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="capacidad" class="control-label">Capacidad</label>
+                                        <input type="text" class="form-control" id="capacidad" 
+                                               placeholder="Capacidad de la maquina" name="capacidad" value="{{data.capacidad}}">
+                                    </div>
+                                </div>
+                                <div class="form-column col-md-4">
+                                    <div class="form-group" style="margin-right: 2%;" >
+                                        <label for="marca" class="control-label" >Marca</label>
+                                        <input type="text" class="form-control" id="marca" 
+                                               placeholder="Marca del equipo" name="marca" value="{{data.marca}}">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-column col-md-6">
+                                    <div class="form-group" >
+                                        <label for="marca" class="control-label" >Descripción</label>
+                                        <textarea name="descripcionMaquina" id="descripcionMaquina" class="form-control" maxlength="250 " >
+                                            {{data.decripcion}}
+                                        </textarea>
+                                    </div>
+                                </div>
+                                
+    {% endfor %}
+                                  <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarDatosGeneralesMaquina">Cancelar</a>
+                                        </div>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-primary  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guargarDatosGeneralesMaquina">Guardar</button>
+                                        </div>                                                                              
+                                    </div>
+                                </div>
+                                
+                            </div>   

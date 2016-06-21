@@ -29,7 +29,7 @@
          }
        
      </style>
-      <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
+     <link rel="stylesheet" href="{{ asset('Resources/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
      
 
     <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
@@ -101,28 +101,28 @@
             <section class="col-lg-12 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <ul class="nav nav-tabs  ui-sortable-handle">
-                        <li class="active"><a href="#divDatosGenerales" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosGenerales">Datos Generales</a></li>
-                        <li><a href="#divdatosMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas disabled" id="datosMantenimiento">Datos del mantenimiento</a></li>
-                        <li><a href="#divExpedienteMantenimiento" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosExpedienteMantenimiento">Expediente Mantenimiento</a></li>
-                        <li><a href="#divImagenesMaquina" data-toggle="tab" class="colorAnclas colorPestanhas" id="imagenesMaquinas">Imagenes</a></li>
+                        <li class="active"><a href="#divDatosGeneralesEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosGenerales">Datos Generales</a></li>
+                        <li><a href="#divdatosMantenimientoEdicion" data-toggle="tab" class="colorAnclas colorPestanhas disabled" id="datosMantenimiento">Datos del mantenimiento</a></li>
+                        <li><a href="#divExpedienteMantenimientoEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosExpedienteMantenimiento">Expediente Mantenimiento</a></li>
+                        <li><a href="#divImagenesMaquinaEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="imagenesMaquinas">Imagenes</a></li>
                         <li class="pull-left header">
                     </ul>
                     
                     <div class="tab-content no-padding">
                        
-                        <div class="chart tab-pane active colorDiv" id="divDatosGenerales" >
-                           {% include ':maquinaria:nuevodatosgenerales.html.twig' %}                       
+                        <div class="chart tab-pane active colorDiv" id="divDatosGeneralesEdicion" >
+                                          {% include ':maquinaria:ediciondatosgenerales.html.twig' %}          
                         </div>
                         
-                        <div class="chart tab-pane colorDiv" id="divdatosMantenimiento" style=" padding: 15px;" >
-                              {% include ':maquinaria:nuevodatosmantenimiento.html.twig' %}          
+                        <div class="chart tab-pane colorDiv" id="divdatosMantenimientoEdicion" style=" padding: 15px;" >
+                                    {% include ':maquinaria:ediciondatosmantenimiento.html.twig' %}     
                         </div>
-                         <div class="chart tab-pane colorDiv" id="divExpedienteMantenimiento" style=" padding: 15px;" >
-                             {% include ':maquinaria:nuevoexpedientemantenimiento.html.twig' %}          
+                         <div class="chart tab-pane colorDiv" id="divExpedienteMantenimientoEdicion" style=" padding: 15px;" >
+                                 {% include ':maquinaria:edicionexpedientemantenimiento.html.twig' %}     
                         </div>
-                         <div class="chart tab-pane colorDiv" id="divImagenesMaquina" style=" padding: 15px;" >
-                             {% include ':maquinaria:imagenesMaquinaria.html.twig' %}          
-                             
+                         <div class="chart tab-pane colorDiv" id="divImagenesMaquinaEdicion" style=" padding: 15px;" >
+                          
+                              {% include ':maquinaria:edicionimagenesmaquinaria.html.twig' %}     
                         </div>
                     </div>
                 </div>
@@ -151,5 +151,6 @@
       
       
   {% endblock %} 
+
 
 

@@ -112,7 +112,7 @@ class MaquinaController extends Controller
             $objeto = new MaMaquina();
             $objeto->setNumeroSerie($numeroSerie);
             $objeto->setNombre($numeroEquipo);
-            $objeto->setAnho(new \DateTime($anho));
+            $objeto->setAnho($anho);
             $objeto->setAlias($alias);
             $objeto->setModelo($modelo);
             
@@ -155,7 +155,6 @@ class MaquinaController extends Controller
      * @Method("POST")
      */
     
-    
       public function ValidarMaquinaAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
@@ -196,24 +195,36 @@ class MaquinaController extends Controller
                         ->getResult();
             $rSerie=$resultadoSerie[0]['resS'];
             
-            $suma= $rEquipo+$rPlaca+$rSerie;
+            
+            $identificador = $request->get('n');
+              $suma= $rEquipo+$rPlaca+$rSerie;
+            if ($identificador==0){
+
+          
+            
             if ($suma==0){
                 
-                $data['estado']=true;
+                $data['estado'] = true;
+                } else if ($rEquipo != 0) {
+                    $data['estado'] = "equipo";
+                } else if ($rPlaca != 0) {
+                    $data['estado'] = "placa";
+                } else if ($rSerie != 0) {
+                    $data['estado'] = "serie";
+                }
                 
-            }else if($rEquipo!=0){
-                $data['estado']="equipo";
-            }else if($rPlaca!=0){
-                $data['estado']="placa";
-            }else if($rSerie!=0){
-                $data['estado']="serie";
-            }
-            
-            
-            
-    
-                
-             return new Response(json_encode($data)); 
+            }else if ($suma <=3) {
+
+                    $data['estado'] = true;
+                } else if ($rEquipo != 0) {
+                    $data['estado'] = "equipo";
+                } else if ($rPlaca != 0) {
+                    $data['estado'] = "placa";
+                } else if ($rSerie != 0) {
+                    $data['estado'] = "serie";
+                }
+
+            return new Response(json_encode($data)); 
             
             
          }
@@ -221,13 +232,12 @@ class MaquinaController extends Controller
         
         
     }
-    
+
+  
     /**
      * @Route("/modificarMaquina/", name="modificarMaquina", options={"expose"=true})
      * @Method("POST")
      */
-    
-    
       public function ModificarMaquinaAction(Request $request) {
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
@@ -245,19 +255,22 @@ class MaquinaController extends Controller
             $tipoEquipo = $request->get('tipoEquipo');
             $vin = $request->get('vin');
             $placa = $request->get('placa');
+
             $color = $request->get('color');
             $tamanho = $request->get('tamanho');
             $capacidad = $request->get('capacidad');
             $marca = $request->get('marca');
             $descripcion = $request->get('descripcion');
             $idMaquina = $request->get('idMaquina');
+            
+          
 
             $objeto= $em->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
           
             
             $objeto[0]->setNumeroSerie($numeroSerie);
             $objeto[0]->setNombre($numeroEquipo);
-            $objeto[0]->setAnho(new \DateTime($anho));
+            $objeto[0]->setAnho($anho);
             $objeto[0]->setAlias($alias);
             $objeto[0]->setModelo($modelo);
             
@@ -276,7 +289,14 @@ class MaquinaController extends Controller
              $objeto[0]->setTamaño($tamanho);
              $objeto[0]->setCapacidad($capacidad);
              $objeto[0]->setMarca($marca);
-             $objeto[0]->setDecripcion($descripcion);
+             
+               if ($descripcion!=""){
+                  $objeto[0]->setDecripcion($descripcion);
+            }else{
+                
+                 $objeto[0]->setDecripcion("");
+            }
+           
 
             $em->merge($objeto[0]);
             $em->flush();
@@ -1118,7 +1138,7 @@ class MaquinaController extends Controller
        
           if ($resultados){
               
-               $x=chmod($pathContenedor.$nombreArchivo, 777);
+               chmod($pathContenedor.$nombreArchivo, 777);
 
                
                $objMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
@@ -1142,6 +1162,68 @@ class MaquinaController extends Controller
             return new Response(json_encode($data)); 
     
       }
+      
+      
+      
+     //Aqui inicia la parte de la edcion de los datos de una maquinaria
+      
+      
+      
+     /**
+     * Lists all MaMaquina entities.
+     *
+     * @Route("/editarMaquina/{id}", name="editarmaquina", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function EditarMaquinaAction($id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $datosGenerales = $em->getRepository('DGAdminBundle:MaMaquina')->findByNombre($id);
+        
+        $idMaquina = $datosGenerales[0]->getId();
+        
+  
+        
+          $dql = "SELECT img.src "
+                    . "FROM DGAdminBundle:ImagenesDetalleMantenimiento img"
+                    . " WHERE  img.maMaquina= :id AND img.tipo=2";
+
+        $imagenes= $em->createQuery($dql) ->setParameters(array('id'=>$idMaquina))->getResult();
+               
+               
+ 
+        
+       
+        return $this->render('maquinaria/edicion.html.twig', array(
+            
+            'datosGenerales'=>$datosGenerales,
+            'imagenes'=>$imagenes
+                
+            
+        ));
+    }
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     
     
     

@@ -1,5 +1,3 @@
-
- 
  $(document).ready(function(){
  var idDetalle =0;
   var idDetalleExpeMantenimiento =0;
@@ -62,7 +60,7 @@ $('#fechaDE').Zebra_DatePicker({
                 escapeMarkup: function (markup) { return markup; },
                 minimumInputLength: 1,
                 templateResult: formatRepo,
-                templateSelection: formatRepoSelection,
+//                templateSelection: formatRepoSelection,
                 formatInputTooShort: function () {
                     return "Ingrese un caracter para la busqueda";
                 }
@@ -217,7 +215,7 @@ $('#fechaDE').Zebra_DatePicker({
                                     async: false,
                                     dataType: 'json',
                                     data: {numeroSerie:numeroSerie,numeroEquipo:numeroEquipo,
-                                        placa:placa},
+                                        placa:placa,n:0},
                                     url: Routing.generate('validarMaquina'),
                                     success: function (data)
                                     {
@@ -311,9 +309,9 @@ $('#fechaDE').Zebra_DatePicker({
          
             var idMaquina = $("#idMaquina").val();
       
-//Edicion de los datos generales de la empresa desde el formulario de insercion
+//Edicion de los datos generales de la maquinaria desde el formulario de insercion
              var numeroSerie, numeroEquipo, anho, alias, modelo, tipoEquipo,
-                vin, placa, color, tamanho, capacidad, marca, descripcion;
+            vin, placa, color, tamanho, capacidad, marca, descripcion;
       
             numeroSerie=$("#numeroSerie").val();
             numeroEquipo=$("#numeroEquipo").val();
@@ -328,9 +326,20 @@ $('#fechaDE').Zebra_DatePicker({
             capacidad=$("#capacidad").val();
             marca=$("#marca").val();
             descripcion=$("#descripcionMaquina").val();
-             
- 
 
+
+       $.ajax({
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: 'json',
+                                    data: {numeroSerie:numeroSerie,numeroEquipo:numeroEquipo,
+                                        placa:placa,n:1},
+                                    url: Routing.generate('validarMaquina'),
+                                    success: function (data)
+                                    {
+                                    
+                                     if (data.estado==true){
+      
                                             $.ajax({
                                                 type: 'POST',
                                                 async: false,
@@ -377,12 +386,42 @@ $('#fechaDE').Zebra_DatePicker({
                                                     
                                                 }
                                             });
-                                         
-                  
+                                            
+                                      
                                      }
+                                     else if(data.estado=="equipo"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de equipo ya existente, intente con otro.'
+                                    });
+                                     }
+                                     else if(data.estado=="placa"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de pĺaca ya existente, intente con otro.'
+                                    });
+                                     }
+                                     else if(data.estado=="serie"){
+                                           Lobibox.notify("info", {
+                                        size: 'mini',
+                                        msg: 'Registro de numero de serie ya existente, intente con otro.'
+                                    });
+                                     }
+                                       
+                                             
+                                    },
+                                    error: function (xhr, status)
+                                    {
+                      
+                            }
+                        });
 
-     });    
-  
+
+
+                    }
+
+                });
+
   //Validacion para que tenga que completar los datos en un orden en especifico
   //Pestaña de Datos de Mantenimiento
   
@@ -747,6 +786,8 @@ $('#fechaDE').Zebra_DatePicker({
        
        
        var idTabla = $(this).parent().parent().attr('id');
+       
+        
                   
                     
              if (idTabla=='listaExpedienteMantenimientos'){
@@ -1059,9 +1100,21 @@ $('#fechaDEE').Zebra_DatePicker({
 
                             });
         
-                    
+            //Esta seccion del codigo reconoce el doble click para asi poder editar con doble click        
+        }else if (idTabla=='listaMaquinas'){
+            
+                 var idMaquinaEditar = $(this).children().html();
+                 var url=Routing.generate('editarmaquina',{id:idMaquinaEditar});
+            
+                                    window.open(url, "_self");
+            
+            
+            
+            
+            
+            
+            
         }
-     
    
 });
 
@@ -1644,6 +1697,25 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
     });
 
 
+    $(document).on("click","#cancelarDatosGeneralesMaquina",function() {
+        
+         var url = Routing.generate('admin_maquina_index');
+         window.open(url, "_self");
+        
+    });
+    
+    
+    //visualizar una imagen en grande
+    $(document).on("click",".image",function() {
+        
+      var link=  $(this).attr("src");
+         window.open(link, "_blank");
+        
+        
+    });
+   
+   
+   
    
   
   //Fin del document Ready

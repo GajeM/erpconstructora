@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12 dropzone" id="zonaDeImagenes" >
+        <div class="fallback">
+            <input name="file[]" type="file" multiple required id="file-input"/>
+           
+        </div>
+        <input type="hidden" name="idMaquinaInsercionImagen" id="idMaquinaInsercionImagen" value="nnnn">
+        
+    </div>	
+
+
+</div>
+<div class="row" id="mostrarImagenes" style="margin-top: 20px;">
+    
+        {% set contador=1 %}
+        {% set numeracionId=0 %}
+        {% for datos in imagenes %}
+           
+             <div class="col-md-4">
+             
+                <img src="/erpconstructora/web/Photos/maquinaria/{{datos.src}}" style="max-height: 300px;max-width: 300px;margin-top:10px;"   class="image" id="{{numeracionId}}">
+          
+             </div>
+             {% if contador % 3 == 0 %}
+                 {% set contador=contador+1 %}
+                 <div class="clearfix"></div>
+             {% else %}
+
+                 {% set contador=contador+1 %}
+
+             {% endif %}
+             
+         {% set contador=contador+1-1 %}
+         {% set numeracionId=numeracionId+1 %}
+
+     {% endfor %}   
+
+</div>

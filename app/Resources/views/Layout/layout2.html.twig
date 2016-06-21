@@ -13,7 +13,6 @@
                 <!-- Stylesheet Personales -->
                 <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
                 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-            
                 <link rel="stylesheet" href="{{ asset('Resources/Zebra/css/bootstrap.css') }}">
                  <style>
                                 .colorAnclas{
@@ -79,20 +78,17 @@
                         <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones" style="margin-left: 5px;">
                             Navegacion <span class="caret"></span>
                         </button>
-                       {# <ul class="dropdown-menu">
+                        <ul class="dropdown-menu">
                             <li>
                                 <a href="{{ path('dashboard_indexCRM') }}">CRM</a>
                             </li>
                             <li>
-                                <a href="{{ path('ordenesdecompra') }}">Ventas</a>
+                                <a href="{{ path('admin_maquina_index') }}">Maquinaria</a>
                             </li>
                             <li>
-                                <a href="{{ path('inventariobeard_listprod') }}">Productos</a>
+                                <a href="{{ path('caja_chica_index') }}">Caja Chica</a>
                             </li>
-                             <li>
-                                <a href="{{ path('admin_contabilidad_index') }}">Contabilidad</a>
-                            </li>
-                        </ul>#}
+                        </ul>
                     </div> 
                     
                 {% endblock acciones %}

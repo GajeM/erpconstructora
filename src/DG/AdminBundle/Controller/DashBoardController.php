@@ -49,5 +49,27 @@ class DashBoardController extends Controller
     
     
     
+    /**
+     * Lists all ClientePotencial entities.
+     *
+     * @Route("/cajaChica", name="caja_chica_dashboard",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function CajaChicaction()
+    {
+        
+       return $this->render('cajachica/index.html.twig', array(
+            
+        ));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
  }
