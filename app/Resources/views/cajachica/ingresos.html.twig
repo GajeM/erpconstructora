@@ -1,0 +1,384 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block css %}
+    {{parent()}}
+
+    
+  <link rel="stylesheet" href="{{ asset('Resources/dataTable/material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/dataTable/dataTable.material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
+    
+    <style>
+      
+
+        .Zebra_DatePicker_Icon{
+               top: 5px !important;
+           right: 3px !important;
+        }
+        
+    </style>
+    
+{% endblock css%}
+{% block js %}
+     {{parent()}}
+     
+     
+
+     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
+     <script src="{{ asset('Resources/js/cajachica/cajachicaIn.js') }}"></script>
+     <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script>
+     <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
+     <script src="{{ asset('Resources/dataTable/js/jquery.dataTables.min.js')}}"></script>
+     <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
+     
+
+{% endblock %}
+
+
+{% block descripcion_y_acciones %}
+
+    
+ <div class="row">
+ {% block descripcion %}
+        <div class="col-md-8">
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Caja Chica</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de ingresos de caja chica</p>
+        </div>
+ {% endblock%}
+ {% block acciones %}
+     
+     	<div class="col-md-4" style="margin-top: 50px;">
+                                <!-- Boton Modificacion -->
+                                {{parent()}}
+                                
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-primary btn-sm" type="button"   id="nuevoIngresoCCHIngresos" style="margin-left: 5px;">
+                                        Nuevo 
+                                    </button>
+                                </div>
+                                   <div class="btn-group pull-right">
+                                        <button class="btn btn-danger  btn-sm " style="margin-left: 5px;" id="eliminarRegistroCCHIngresos">Eliminar</button>
+                                    </div>
+                                <div class="btn-group pull-right">
+                                
+                                        <button class="btn btn-default  btn-sm " style="margin-left: 5px;" id="cancelarNuevoIngresos">Cancelar</button>
+                             
+                                </div>
+                                 <div class="btn-group pull-right">
+                                
+                                        <button class="btn btn-default  btn-sm " style="margin-left: 5px;" id="cancelarEdicionIngresos">Cancelar</button>
+                             
+                                </div>
+	</div>
+     
+ {% endblock %}
+		
+    </div>
+
+{% endblock %}
+{% block navegacion_Y_body %}
+  <div class="row">
+        {% block navegacion %}
+            <hr style="margin-top: 0px !important;">
+            
+                <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+                    <!-- Left Navigation -->
+                    <ul style="list-style: none; padding: 0;">
+                        <a href="{{ path('caja_chica_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                      
+
+                    </ul>
+                </div>	
+
+       {% endblock %}
+
+{% block cuerpo %}
+    {{parent()}}
+     
+    <div class="col-md-10" style="margin-top: 10px;">
+       <div class="form-group" style="margin-bottom: -30px;margin-left: 5px;">
+            <label class="label label-success"  style=" font-family: sans-serif;">Saldo:</label>
+            <label class="control-label saldo"><b>${{saldo}}</b></label>
+       </div>
+        <div id="contendorTablaRegistrosCajaChicaIngresos">
+            <table id="listaRegistrosCajachicaIngresos" class="mdl-data-table" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID Registro</th>
+                        <th>Fecha Registro</th>
+                        <th>Entrego</th>
+                        <th>Recibio</th>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Cantidad ($)</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
+        <div class="row" id="contenedorInsercionRegistroCajachicaIngresos" style="margin-top: 50px;">
+            <div class="clearfix"></div>
+            <div class="form-column col-md-4" style="padding-top: 0%;">
+                <div class="form-group required" >
+                    <label for="fechaRCCH" class="control-label">Fecha</label></br>
+                    <input type="text" name="fechaRCCHIngresos" id="fechaRCCHIngresos" class="requerido" >
+
+                </div>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="clearfix"></div>
+               
+            <div class="form-column col-md-4"><div class="form-group required" >
+                    <div class="form-group">
+                        <label class="control-label" for="exampleInputAmount">Cantidad</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            <input type="text" class="form-control requerido" id="cantidadPorIngresos"  name="cantidadPorIngresos" >
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="form-column col-md-4"><div class="form-group required" >
+                    <div class="form-group">
+                        <label class="control-label" for="valor">Valor</label>
+                        <input type="text" class="form-control requerido" id="valorIngresos"  name="valorIngresos">
+                    </div>
+                </div> 
+            </div>
+            <div class="col-md-4"></div>
+            <div class="clearfix"></div>
+              <div class="form-column col-md-4"><div class="form-group required" >
+                        <div class="form-group">
+                        <label class="control-label" for="valor">Persona que entrega</label>
+                            <input type="text" class="form-control requerido" id="personaEntregaIngresos"  name="personaEntregaIngresos" >
+                       </div>
+                     </div> 
+                 </div>
+               <div class="form-column col-md-4"><div class="form-group required" >
+                        <div class="form-group">
+                        <label class="control-label" for="valor">Persona que Recibe</label>
+                            <input type="text" class="form-control requerido" id="personaRecibeIngresos"  name="personaRecibeIngresos" >
+                       </div>
+                     </div> 
+                </div>
+                <div class="col-md-4"></div>
+                <div class="clearfix"></div>
+            
+                    <div class="form-column col-md-8">
+                    <div class="form-group" >
+                        <label for="descripcionRCCH" class="control-label" >Concepto</label>
+                        <textarea name="descripcionRCCH" id="descripcionRCCHIngresos" class="form-control" maxlength="250">
+
+                        </textarea>
+                    </div>
+                    <div class="form-group" >
+                        <div class="btn-group pull-left">
+                            <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarInsercionNuevoRegistroCCHIngresos">Cancelar</a>
+                        </div>
+                        <div class="btn-group pull-left">
+                            <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarRegistroCajaChicaIngresos">Guardar</a>
+                        </div>
+                    </div>
+                </div>
+                
+         </div> 
+        <div class="row" id="contenedorInsercionEdicionRegistroCajachicaIngresos" style="margin-top: 50px;">
+            
+            
+        </div>
+        
+        
+        
+</div>
+                                        
+    {% endblock %}
+
+       </div>
+{% endblock %}
+ 
+ {% block js_extend %}
+
+     <script type="text/javascript">
+		$(document).ready(function() {
+   
+		    $('#listaRegistrosCajachicaIngresos').DataTable( {
+                                    
+		        columnDefs: [
+		            {
+		                targets: [ 0, 1, 2, 3, 4, 5 ,6],
+		                className: 'mdl-data-table__cell--non-numeric'
+		            }, {
+                                                        "targets": [4],
+                                                        "visible": false
+                                                    },
+                                           
+                                                
+		        ],
+                                        
+                                        "pageLength": 10,
+                                        "lengthMenu": [ 20 ],
+                                            "dom": "ftp",
+                                        "processing": true,
+                                        "serverSide": true,
+                                        "ajax": {
+                                            "url": '{{path('caja_chica_data_ingresos')}}',
+                                            "type": 'GET'
+                                        },
+                                        "columns": [
+                                             
+                                             { "data":"codigo" },
+                                             { "data":"fecha" },
+                                             {"data":"nombre"},
+                                             {"data":"recibio"},
+                                             {"data":"concepto"},
+                                             {"data":"valor"},
+                                             {"data":"cantidad"}
+                                             
+        
+                              ],
+                                            "language": {
+                                            "info": "Mostrando página _PAGE_ de _PAGES_",
+                                            "infoEmpty": "",
+                                            "emptyTable": "No se encontraron registros",
+                                            "paginate": {
+                                                "next": "Siguiente",
+                                                "previous": "Anterior"
+                                            },
+                                            "processing": "<p>Procesando petición...</p>",
+                                            "search": "<p>Buscar registros:</p>",
+                                            "lengthMenu": "Mostrar _MENU_ registros"
+                                        }
+
+ 
+		    } );
+                  
+//Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
+         
+       var idEliminar=0;
+       
+       $(document).on("click","tbody>tr",function() {
+       
+            var identificador = $(this).attr("role");
+            if(identificador=="row"){
+             var idRegistro =  $(this).children().html();
+            $("tr").css('background-color', 'white');
+            $("tr").css('border-color', 'black');
+            
+            $(this).css('background-color', '#E9E6E6');
+             idEliminar=idRegistro;
+            $("#eliminarRegistroCCH").show();
+            
+        }
+           
+                
+       });
+         
+       
+     
+ 
+         $(document).on("click","#eliminarRegistroCCHIngresos",function() {
+             $("#eliminarRegistroCCH").hide();
+             
+             
+                swal({
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de eliminar el registro?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "RED",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: false
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                
+                                                                  $.ajax({
+                                                                    type: 'POST',
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    data: {idEliminar:idEliminar},
+                                                                    url: Routing.generate('eliminarRegistroCCHIngresos'),
+                                                                    success: function (data)
+                                                                    {
+                                                                         if (data.estado==true){
+
+                                                                          swal({
+                                                                                    title: "Datos  eliminados con exito",
+                                                                                    text: "¿Quieres seguir eliminando mas registros dentro de caja chica?<br>Ten en cuenta que los datos eliminados, no podran ser recuperados.",
+                                                                                    type: "success",
+                                                                                    html:true,
+                                                                                    showCancelButton: true,
+                                                                                    cancelButtonText: "Despues",
+                                                                                    confirmButtonText: "Seguir",
+                                                                                    confirmButtonColor: "#00A59D",
+                                                                                    closeOnConfirm: true,
+                                                                                    closeOnCancel: false
+                                                                                    },
+                                                                                            function (isConfirm) {
+                                                                                                if (isConfirm) {
+
+
+
+                                                                                                } else {
+                                                                                                        var url=Routing.generate('dashboard_index');
+                                                                                                    window.open(url,"_self"); 
+
+                                                                                                }
+                                                                                            });
+
+
+                                                                             }
+
+                                                                        },
+                                                                        error: function (xhr, status)
+                                                                        {
+
+                                                                        }
+                                                                });
+
+                                                            } else {
+                                                                    var url=Routing.generate('dashboard_index');
+                                                                window.open(url,"_self"); 
+
+                                                            }
+                                                        });
+             
+             
+             
+             
+             
+             
+             
+             
+             
+             
+              
+             
+             
+             
+         });
+ 
+ 
+ 
+           
+  
+        
+                    
+});
+    
+</script>
+  
+     
+      
+      
+  {% endblock %} 
+
+
+

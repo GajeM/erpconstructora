@@ -83,57 +83,152 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                
                 if (num==0){ 
       
-      
+                     var personaEntrega= $("#personaEntrega").val();
                      var fechaRCCH = $("#fechaRCCH").val();
                      var valor= $("#valor").val();
                      var empleado = $("#empleado").val();
                      var cantidadPor = $("#cantidadPor").val();
                      var descripcionRCCH = $("#descripcionRCCH").val();
                      
+                     
                         if (isNaN(cantidadPor)!=true){
-                              $.ajax({
+                            
+                             $.ajax({
                                     type: 'POST',
                                     async: false,
                                     dataType: 'json',
-                                    data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH},
-                                    url: Routing.generate('insertarRegistroCCH'),
+                                    data: {cantidadPor:cantidadPor},
+                                    url: Routing.generate('validarRegistroCCH'),
                                     success: function (data)
                                     {
-                                         if (data.estado==true){
-                                          
-                                          swal({
-                                                    title: "Datos  ingresados con exito",
-                                                    text: "¿Quieres seguir ingresando mas registros dentro de caja chica?",
-                                                    type: "success",
-                                                    showCancelButton: true,
-                                                    cancelButtonText: "Despues",
-                                                    confirmButtonText: "Seguir",
-                                                    confirmButtonColor: "#00A59D",
-                                                    closeOnConfirm: true,
-                                                    closeOnCancel: false
-                                                },
-                                                        function (isConfirm) {
-                                                            if (isConfirm) {
-                                                                   var url=Routing.generate('caja_chica_dashboard');
-                                                                window.open(url,"_self"); 
-                                                                  
-                                      
-                                                            } else {
-                                                                    var url=Routing.generate('dashboard_index');
-                                                                window.open(url,"_self"); 
-
-                                                            }
-                                                        });
-                                            
+                                if (data.estado==true){
                                              
-                                         }
+                                                                $.ajax({
+                                                          type: 'POST',
+                                                          async: false,
+                                                          dataType: 'json',
+                                                          data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,personaEntrega:personaEntrega},
+                                                          url: Routing.generate('insertarRegistroCCH'),
+                                                          success: function (data)
+                                                          {
+                                                               if (data.estado==true){
 
-                                    },
-                                    error: function (xhr, status)
-                                    {
-                      
-                    }
-            });
+                                                                  $(".saldo").text(data.saldo);
+
+                                                                swal({
+                                                                          title: "Datos  ingresados con exito",
+                                                                          text: "¿Quieres seguir ingresando mas registros dentro de caja chica?",
+                                                                          type: "success",
+                                                                          showCancelButton: true,
+                                                                          cancelButtonText: "Despues",
+                                                                          confirmButtonText: "Seguir",
+                                                                          confirmButtonColor: "#00A59D",
+                                                                          closeOnConfirm: true,
+                                                                          closeOnCancel: false
+                                                                      },
+                                                                              function (isConfirm) {
+                                                                                  if (isConfirm) {
+                                                                                         var url=Routing.generate('caja_salida_index');
+                                                                                      window.open(url,"_self"); 
+
+
+                                                                                  } else {
+                                                                                          var url=Routing.generate('caja_chica_index');
+                                                                                      window.open(url,"_self"); 
+
+                                                                                                        }
+                                                                                                    });
+
+
+                                                                                     }
+
+                                                                                },
+                                                                                error: function (xhr, status)
+                                                                                {
+
+                                                                }
+                                                        });
+
+                                             
+                                                 }else{
+                                                        
+                                                                swal({
+                                                                          title: "Advertencia",
+                                                                          text: "<p style='text-align: center;'>El saldo disponible dentro de caja chica es inferior a la cifra a retirar (saldo $ "+data.saldo+")<br>¿Quieres registrar el retiro y tener un saldo negativo?</p>",
+                                                                          type: "warning",
+                                                                          showCancelButton: true,
+                                                                          cancelButtonText: "No",
+                                                                          confirmButtonText: "Si",
+                                                                          confirmButtonColor: "#00A59D",
+                                                                          html:true,
+                                                                          closeOnConfirm: true,
+                                                                          closeOnCancel: false
+                                                                      },
+                                                                              function (isConfirm) {
+                                                                                  if (isConfirm) {
+                                                                                      
+                                                                                      
+                                                                                                  $.ajax({
+                                                                                                    type: 'POST',
+                                                                                                    async: false,
+                                                                                                    dataType: 'json',
+                                                                                                    data: {fechaRCCH: fechaRCCH, valor: valor, empleado: empleado, cantidadPor: cantidadPor, descripcionRCCH: descripcionRCCH, personaEntrega: personaEntrega},
+                                                                                                    url: Routing.generate('insertarRegistroCCH'),
+                                                                                                    success: function (data)
+                                                                                                    {
+                                                                                                        if (data.estado == true) {
+
+                                                                                                            $(".saldo").text(data.saldo);
+
+                                                                                                            swal({
+                                                                                                                title: "Datos  ingresados con exito",
+                                                                                                                text: "¿Quieres seguir ingresando mas registros dentro de caja chica?",
+                                                                                                                type: "success",
+                                                                                                                showCancelButton: true,
+                                                                                                                cancelButtonText: "Despues",
+                                                                                                                confirmButtonText: "Seguir",
+                                                                                                                confirmButtonColor: "#00A59D",
+                                                                                                                closeOnConfirm: true,
+                                                                                                                closeOnCancel: false
+                                                                                                            },
+                                                                                                                    function (isConfirm) {
+                                                                                                                        if (isConfirm) {
+                                                                                                                            var url = Routing.generate('caja_salida_index');
+                                                                                                                            window.open(url, "_self");
+
+
+                                                                                                                        } else {
+                                                                                                                            var url = Routing.generate('caja_chica_index');
+                                                                                                                            window.open(url, "_self");
+
+                                                                                                                        }
+                                                                                                                    });
+
+
+                                                                                                        }
+
+                                                                                                    },
+                                                                                                    error: function (xhr, status)
+                                                                                                    {
+
+                                                                                                    }
+                                                                                                });
+
+                                                                                  } else {
+                                                                                          var url=Routing.generate('caja_chica_index');
+                                                                                      window.open(url,"_self"); 
+
+                                                                                                        }
+                                                                                                    });
+
+                                                 }
+
+                                           },
+                                           error: function (xhr, status)
+                                                        {
+
+                                        }
+                                });
 
                         }else{
                             
@@ -223,7 +318,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                    <div class="form-column col-md-8">\n\
                                    <div class="form-group" >\n\
                                    <label for="descripcionRCCH" class="control-label" >Concepto</label>\n\
-                                   <textarea name="descripcionRCCHE" id="descripcionRCCHE" class="form-control cler" maxlength="250">'+data.concepto+'</textarea>\n\
+                                    <textarea name="descripcionRCCHE" id="descripcionRCCHE" class="form-control cler" maxlength="250">'+data.concepto+'</textarea>\n\
                                    </div><div class="form-group" >\n\
                                    <div class="btn-group pull-left">\n\
                                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarEdicionNuevoRegistroCCH">Cancelar</a>\n\
@@ -231,7 +326,14 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                    <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarEdicionCajaChica">Guardar</a>\n\
                                    </div>\n\
                                    </div>\n\
-                                   </div>';
+                                         </div>\n\
+                                   <div class="form-column col-md-4">\n\
+                                        <div class="form-group required" ><div class="form-group">\n\
+                                                <label class="control-label" for="valor">Persona que entrega</label>\n\
+                                                        <input type="text" class="form-control requerido" id="personaEntrega"  name="personaEntrega" value="'+data.nombre+'">\n\
+                                                            </div>\n\
+                                                        </div>\n\
+                                                   </div>';
 
 
 
@@ -317,49 +419,140 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                      var descripcionRCCH = $("#descripcionRCCHE").val();
                      
                         if (isNaN(cantidadPor)!=true){
-                              $.ajax({
-                                    type: 'POST',
-                                    async: false,
-                                    dataType: 'json',
-                                    data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
-                                    url: Routing.generate('editarRegistroCCH'),
-                                    success: function (data)
-                                    {
-                                         if (data.estado==true){
-                                          
-                                          swal({
-                                                    title: "Datos  editados  con exito",
-                                                    text: "¿Quieres seguir modificando mas registros dentro de caja chica?",
-                                                    type: "success",
-                                                    showCancelButton: true,
-                                                    cancelButtonText: "Despues",
-                                                    confirmButtonText: "Seguir",
-                                                    confirmButtonColor: "#00A59D",
-                                                    closeOnConfirm: true,
-                                                    closeOnCancel: false
+                            
+                                                $.ajax({
+                                                    
+                                                          type: 'POST',
+                                                          async: false,
+                                                          dataType: 'json',
+                                                          data: {cantidadPor:cantidadPor},
+                                                          url: Routing.generate('validarRegistroCCH'),
+                                                          success: function (data)
+                                                          {
+                                                            if (data.estado == true) {
+                                                                
+                                                                $.ajax({
+                                                                        type: 'POST',
+                                                                        async: false,
+                                                                        dataType: 'json',
+                                                                        data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
+                                                                        url: Routing.generate('editarRegistroCCH'),
+                                                                        success: function (data)
+                                                                        {
+                                                                             if (data.estado==true){
+                                                                                   $(".saldo").text(data.saldo);
+
+                                                                              swal({
+                                                                                        title: "Datos  editados  con exito",
+                                                                                        text: "¿Quieres seguir modificando mas registros dentro de caja chica?",
+                                                                                        type: "success",
+                                                                                        showCancelButton: true,
+                                                                                        cancelButtonText: "Despues",
+                                                                                        confirmButtonText: "Seguir",
+                                                                                        confirmButtonColor: "#00A59D",
+                                                                                        closeOnConfirm: true,
+                                                                                        closeOnCancel: false
+                                                                                    },
+                                                                                            function (isConfirm) {
+                                                                                                if (isConfirm) {
+                                                                                                       var url=Routing.generate('caja_salida_index');
+                                                                                                    window.open(url,"_self"); 
+
+
+                                                                                                } else {
+                                                                                                        var url=Routing.generate('caja_chica_index');
+                                                                                                    window.open(url,"_self"); 
+
+                                                                                                }
+                                                                                            });
+
+
+                                                                             }
+
+                                                                        },
+                                                                        error: function (xhr, status)
+                                                                        {
+
+                                                                    }
+                                                            });
+
+                                                            }else{
+                                                                   swal({
+                                                                          title: "Advertencia",
+                                                                          text: "<p style='text-align: justify;'>El saldo disponible dentro de caja chica es inferior a la cifra a retirar (saldo $ "+data.saldo+")<br>¿Quieres registrar el retiro y tener un saldo negativo?</p>",
+                                                                          type: "warning",
+                                                                          showCancelButton: true,
+                                                                          cancelButtonText: "No",
+                                                                          confirmButtonText: "Si",
+                                                                          confirmButtonColor: "#00A59D",
+                                                                          html:true,
+                                                                          closeOnConfirm: true,
+                                                                          closeOnCancel: false
+                                                                      },
+                                                                              function (isConfirm) {
+                                                                                  if (isConfirm) {
+                                                                                       
+                                                                                         $.ajax({
+                                                                        type: 'POST',
+                                                                        async: false,
+                                                                        dataType: 'json',
+                                                                        data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
+                                                                        url: Routing.generate('editarRegistroCCH'),
+                                                                        success: function (data)
+                                                                        {
+                                                                             if (data.estado==true){
+                                                                                   $(".saldo").text(data.saldo);
+
+                                                                              swal({
+                                                                                        title: "Datos  editados  con exito",
+                                                                                        text: "¿Quieres seguir modificando mas registros dentro de caja chica?",
+                                                                                        type: "success",
+                                                                                        showCancelButton: true,
+                                                                                        cancelButtonText: "Despues",
+                                                                                        confirmButtonText: "Seguir",
+                                                                                        confirmButtonColor: "#00A59D",
+                                                                                        closeOnConfirm: true,
+                                                                                        closeOnCancel: false
+                                                                                    },
+                                                                                            function (isConfirm) {
+                                                                                            if (isConfirm) {
+                                                                                                var url = Routing.generate('caja_salida_index');
+                                                                                                window.open(url, "_self");
+
+
+                                                                                            } else {
+                                                                                                var url = Routing.generate('caja_chica_index');
+                                                                                                window.open(url, "_self");
+
+                                                                                            }
+                                                                                        });
+
+
+                                                    }
+
                                                 },
-                                                        function (isConfirm) {
-                                                            if (isConfirm) {
-                                                                   var url=Routing.generate('caja_chica_dashboard');
-                                                                window.open(url,"_self"); 
-                                                                  
-                                      
-                                                            } else {
-                                                                    var url=Routing.generate('dashboard_index');
-                                                                window.open(url,"_self"); 
+                                                error: function (xhr, status)
+                                                {
 
-                                                            }
-                                                        });
-                                            
-                                             
-                                         }
+                                                }
+                                            });
 
-                                    },
-                                    error: function (xhr, status)
-                                    {
-                      
+
+                                        } else {
+                                            var url = Routing.generate('caja_chica_index');
+                                            window.open(url, "_self");
+
+                                        }
+                                    });
+
+                        }
+
+                    },
+                    error: function (xhr, status)
+                    {
+
                     }
-            });
+                });
 
                         }else{
                             
@@ -435,7 +628,8 @@ function alDarclickEnNuevo(){
     $("#contendorTablaRegistrosCajaChica").hide();
     $("#contenedorInsercionRegistroCajachica").show();
     $("#nuevoIngresoCCH").hide();
-        $("#cancelarNuevo").show();
+    $("#cancelarNuevo").show();
+    $("#accionesIngreso").hide();
     
     
 }
@@ -445,6 +639,7 @@ function alDarclickEnCancelarNuevo(){
     $("#contenedorInsercionRegistroCajachica").hide();
     $("#nuevoIngresoCCH").show();
       $("#cancelarNuevo").hide();
+      $("#accionesIngreso").show();
     
 }
 
@@ -466,3 +661,6 @@ function alDarclickEnCancelarEdicion(){
      $("#cancelarEdicion").hide();
     
 }
+
+
+

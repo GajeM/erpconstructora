@@ -2,9 +2,11 @@
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+
+    <link rel="stylesheet" href="{{ asset('Resources/dataTable/material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/dataTable/dataTable.material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+    
     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
 {% endblock css%}
 {% block js %}
@@ -43,24 +45,6 @@
                                 <!-- Botones del ingreso -->
                                 
                                 
-				<!-- Boton con Dropdown -->
-				<div class="btn-group pull-right" >
-                                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
-				    Menu <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				  </ul>
-				</div> 
-				<!-- Small button -->
 	</div>
      
  {% endblock %}
@@ -78,7 +62,7 @@
        {% endblock %}
 
 {% block cuerpo %}
-     
+      {{ parent()}}
     <div class="col-md-10">
       
               
@@ -135,8 +119,8 @@
 {% endblock %}
  
  {% block js_extend %}
-     <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+    <script src="{{ asset('Resources/dataTable/js/jquery.dataTables.min.js')}}"></script>
+     <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
                     $("#eliminarCP").hide();

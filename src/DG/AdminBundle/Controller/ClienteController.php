@@ -38,7 +38,7 @@ class ClienteController extends Controller
     /**
      * Lists all ClientePotencial entities.
      *
-     * @Route("/nuevocliente", name="nuevocliente")
+     * @Route("/nuevocliente", name="nuevocliente",options={"expose"=true})
      * @Method("GET")
      */
     public function NuevoClientePotencialAction()

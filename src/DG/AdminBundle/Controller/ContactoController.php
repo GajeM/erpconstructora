@@ -38,7 +38,7 @@ class ContactoController extends Controller
     /**
      * Lists all ClientePotencial entities.
      *
-     * @Route("/nuevocontacto", name="nuevocontacto")
+     * @Route("/nuevocontacto", name="nuevocontacto",options={"expose"=true})
      * @Method("GET")
      */
     public function NuevoContactoAction()

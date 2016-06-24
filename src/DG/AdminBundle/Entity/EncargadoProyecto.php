@@ -48,7 +48,11 @@ class EncargadoProyecto
      * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
      */
     private $telefono;
-
+      /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
 
 
     /**
@@ -152,4 +156,35 @@ class EncargadoProyecto
     {
         return $this->telefono;
     }
+    
+     /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }

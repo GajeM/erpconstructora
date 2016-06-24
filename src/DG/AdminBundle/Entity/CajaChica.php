@@ -78,8 +78,34 @@ class CajaChica
      */
     private $empleadoId;
     
+      /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
     
-
+      /**
+     * @var integer
+     * @ORM\Column(name="tipo_ingreso", type="integer", nullable=false) 
+     */
+    private $tipoIngreso;
+    
+      /**
+     * @var string
+     * @ORM\Column(name="codigo", type="string", length=20,  nullable=false) 
+     */
+    private $codigo;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="persona_que_recibe", type="string", length=60, nullable=true)
+     */
+    private $personaQueRecibe;
+    
+    
+    
+    
     /**
      * Get id
      *
@@ -250,6 +276,106 @@ class CajaChica
     {
         return $this->empleadoId;
     }
+    
+    
+    
+     
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+    
+    
+     
+    /**
+     * Set estado
+     *
+     * @param string $tipoIngreso
+     * @return Cliente
+     */
+    public function setTipoIngreso($tipoIngreso)
+    {
+        $this->tipoIngreso = $tipoIngreso;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoIngreso
+     *
+     * @return integer 
+     */
+    public function getTipoIngreso()
+    {
+        return $this->tipoIngreso;
+    }
+    
+      /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Cliente
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+    
+     /**
+     * Set personaQueRecibe
+     *
+     * @param string $personaQueRecibe
+     * @return CajaChica
+     */
+    public function setPersonaQueRecibe($personaQueRecibe)
+    {
+        $this->personaQueRecibe = $personaQueRecibe;
+
+        return $this;
+    }
+
+    /**
+     * Get personaQueRecibe
+     *
+     * @return string 
+     */
+    public function getPersonaQueRecibe()
+    {
+        return $this->personaQueRecibe;
+    }
+
+    
     
     
     

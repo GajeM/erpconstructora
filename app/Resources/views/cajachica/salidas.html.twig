@@ -2,12 +2,11 @@
 
 {% block css %}
     {{parent()}}
-    
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
 
-    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}"> 
+    
+  <link rel="stylesheet" href="{{ asset('Resources/dataTable/material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/dataTable/dataTable.material.min.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
@@ -31,13 +30,11 @@
      <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
      <script src="{{ asset('Resources/js/cajachica/cajachica.js') }}"></script>
      <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script>
-     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
      <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
-     <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+     <script src="{{ asset('Resources/dataTable/js/jquery.dataTables.min.js')}}"></script>
+     <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
+     
 
-
-    
 {% endblock %}
 
 
@@ -48,7 +45,7 @@
  {% block descripcion %}
         <div class="col-md-8">
             <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Caja Chica</p>
-            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de registros de caja chica</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Gesti&oacute;n  de salidas de caja chica</p>
         </div>
  {% endblock%}
  {% block acciones %}
@@ -56,10 +53,14 @@
      	<div class="col-md-4" style="margin-top: 50px;">
                                 <!-- Boton Modificacion -->
                                 {{parent()}}
-                                <div class="btn-group pull-right">
                                 
-                                        <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoIngresoCCH">Nuevo</button>
-                             
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-primary btn sm" type="button"  id="nuevoIngresoCCH" style="margin-left: 5px;">
+                                        Nuevo 
+                                    </button>
+                                    
+                                    {# <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoIngresoCCH">Nuevo</button>#}
+
                                 </div>
                                    <div class="btn-group pull-right">
                                         <button class="btn btn-danger  btn-sm " style="margin-left: 5px;" id="eliminarRegistroCCH">Eliminar</button>
@@ -84,7 +85,8 @@
 {% block navegacion_Y_body %}
   <div class="row">
         {% block navegacion %}
-            <hr style="margin-top: 0px !important;">    
+            <hr style="margin-top: 0px !important;">
+            
                 <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
@@ -97,36 +99,32 @@
        {% endblock %}
 
 {% block cuerpo %}
-     
-    <div class="col-md-10">
-     
-              
+    {{parent()}}
+    <div class="col-md-10" style="margin-top: 10px;">
+{#  Saldo que tiene la caja chica para poder prestar      #}
+     <div class="form-group" style="margin-bottom: -30px;margin-left: 5px;">
+            <label class="label label-success"  style=" font-family: sans-serif;">Saldo:</label>
+            <label class="control-label saldo"><b>${{saldo}}</b></label>
+       </div>
+       
+       
         <div id="contendorTablaRegistrosCajaChica">
-     
-      <table id="listaRegistrosCajachica" class="mdl-data-table" cellspacing="0" width="100%">
-           
-                                                                                <thead>
+            <table id="listaRegistrosCajachica" class="mdl-data-table" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID Registro</th>
+                        <th>Fecha Registro</th>
+                        <th>Empleado</th>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Cantidad ($)</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
-                                                                                    <tr>
 
-                                                                                        <th>ID Registro</th>
-                                                                                        <th>Fecha Registro</th>
-                                                                                        <th>Empleado</th>
-                                                                                        <th>Concepto</th>
-                                                                                        <th>Cantidad ($)</th>
-                                                                                        <th>Valor</th>
-
-                                                                                    </tr>
-                                                                                </thead>
-				     
-			
-				    </table>
-
-    
-  </div>
-     
-
-        <div class="row" id="contenedorInsercionRegistroCajachica" style="margin-top: 10px;">
+        <div class="row" id="contenedorInsercionRegistroCajachica" style="margin-top: 50px;">
             <div class="clearfix"></div>
             <div class="form-column col-md-3" style="padding-top: 0%;">
                 <div class="form-group required" >
@@ -147,26 +145,24 @@
 
                 </div>
             </div>
-            
-              <div class="form-column col-md-3"><div class="form-group required" >
-                        <div class="form-group">
-                        <label class="control-label" for="valor">Valor</label>
-                            <input type="text" class="form-control requerido" id="valor"  name="valor" >
-                       </div>
-                     </div> 
-                 </div>
-            
-              <div class="form-column col-md-3"><div class="form-group required" >
-                        <div class="form-group">
+            <div class="form-column col-md-3"><div class="form-group required" >
+                    <div class="form-group">
                         <label class="control-label" for="exampleInputAmount">Cantidad</label>
                         <div class="input-group">
                             <div class="input-group-addon">$</div>
                             <input type="text" class="form-control requerido" id="cantidadPor"  name="cantidadPor" >
                             <div class="input-group-addon">.00</div>
                         </div>
-                       </div>
-                     </div> 
-                 </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="form-column col-md-3"><div class="form-group required" >
+                    <div class="form-group">
+                        <label class="control-label" for="valor">Valor</label>
+                        <input type="text" class="form-control requerido" id="valor"  name="valor">
+                    </div>
+                </div> 
+            </div>
             
                 <div class="clearfix"></div>
                 <div class="form-column col-md-8">
@@ -185,8 +181,15 @@
                         </div>
                     </div>
                 </div>
+                  <div class="form-column col-md-4"><div class="form-group required" >
+                        <div class="form-group">
+                        <label class="control-label" for="valor">Persona que entrega</label>
+                            <input type="text" class="form-control requerido" id="personaEntrega"  name="personaEntrega" >
+                       </div>
+                     </div> 
+                 </div>
          </div> 
-        <div class="row" id="contenedorInsercionEdicionRegistroCajachica" style="margin-top: 10px;">
+        <div class="row" id="contenedorInsercionEdicionRegistroCajachica" style="margin-top: 50px;">
             
             
         </div>
@@ -201,9 +204,8 @@
 {% endblock %}
  
  {% block js_extend %}
-     <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
-	<script type="text/javascript">
+
+     <script type="text/javascript">
 		$(document).ready(function() {
    
 		    $('#listaRegistrosCajachica').DataTable( {
@@ -212,7 +214,12 @@
 		            {
 		                targets: [ 0, 1, 2, 3, 4, 5 ],
 		                className: 'mdl-data-table__cell--non-numeric'
-		            }
+		            },
+                                                     {
+                                                        "targets": [3],
+                                                        "visible": false
+                                                    },
+                                                
 		        ],
                                         
                                         "pageLength": 10,
@@ -226,14 +233,13 @@
                                         },
                                         "columns": [
                                              
-                                              { "data":"id" },
+                                             { "data":"codigo" },
                                              { "data":"fecha" },
                                              {"data":"nombre"},
                                              {"data":"concepto"},
                                              {"data":"cantidad"},
-                                               {"data":"valor"}
-                                            
-                                             
+                                             {"data":"valor"}
+        
                               ],
                                             "language": {
                                             "info": "Mostrando página _PAGE_ de _PAGES_",

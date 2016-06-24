@@ -34,7 +34,7 @@
      
      	<div class="col-md-4" style="margin-top: 50px;">
                                 <!-- Boton Modificacion -->
-	
+                                {{parent()}}
                                
                                
                               
@@ -42,22 +42,7 @@
                                 
                                 
 				<!-- Boton con Dropdown -->
-				<div class="btn-group pull-right" >
-                                                                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="acciones">
-				    Menu <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				    <li>
-				    	<a href="#">Action</a>
-				    </li>
-				  </ul>
-				</div> 
+				
 				<!-- Small button -->
 	</div>
      
@@ -85,7 +70,7 @@
        {% endblock %}
 
 {% block cuerpo %}
-    
+     {{ parent()}}
 <div class="col-md-10">
 
          <div class="row">

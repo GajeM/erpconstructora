@@ -116,7 +116,17 @@ class Proyecto
      */
     private $encargadoProyecto;
 
-
+      /**
+     * @var integer
+     * @ORM\Column(name="estado", type="integer", nullable=false) 
+     */
+    private $estado;
+    
+     /**
+     * @var string
+     * @ORM\Column(name="codigo", type="string", length=20,  nullable=false) 
+     */
+    private $codigo;
 
     /**
      * Get id
@@ -384,6 +394,56 @@ class Proyecto
      public function __toString() {
   return $this->nombre;
 }
+
+
+     /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Cliente
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    
+     /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Cliente
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+
+
     
     
 }
