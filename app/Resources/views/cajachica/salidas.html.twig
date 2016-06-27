@@ -114,7 +114,7 @@
                     <tr>
                         <th>ID Registro</th>
                         <th>Fecha Registro</th>
-                        <th>Empleado</th>
+                        <th>Recibio</th>
                         <th>Concepto</th>
                         <th>Valor</th>
                         <th>Cantidad ($)</th>
@@ -137,13 +137,10 @@
             <div class="clearfix"></div>
                 
             <div class="form-column col-md-3">
-                <div class="form-group required" style="margin-right: 2%;">
-                    <label for="tipoMantenimiento" class="control-label">Empleado</label>
-                    <select id="empleado" name="empleado" class="form-control requerido" style="width: 100%" >
-                        <option value="0" disabled selected>Seleccione un empleado...</option>
-                    </select>  
-
-                </div>
+                  <div class="form-group required">
+                        <label class="control-label" for="valor">Entregado a: </label>
+                        <input type="text" class="form-control requerido" id="entregadoa"  name="entregadoa">
+                    </div>
             </div>
             <div class="form-column col-md-3"><div class="form-group required" >
                     <div class="form-group">
@@ -235,7 +232,7 @@
                                              
                                              { "data":"codigo" },
                                              { "data":"fecha" },
-                                             {"data":"nombre"},
+                                             {"data":"recibio"},
                                              {"data":"concepto"},
                                              {"data":"cantidad"},
                                              {"data":"valor"}

@@ -83,56 +83,59 @@
                                         <label for="color   " class="control-label" >Color</label>
                                         <select id="colorMaquina" name="colorMaquina" style="width: 100%">
                                            
-                                         
-                                        {#
-                                            {% if data.color == 'Negro' %}
+
+                                                            {% if data.color == 'Negro' %}
                                                             <option value="{{data.color}}" >{{data.color}}</option>
                                                             <option value="Naranja" >Naranja</option>
                                                             <option value="Celeste" >Celeste</option>
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
-                                                          {% else if data.color=='Naranja'  %}
+                                                            
+                                                             {% endif %}  
+                                                          {% if data.color=='Naranja'  %}
                                                              <option value="{{data.color}}" >{{data.color}}</option>
                                                              <option value="Negro" >Negro</option>
                                                             <option value="Celeste" >Celeste</option>
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
-                                                            
-                                                             {% else if data.color=='Celeste'  %}
+                                                             {% endif %}  
+                                                             {%  if data.color=='Celeste'  %}
                                                              <option value="{{data.color}}" >{{data.color}}</option>
                                                              <option value="Negro" >Negro</option>
                                                             <option value="Naranja" >Naranja</option>
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
-                                                              
-                                                             {% else if data.color=='Azul'  %}
+                                                               {% endif %}  
+                                                             {%  if data.color=='Azul'  %}
                                                              <option value="{{data.color}}" >{{data.color}}</option>
                                                              <option value="Negro" >Negro</option>
                                                             <option value="Naranja" >Naranja</option>
                                                             <option value="Celeste" >Celeste</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
-                                                            
-                                                             {% else if data.color=='Blanco'  %}
+                                                             {% endif %}  
+                                                             {% if data.color=='Blanco'  %}
                                                                  <option value="{{data.color}}" >{{data.color}}</option>
                                                                  <option value="Negro" >Negro</option>
                                                                  <option value="Naranja" >Naranja</option>
                                                                  <option value="Celeste" >Celeste</option>
                                                                  <option value="Azul" >Azul</option>
                                                                  <option value="Cafe" >Cafe</option>
-
-                                                               {% else if data.color=='Cafe'  %}
+                                                                  {% endif %}  
+                                                               {% if data.color=='Cafe'  %}
                                                                  <option value="{{data.color}}" >{{data.color}}</option>
                                                                  <option value="Negro" >Negro</option>
                                                                  <option value="Naranja" >Naranja</option>
                                                                  <option value="Celeste" >Celeste</option>
                                                                  <option value="Azul" >Azul</option>
                                                                  <option value="Blanco" >Blanco</option>
-                                                            {% else %}
-                                                                
+                                                                  {% endif %}  
+                                                                  
+                                                               {% if data.color is null %}
+                                                                <option value='null' >Seleccione un color</option>
                                                                 <option value="Negro" >Negro</option>
                                                                 <option value="Naranja" >Naranja</option>
                                                                 <option value="Celeste" >Celeste</option>
@@ -140,7 +143,7 @@
                                                                 <option value="Blanco" >Blanco</option>
                                                                 <option value="Cafe" >Cafe</option>
                                                               
-                                                        {% endif %}   #}
+                                                        {% endif %}  
                                            
                                            
                                         

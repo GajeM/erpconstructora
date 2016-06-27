@@ -125,7 +125,7 @@ class CajaChicaController extends Controller
         if($busqueda['value']!=''){
           $value = $busqueda['value'];  
            
-          $sql = "SELECT cch.codigo, date_format(cch.fecha,'%d-%m-%Y') as fecha, cch.concepto, per.nombres as nombre, cch.cantidad_por as cantidad, cch.valor  FROM caja_chica cch"
+          $sql = "SELECT cch.codigo, date_format(cch.fecha,'%d-%m-%Y') as fecha, cch.concepto, per.nombres as nombre, cch.cantidad_por as cantidad, cch.valor, cch.persona_que_recibe as recibio  FROM caja_chica cch"
                     . " LEFT OUTER JOIN empleado per on cch.empleado_id=per.id "
                     . "WHERE upper(per.nombres)  LIKE '%".strtoupper($value)."%' AND cch.tipo_ingreso = 2 AND cch.estado=1 "
                     . "ORDER BY cch.fecha ASC";
@@ -137,7 +137,7 @@ class CajaChicaController extends Controller
         }
         else{
             
-              $sql = "SELECT cch.codigo, date_format(cch.fecha,'%d-%m-%Y') as fecha, cch.concepto, per.nombres as nombre, cch.cantidad_por as cantidad, cch.valor  FROM caja_chica cch"
+              $sql = "SELECT cch.codigo, date_format(cch.fecha,'%d-%m-%Y') as fecha, cch.concepto, per.nombres as nombre, cch.cantidad_por as cantidad, cch.valor, cch.persona_que_recibe as recibio  FROM caja_chica cch"
                     . " LEFT OUTER JOIN empleado per on cch.empleado_id=per.id WHERE cch.tipo_ingreso = 2 AND cch.estado=1 "
                     . "ORDER BY cch.fecha ASC";
             $stmt = $em->getConnection()->prepare($sql);
@@ -200,7 +200,7 @@ class CajaChicaController extends Controller
             
             $personaEntrega = $request->get('personaEntrega');
             $valor = $request->get('valor');
-            $empleado = $request->get('empleado');
+            $personaRecibe = $request->get('personaRecibe');
             $cantidadPor = $request->get('cantidadPor');
             $descripcionRCCH = $request->get('descripcionRCCH');
             
@@ -210,9 +210,8 @@ class CajaChicaController extends Controller
             $objeto->setConcepto($descripcionRCCH);
             $objeto->setFecha(new \DateTime($fecha2));
             $objeto->setValor($valor);
-            $empleados = $this->getDoctrine()->getRepository('DGAdminBundle:Empleado')->findById($empleado);
+            $objeto->setPersonaQueRecibe($personaRecibe);
             $objeto->setNombre($personaEntrega);
-            $objeto->setEmpleadoId($empleados[0]);
             $objeto->setCantidadPor($cantidadPor);
             $objeto->setTipoIngreso(2);
             $objeto->setCodigo($codigo);

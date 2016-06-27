@@ -82,11 +82,11 @@ $(document).on("click","#nuevoIngresoCCH",function() {
            
                
                 if (num==0){ 
-      
+                    var personaRecibe = $("#entregadoa").val();
                      var personaEntrega= $("#personaEntrega").val();
                      var fechaRCCH = $("#fechaRCCH").val();
                      var valor= $("#valor").val();
-                     var empleado = $("#empleado").val();
+//                     var empleado = $("#empleado").val();
                      var cantidadPor = $("#cantidadPor").val();
                      var descripcionRCCH = $("#descripcionRCCH").val();
                      
@@ -107,7 +107,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                                           type: 'POST',
                                                           async: false,
                                                           dataType: 'json',
-                                                          data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,personaEntrega:personaEntrega},
+                                                          data: {fechaRCCH:fechaRCCH,valor:valor,personaRecibe:personaRecibe,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,personaEntrega:personaEntrega},
                                                           url: Routing.generate('insertarRegistroCCH'),
                                                           success: function (data)
                                                           {

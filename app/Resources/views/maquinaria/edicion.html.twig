@@ -84,8 +84,8 @@
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
                       
-                        <a href="{{ path('admin_cliente_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
-                        <a href="" class="leftnava colorAnclas"><li class="leftnav left colorAnclas">Configuraci&oacute;n</li></a>
+                        <a href="{{ path('admin_maquina_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        {#<a href="" class="leftnava colorAnclas"><li class="leftnav left colorAnclas">Configuraci&oacute;n</li></a>#}
 
                     </ul>
                 </div>	
@@ -95,34 +95,65 @@
 {% block cuerpo %}
     
     <div class="col-md-10">
-
-        
-        <div class="row" style=" margin-left:0px; margin-right:0px;">
+        <div class="row col-lg-12" style="margin-left: 0px;" id="datosGeneralesMaquinaPanel">
+            {% for data in datosGenerales %}
+        <div class="panel panel-default" >
+            <div class="panel-heading" style="height: 36px; padding-top: 5px;">  
+                    <label class="control-label" style="font-size: 15px !important;"><b>Datos generales maquina</b></label>
+            </div>
+            <div class="panel-body" style="height: 42px;">
+                 
+                    <div class="col-md-3">
+                        <label class="control-label" style="font-size: 14px !important;"><b>Nombre:</b></label>
+                        <label class="control-label limpiarLabel" style="font-size: 14px !important;" id="aliasDG">{{data.alias}}</label> 
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label" style="font-size: 14px !important;"><b>Marca:</b></label>
+                        <label class="control-label limpiarLabel" style="font-size: 14px !important;" id="marcaDG">{{data.marca}}</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label" style="font-size: 14px !important;"><b>Serie:</b></label>
+                        <label class="control-label limpiarLabel" style="font-size: 14px !important;" id="serieDG">{{data.numeroSerie}}</label>
+                    </div>
+                 
+                    <div class="col-md-3">
+                        <label class="control-label" style="font-size: 14px !important;" id="modeloDG"><b>Modelo:</b></label>
+                        <label class="control-label limpiarLabel" style="font-size: 14px !important;">{{data.modelo}}</label>
+                    </div>
+                     
+              </div>
+          </div>
+            {% endfor %}
+        </div>
+            <div class="row" style=" margin-left:0px; margin-right:0px;">
             <section class="col-lg-12 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom" style="cursor: move;">
                     <ul class="nav nav-tabs  ui-sortable-handle">
+                        
                         <li class="active"><a href="#divDatosGeneralesEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosGenerales">Datos Generales</a></li>
-                        <li><a href="#divdatosMantenimientoEdicion" data-toggle="tab" class="colorAnclas colorPestanhas disabled" id="datosMantenimiento">Datos del mantenimiento</a></li>
+                        <li ><a href="#divdatosMantenimientoEdicion" data-toggle="tab" class="colorAnclas colorPestanhas disabled" id="datosMantenimiento">Datos de Respuestos</a></li>
                         <li><a href="#divExpedienteMantenimientoEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="datosExpedienteMantenimiento">Expediente Mantenimiento</a></li>
                         <li><a href="#divImagenesMaquinaEdicion" data-toggle="tab" class="colorAnclas colorPestanhas" id="imagenesMaquinas">Imagenes</a></li>
                         <li class="pull-left header">
                     </ul>
                     
                     <div class="tab-content no-padding">
-                       
                         <div class="chart tab-pane active colorDiv" id="divDatosGeneralesEdicion" >
-                                          {% include ':maquinaria:ediciondatosgenerales.html.twig' %}          
+                            {% include ':maquinaria:ediciondatosgenerales.html.twig' %}          
                         </div>
-                        
-                        <div class="chart tab-pane colorDiv" id="divdatosMantenimientoEdicion" style=" padding: 15px;" >
-                                    {% include ':maquinaria:ediciondatosmantenimiento.html.twig' %}     
+
+                        <div class="chart tab-pane  colorDiv" id="divdatosMantenimientoEdicion" style=" padding: 15px;" >
+                            {% include ':maquinaria:ediciondatosmantenimiento.html.twig' %}     
                         </div>
-                         <div class="chart tab-pane colorDiv" id="divExpedienteMantenimientoEdicion" style=" padding: 15px;" >
-                                 {% include ':maquinaria:edicionexpedientemantenimiento.html.twig' %}     
+
+
+
+                        <div class="chart tab-pane colorDiv" id="divExpedienteMantenimientoEdicion" style=" padding: 15px;" >
+                            {% include ':maquinaria:edicionexpedientemantenimiento.html.twig' %}     
                         </div>
-                         <div class="chart tab-pane colorDiv" id="divImagenesMaquinaEdicion" style=" padding: 15px;" >
-                          
-                              {% include ':maquinaria:edicionimagenesmaquinaria.html.twig' %}     
+                        <div class="chart tab-pane colorDiv" id="divImagenesMaquinaEdicion" style=" padding: 15px;" >
+
+                            {% include ':maquinaria:edicionimagenesmaquinaria.html.twig' %}     
                         </div>
                     </div>
                 </div>

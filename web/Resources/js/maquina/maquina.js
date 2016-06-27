@@ -12,7 +12,8 @@
 
      $("#eliminarDatoMantenimiento").hide();
      $("#eliminarDatoExpedienteMantenimiento").hide();
-     $("#formularioInsercionExpedienteMaquinaria").hide();
+     $(".formularioInsercionExpedienteMaquinaria").hide();
+     
      
      
 $('#anhoMaquina').Zebra_DatePicker({
@@ -21,7 +22,8 @@ $('#anhoMaquina').Zebra_DatePicker({
 
 
 $('#fechaDE').Zebra_DatePicker({
-     format: 'M d, Y'
+     format: 'M d, Y',
+     direction:false
 });
 
      
@@ -309,7 +311,7 @@ $('#fechaDE').Zebra_DatePicker({
          
             var idMaquina = $("#idMaquina").val();
       
-//Edicion de los datos generales de la maquinaria desde el formulario de insercion
+             //Edicion de los datos generales de la maquinaria desde el formulario de insercion
              var numeroSerie, numeroEquipo, anho, alias, modelo, tipoEquipo,
             vin, placa, color, tamanho, capacidad, marca, descripcion;
       
@@ -349,7 +351,14 @@ $('#fechaDE').Zebra_DatePicker({
                                                 url: Routing.generate('modificarMaquina'),
                                                 success: function (data)
                                                 {
+                                                    $(".limpiarLabel").text("");
+                                                    
                                                      $("#idMaquina").val(data.idMaquina);
+                                                     $("#aliasDG").text(data.nombre);
+                                                     $("#marcaDG").text(data.marca);
+                                                     $("#serieDG").text(data.serie);
+                                                     $("#modeloDG").text(data.modelo);
+                                                     
                                                 
                                                     if (data.estado == true) {
                                                         
@@ -370,7 +379,7 @@ $('#fechaDE').Zebra_DatePicker({
                                                                     
                                       
                                                             } else {
-                                                                    var url=Routing.generate('dashboard_index');
+                                                                    var url=Routing.generate('admin_maquina_index');
                                                                 window.open(url,"_self"); 
 
                                                             }
@@ -510,7 +519,7 @@ $('#fechaDE').Zebra_DatePicker({
             $('#listaDatosMantenimientos').DataTable({
                 columnDefs: [
                     {
-                        targets: [0, 1, 2],
+                        targets: [0, 1, 2, 3],
                         className: 'mdl-data-table__cell--non-numeric'
                     }
                 ],
@@ -525,7 +534,7 @@ $('#fechaDE').Zebra_DatePicker({
                   
                 },
                 "columns": [
-                    {"data": "id"},
+                    {"data": "codigo"},
                     {"data": "nombre"},
                     {"data": "numero"},
                     {"data": "descripcion"}
@@ -551,15 +560,20 @@ $('#fechaDE').Zebra_DatePicker({
           
 //Donde se me crean los campos que llenan el detalle de Datos de Mantenimiento          
 
-
+var numeroEliminacion=0;
   
   $(document).on("click",".addDatosMantenimiento",function() {
-      
+      numeroEliminacion=numeroEliminacion+1;
       var formulario="";
       
-        formulario = '<div class="form-column col-md-3"><div class="form-group" >\n\
+        formulario = '<div class="divMadreDatosMantenimiento" id="DatosMantenimiento-'+numeroEliminacion+'"><div class="form-column col-md-4"><div class="form-group" >\n\
                             <label for="nombre" class="control-label">Nombre</label>\n\
                                 <input type="text" class="form-control nombreDato" id="nombre" placeholder="Nombre del producto" name="nombre" >\n\
+                                </div>\n\
+                           </div>\n\
+                            <div class="form-column col-md-4"><div class="form-group" >\n\
+                                <label for="marca" class="control-label">Marca</label>\n\
+                                <input type="text" class="form-control marcaDato" id="marca" placeholder="Marca del producto" name="marca" >\n\
                                 </div>\n\
                            </div>\n\
                             <div class="form-column col-md-3"><div class="form-group" >\n\
@@ -567,11 +581,15 @@ $('#fechaDE').Zebra_DatePicker({
                                 <input type="text" class="form-control numeroDato" id="numero" placeholder="# del producto" name="numero" >\n\
                                 </div>\n\
                            </div>\n\
+                            <div class="col-md-1 fa fa-close eliminarDiv" id="'+numeroEliminacion+'" style="margin-top: 29px;margin-left:-15px;"></div>\n\
+                            <div class="clearfix"></div>\n\
                             <div class="form-column col-md-6"><div class="form-group" >\n\
                               <label for="descripcion" class="control-label">Descripcion</label>\n\
-                              <textarea class="form-control descripcionDato" id="descripcion" placeholder="Descripcion del producto" name="descripcion" ></textarea>\n\
+                                        <textarea class="form-control descripcionDato" id="descripcion" placeholder="Descripcion del producto" name="descripcion" ></textarea>\n\
                              </div>\n\
-                            </div>';
+                            </div>  \n\
+                                <div class="col-md-5"></div>\n\
+                                  </div><div class="clearfix"></div>';
       
       
        $("#contenidoDatosMantenimiento").append(formulario);
@@ -581,12 +599,62 @@ $('#fechaDE').Zebra_DatePicker({
       
   });
   
+  
+  
+  
+  //Eliminar div de expediente de mantenimiento en la edicion
+   
+   $(document).on("click",".eliminarDiv",function() {
+         var idDetalleOrden = $(this).attr("id");
+
+         
+           swal({
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de remover?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                   
+                                                
+                                                                $("#DatosMantenimiento-"+idDetalleOrden).remove();
+                                                                
+                                                           numeroEliminacion=numeroEliminacion-1;
+                                                            if (numeroEliminacion==0){
+                                                                
+                                                                    $("#almacenarInsersion").hide();
+                                                                
+                                                            }
+                                                          
+
+                                                            } else {
+
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                        });
+         
+         
+        });
+   
+  
+  
+  
+  
  
   //Donde se envian los valores de que se quieren registrar
    $(document).on("click","#guardarFormularioDatoManetenimiento",function() {
         var nombres = new Array();
         var numeros = new Array();
         var descripciones = new Array();
+          var marcas = new Array();
             
             $(".nombreDato").each(function(k, va) {
                      nombres.push($(this).val());
@@ -599,6 +667,10 @@ $('#fechaDE').Zebra_DatePicker({
             $(".descripcionDato").each(function(k, va) {
                      descripciones.push($(this).val());
              });
+             $(".marcaDato").each(function(k, va) {
+                     marcas.push($(this).val());
+             });
+             
              
         var idMaquina = $("#idMaquina").val();       
              
@@ -606,7 +678,7 @@ $('#fechaDE').Zebra_DatePicker({
             type: 'POST',
             async: false,
             dataType: 'json',
-            data: {nombres:nombres,numeros:numeros,descripciones:descripciones,idMaquina:idMaquina},
+            data: {nombres:nombres,numeros:numeros,descripciones:descripciones,idMaquina:idMaquina,marcas:marcas},
             url: Routing.generate('insertarDatosMantenimiento'),
             success: function (data)
             {
@@ -634,10 +706,10 @@ $('#fechaDE').Zebra_DatePicker({
                     },
                             function (isConfirm) {
                                 if (isConfirm) {
-                                
+                               
 
                                 } else {
-                                    var url = Routing.generate('dashboard_index');
+                                    var url = Routing.generate('admin_maquina_index');
                                     window.open(url, "_self");
 
                                 }
@@ -801,6 +873,10 @@ $('#fechaDE').Zebra_DatePicker({
             url: Routing.generate('seleccionarDatosExpedienteMantenimiento'),
             success: function (data)
             {
+                var correlativo=0;
+                var total = data.total
+                total= total.toFixed(2);
+                
                 if (data.estado == true) {
                         var imagenVisibilidad= '';
                         if (data.imagen==null){
@@ -815,7 +891,7 @@ $('#fechaDE').Zebra_DatePicker({
                     <div class="form-column col-md-4">\n\
                         <div class="form-group required" style="margin-right: 2%;">\n\
                        <label for="tipoMantenimiento" class="control-label">Tipo de Mantenimiento</label>\n\
-                        <select id="tipoMantenimientoE" name="tipoMantenimientoE" class="form-control requeridoINEMEn clerSelect" style="width: 100%" >\n\
+                        <select id="tipoMantenimientoE" name="tipoMantenimientoE" class="form-control requeridoINEME clerSelect" style="width: 100%" >\n\
                             <option selected value="'+data.tipoMantenimientoId+'" selected>'+data.tipoMantenimientoNombre+'</option>\n\
                             </select>\n\
                         </div>\n\
@@ -825,42 +901,6 @@ $('#fechaDE').Zebra_DatePicker({
                                 <label for="fechaDE" class="control-label">Fecha</label>\n\
                                 </br><input type="text" name="fechaDEE" id="fechaDEE" class="requeridoINEME cler" value="'+data.fecha+'">\n\
                             </div>\n\
-                           </div>\n\
-                           <div class="col-md-4"></div>\n\
-                     <div class="clearfix"></div>\n\
-                     <div class="form-column col-md-4">\n\
-                     <div class="form-group required" style="margin-right: 2%;" >\n\
-                <div class="form-group">\n\
-                        <label for="serie" class="control-label">Serie</label>\n\
-                    <div class="input-group">\n\
-                    <div class="input-group-addon">#</div>\n\
-                    <input type="text" class="form-control requeridoINEME cler" id="serieE"  name="serieE" value="'+data.serie+'">\n\
-                    </div>\n\
-                    </div>\n\
-                  </div>\n\
-            </div>\n\
-                 <div class="form-column col-md-4">\n\
-                    <div class="form-group required" style="margin-right: 2%;" >\n\
-                        <div class="form-group">\n\
-                        <label for="costo" class="control-label">Costo</label>\n\
-                                <div class="input-group">\n\
-                                <div class="input-group-addon">$</div>\n\
-                               <input type="text" class="form-control requeridoINEM cler" id="costoE"  name="costoE" value="'+data.costo+'">\n\
-                                <div class="input-group-addon">.00</div>\n\
-                                </div>\n\
-                            </div>\n\
-                        </div>\n\
-                    </div>\n\
-                    <div class="form-column col-md-4">\n\
-                          <div class="form-group required" style="margin-right: 2%;" >\n\
-                                <div class="form-group">\n\
-                                <label for="numeroFactura" class="control-label ">Numero Factura</label>\n\
-                                      <div class="input-group">\n\
-                                        <div class="input-group-addon">#</div>\n\
-                                      <input type="text   " class="form-control requeridoINEME cler" id="numeroFacturaE"  name="numeroFacturaE" value="'+data.numeroFactura+'">\n\
-                                </div>\n\
-                           </div>\n\
-                        </div>\n\
                         </div><div class="clearfix"></div>\n\
                             <div class="form-column col-md-4">\n\
                                 <div class="form-group" style="margin-right: 2%;">\n\
@@ -871,40 +911,74 @@ $('#fechaDE').Zebra_DatePicker({
                                      </div>\n\
                              </div>\n\
                                 <div class="form-column col-md-4">\n\
-                                    <div class="form-group" style="margin-right: 2%;">\n\
-                                            <label for="proveedor" class="control-label">Proveedor</label>\n\
-                                            <select id="proveedorE" name="proveedorE" class="form-control clerSelect" style="width: 100%" >\n\
-                                                <option selected  value="'+data.proveedorId+'" selected>'+data.proveedorNombre+'</option>\n\
-                                              </select>\n\
-                                     </div>\n\
+                                      <div class="form-group required" style="margin-right: 8%;" >\n\
+                                            <div class="form-group">\n\
+                                            <label for="numeroFactura" class="control-label ">Numero Factura</label>\n\
+                                                  <div class="input-group">\n\
+                                                    <div class="input-group-addon">#</div>\n\
+                                                  <input type="text   " class="form-control requeridoINEME cler" id="numeroFacturaE"  name="numeroFacturaE" value="'+data.numeroFactura+'">\n\
+                                            </div>\n\
+                                       </div>\n\
+                                    </div>\n\
                                 </div>\n\
-                                  <div class="form-column col-md-4">\n\
+                                 <div class="form-column col-md-4">\n\
                                             <div class="form-group" style="margin-right: 2%;">\n\
                                             <label for="fotoFactura" class="control-label">Foto de factura</label>\n\
                                             <input type="file" class="clerSelect" id="fotoFacturaE"  name="fotoFacturaE">\n\
-                                    </div>\n\
-                                  </div> <div class="clearfix"></div>\n\
+                                 </div>\n\
+                                  </div><div class="clearfix"></div>\n\
                                         <div class="form-column col-md-8">\n\
                                             <div class="form-group" >\n\
                                                 <label for="descripcionDatoExpediente" class="control-label" >Descripción</label>\n\
                                                 <textarea name="descripcionDatoExpedienteE" id="descripcionDatoExpedienteE" class="form-control cler" maxlength="250">'+data.descripcion+'</textarea>\n\
                                             </div>\n\
+                                        </div>\n\
+                                        <div class="form-column col-md-4" >\n\
                                             <div class="form-group" >\n\
-                                                <div class="btn-group pull-left"><a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarInsercionExpeManetenimientoEdicion">Cancelar</a>\n\
-                                            </div>\n\
-                                            <div class="btn-group pull-left">\n\
-                                                    <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarExpedienteEdicion">Guardar</a>\n\
-                                                 </div>\n\
-                                                </div>\n\
-                                           </div>\n\
-                                    <div class="form-column col-md-4" >\n\
-                                            <div class="form-group" >\n\
-                                        <img src="/erpconstructora/web/Photos/expediente/'+data.imagen+'"  style="max-height: 300px;max-width: 300px;'+imagenVisibilidad+'" id="prevFacturaE">\n\
-                                        <input type="hidden" value='+data.imagenIdRegistro+' name="idRegistroImagen">\n\
+                                            <img src="/erpconstructora/web/Photos/expediente/'+data.imagen+'"  style="max-height: 300px;max-width: 300px;'+imagenVisibilidad+'" id="prevFacturaE">\n\
+                                            <input type="hidden" value='+data.imagenIdRegistro+' name="idRegistroImagen">\n\
+                                        </div>\n\
                                     </div>\n\
-                                    </div>\n\
+                                        <input type="hidden" name="totalCostoE" id="costoTotalBaseE" value="'+total+'">\n\
                                     </form>\n\
-                                </div>';
+                        <div class="clearfix"></div>\n\
+                        <div class="form-column col-md-4" >\n\
+                         <div class="form-group" >\n\
+                                <img src=""  style="display: none; max-height: 300px;max-width: 300px;" id="prevFactura">\n\
+                                </div>\n\
+                         </div>\n\
+                        <div class="clearfix"></div>\n\
+                           <div style="margin-bottom:0;margin-top: 10px;margin-left: 10px;"  class="formularioInsercionExpedienteMaquinaria">\n\
+                                   <img src="/erpconstructora/web/Resources/src/img/add.png" title="Nuevo detalle" class="addExpedienteDatosMantenimientoEdicion">\n\
+                                           <b class="addExpedienteDatosMantenimientoEdicion">Agregar detalle</b><br><br>\n\
+                                                   </div>\n\
+                                                        <div  id="detalleDimanicoExpedienteMantenimientoEdicion" style="margin-left:2%;margin-right:2%;">\n\
+                                                         </div>\n\
+                                                       <div class="clearfix">\n\
+                                                        </div>\n\
+                                                            <div class="col-md-4">\n\
+                                                                    <div class="form-group" >\n\
+                                                                       <div class="btn-group pull-left"><a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarInsercionExpeManetenimientoEdicion">Cancelar</a>\n\
+                                                                   </div>\n\
+                                                                 <div class="btn-group pull-left">\n\
+                                                               <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarExpedienteEdicion">Guardar</a>\n\
+                                                        </div>\n\
+                                                    </div>\n\
+                                               </div>\n\
+                                            <div class="col-md-4"></div>\n\
+                                                   <div class="form-column col-md-4">\n\
+                                                           <div class="form-group required" style="margin-right: 2%;" >\n\
+                                                               <div class="form-group">\n\
+                                                                           <label class="control-label" for="exampleInputAmount">Total</label>\n\
+                                                                           <div class="input-group"><div class="input-group-addon">$</div>\n\
+                                                                                           <input type="text" class="form-control requeridoINEM totalCosto" id="totalCostoE"   readonly disabled value="'+total+'">\n\
+                                                                                       <div class="input-group-addon">\n\
+                                                                                       </div>\n\
+                                                                                   </div>\n\
+                                                                           </div>\n\
+                                                                       </div>\n\
+                                                                   </div>\n\
+                                                                 </div>';
                     
                     
                     
@@ -913,6 +987,89 @@ $('#fechaDE').Zebra_DatePicker({
                     $("#formularioInsercionExpedienteMaquinaria").hide();
                     $("#eliminarDatoExpedienteMantenimiento").hide();
                     $("#formularioEdicionExpedienteMaquinaria").append(formulario);
+                    
+
+
+        $.each(data.detalle, function( key, value ) {  
+                                            
+                                             correlativo=correlativo+1;
+                                             var idProveedor, nombreProveedor;
+                                             idProveedor=value.idProv;
+                                             nombreProveedor= value.provNombre;
+                                             if (idProveedor==null){
+                                                 idProveedor=0;
+                                                 nombreProveedor= "Seleccione un proveedor...";
+                                                 
+                                             }
+
+     var agregar = ' <div class="divDetalle" id="detalleDivEdicion-'+value.id+'"><div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >\n\
+        <input type ="hidden" name="idRegistro" class="idRegistros" value="'+value.id+'">\n\
+                                    <div class="form-group"><label for="serie" class="control-label">Nombre</label>\n\
+                                        <div class="input-group"><div class="input-group-addon">#</div>\n\
+                                            <input type="text" class="form-control requeridoINEME nombresE" id="nombresE"  name="nombresE" value="'+value.nombreDet+'" >\n\
+                                             </div>\n\
+                                            </div>\n\
+                                       </div>\n\
+                                  </div>\n\
+                                    <div class="form-column col-md-4">\n\
+                               <div class="form-group required" style="margin-right: 2%;" ><div class="form-group"><label class="control-label" for="exampleInputAmount">Costo</label>\n\
+                               <div class="input-group"><div class="input-group-addon">$</div>\n\
+                                    <input type="text" class="form-control requeridoINEME costosE costosG" id="costosE"  name="costosE" value="'+value.costo+'">\n\
+                                        <div class="input-group-addon">.00</div>\n\
+                                     </div>\n\
+                                </div>\n\
+                              </div> \n\
+                            </div>\n\
+                     <div class="form-column col-md-3">\n\
+                            <div class="form-group" style="margin-right: 2%;">\n\
+                                    <label for="proveedor" class="control-label">Proveedor</label>\n\
+                                        <select id="proveedorE-'+correlativo+'" name="proveedoresE" class="form-control clerSelect proveedoresE" style="width: 100%">\n\
+                                        <option value="'+idProveedor+'">'+nombreProveedor+'</option>\n\
+                                   </select>\n\
+                                        </div>\n\
+                                    </div> <div  id="'+value.id+'" class="eliminarDivDetalleExpedienteEB btn btn-danger col-md-1" style="margin-top: 25px;margin-left:-2px;border-radius: 0;">Delete</div>\n\
+                    <div class="clearfix"></div>\n\
+                        </div>';
+
+            $("#detalleDimanicoExpedienteMantenimientoEdicion").append(agregar);      
+            
+             $('#proveedorE-'+correlativo).select2({
+                ajax: {
+                    url: Routing.generate('buscarProveedor'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
+                }
+            });
+
+        });
+                                            
+                    
 
 $('#fechaDEE').Zebra_DatePicker({
      format: 'M d, Y'
@@ -991,39 +1148,7 @@ $('#fechaDEE').Zebra_DatePicker({
             });
  
  //Select del proveedor
-  $('#proveedorE').select2({
-                ajax: {
-                    url: Routing.generate('buscarProveedor'),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term,
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        var select2Data = $.map(data.data, function (obj) {
-                            obj.id = obj.abogadoid;
-                            obj.text = obj.nombre;
-
-                            return obj;
-                        });
-
-                        return {
-                            results: select2Data
-                        };
-                    },
-                    cache: true
-                },
-                escapeMarkup: function (markup) { return markup; },
-                minimumInputLength: 1,
-                templateResult: formatRepo,
-//                templateSelection: formatRepoSelection,
-                formatInputTooShort: function () {
-                    return "Ingrese un caracter para la busqueda";
-                }
-            });
+ 
                     
                     
                     
@@ -1042,6 +1167,7 @@ $('#fechaDEE').Zebra_DatePicker({
             }
         });
                      
+//Doble click de en la tabla lista de datos de mantenimiento
 
                     }else if(idTabla=='listaDatosMantenimientos'){
                         
@@ -1061,21 +1187,29 @@ $('#fechaDEE').Zebra_DatePicker({
                                     if (data.estado == true) {
                                         var form = "";
 
-                                        form = '<div class="form-column col-md-3"><div class="form-group" >\n\
+                                        form = '<div class="clearfix"></div><div class="form-column col-md-4"><div class="form-group" >\n\
                                             <label for="nombre" class="control-label">Nombre</label>\n\
                                                 <input type="text" class="form-control nombreDatoE" id="nombre" placeholder="Nombre del producto" name="nombre" value="' + data.nombre + '" >\n\
                                                 </div>\n\
                                            </div>\n\
-                                            <div class="form-column col-md-3"><div class="form-group" >\n\
+                                            <div class="form-column col-md-4"><div class="form-group" >\n\
+                                                <label for="numero" class="control-label">Marca</label>\n\
+                                                <input type="text" class="form-control marcaDatoE" id="marcaDatoE" placeholder="Marca del producto" name="marcaDatoE" value="' + data.marca + '">\n\
+                                                </div>\n\
+                                           </div>\n\
+                                            <div class="form-column col-md-4"><div class="form-group" >\n\
                                             <label for="numero" class="control-label">Numero</label>\n\
                                                 <input type="text" class="form-control numeroDatoE" id="numero" placeholder="# del producto" name="numero" value="' + data.numero + '">\n\
                                                 </div>\n\
                                            </div>\n\
+                                            <div class="clearfix"></div>\n\
                                             <div class="form-column col-md-6"><div class="form-group" >\n\
                                               <label for="descripcion" class="control-label">Descripcion</label>\n\
                                               <textarea class="form-control descripcionDatoE" id="descripcion" placeholder="Descripcion del producto" name="descripcion" >' + data.descripcion + '</textarea>\n\
                                              </div>\n\
-                                            </div><hr style="color:black;"><div class="clearfix"></di>\n\
+                                            </div>\n\
+                                            <div class="form-column col-md-6"></div>\n\
+                                            <div class="clearfix"></div>\n\
                                                   <div id="almacenarEdicion">\n\
                                                     <div class="form-column col-md-4" style="margin-left: -120px;"><div class="form-group" >\n\
                                                 <div class="btn-group pull-right">\n\
@@ -1119,11 +1253,153 @@ $('#fechaDEE').Zebra_DatePicker({
 });
 
 
+//Eliminar registro de detalle en la edicion y de un solo eliminar el registro dentro de la BD
+      $(document).on("click",".eliminarDivDetalleExpedienteEB",function() {
+         
+                                                           
+                   var idRegistro = $(this).attr("id");
+                                                                
+                                                                
+                                swal({
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de remover este registro? Si aceptas removerlo, no habra forma de recuperar los datos posteriormente",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                   
+                                                             
+
+                                                                $.ajax({
+                                                                    type: 'POST',
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    data: {idRegistro:idRegistro},
+                                                                    url: Routing.generate('eliminarRegistroDetalleEspediente'),
+                                                                    success: function (data)
+                                                                    {
+
+
+                                                                        if (data.estado == true) {
+
+                                                                            $("#detalleDivEdicion-"+idRegistro).remove();
+                                                                            llenarTotalPagarEdicion();
+                                                                                                                                                                 
+                                                                        }
+
+                                                                    },
+                                                                    error: function (xhr, status)
+                                                                    {
+
+                                                                    }
+                                                                });
+                                                                
+                                                                
+
+
+                                                            } else {
+                                                                
+                                                                
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                        });
+      
+         
+     });
+
+
+//Agregegar nuevo registro al detalle de la edicion de un registro de Expediente de mantenimiento
+
+  var correlativoDetalleExpedienteEdicion=0;
+   $(document).on("click",".addExpedienteDatosMantenimientoEdicion",function() {
+     correlativoDetalleExpedienteEdicion=correlativoDetalleExpedienteEdicion+1;
+          
+     var agregar = ' <div class="divDetalle" id="detalleDiv-'+correlativoDetalleExpedienteEdicion+'"><div class="clearfix"></div><div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >\n\
+                                    <div class="form-group"><label for="serie" class="control-label">Nombre</label>\n\
+                                        <div class="input-group"><div class="input-group-addon">#</div>\n\
+                                            <input type="text" class="form-control requeridoINEME nombresENuevo" id="nombresE"  name="nombresE" >\n\
+                                             </div>\n\
+                                            </div>\n\
+                                       </div>\n\
+                                  </div>\n\
+                                    <div class="form-column col-md-4">\n\
+                               <div class="form-group required" style="margin-right: 2%;" ><div class="form-group"><label class="control-label" for="exampleInputAmount">Costo</label>\n\
+                               <div class="input-group"><div class="input-group-addon">$</div>\n\
+                                    <input type="text" class="form-control requeridoINEME costosENuevo costosG" id="costosE"  name="costosE" value="0">\n\
+                                        <div class="input-group-addon">.00</div>\n\
+                                     </div>\n\
+                                </div>\n\
+                              </div> \n\
+                            </div>\n\
+                     <div class="form-column col-md-3">\n\
+                            <div class="form-group" style="margin-right: 2%;">\n\
+                                    <label for="proveedor" class="control-label">Proveedor</label>\n\
+                                        <select id="proveedorEN-'+correlativoDetalleExpedienteEdicion+'" name="proveedoresE" class="form-control clerSelect proveedoresENuevo" style="width: 100%" >\n\
+                                        <option value="0">Proveedor...</option>\n\
+                                            </select>\n\
+                                        </div>\n\
+                                    </div> <div  id="'+correlativoDetalleExpedienteEdicion+'" class="eliminarDivDetalleExpedienteEdicion btn btn-danger col-md-1" style="margin-top: 25px;margin-left:-2px;border-radius: 0;">Delete</div>\n\
+                    <div class="clearfix"></div>\n\
+                        </div>';
+     
+     
+     $("#detalleDimanicoExpedienteMantenimientoEdicion").append(agregar);
+     
+     $('#proveedorEN-'+correlativoDetalleExpedienteEdicion).select2({
+                ajax: {
+                    url: Routing.generate('buscarProveedor'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
+                }
+            });
+     
+     
+
+   });
+//Final de agregar nuevo
+
+
+
+
 $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() {
-        
-        
+
        
        $("#formularioEdicionExpedienteMaquinaria div").html("");
+       
        $("#cancelarInsercionExpeManetenimiento").click();
        
                    
@@ -1140,6 +1416,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
        var nombres = new Array();
         var numeros = new Array();
         var descripciones = new Array();
+        var marcas = new Array();
 
         $(".nombreDatoE").each(function (k, va) {
             nombres.push($(this).val());
@@ -1152,6 +1429,10 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
         $(".descripcionDatoE").each(function (k, va) {
             descripciones.push($(this).val());
         });
+        
+         $(".marcaDatoE").each(function (k, va) {
+            marcas.push($(this).val());
+        });
       
       
       
@@ -1159,7 +1440,8 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             type: 'POST',
             async: false,
             dataType: 'json',
-            data: {idDatoMantenimiento: idDetalle,nombres:nombres,numeros:numeros,descripciones:descripciones},
+            data: {idDatoMantenimiento: idDetalle,nombres:nombres,numeros:numeros,descripciones:descripciones
+            ,marcas:marcas},
             url: Routing.generate('editarDatosMantenimientoEdicion'),
             success: function (data)
             {
@@ -1191,7 +1473,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                 
 
                                 } else {
-                                    var url = Routing.generate('dashboard_index');
+                                    var url = Routing.generate('admin_maquina_index');
                                     window.open(url, "_self");
 
                                 }
@@ -1296,7 +1578,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
           $('#listaExpedienteMantenimientos').DataTable({
                 columnDefs: [
                     {
-                        targets: [0, 1, 2],
+                        targets: [0, 1, 2,3],
                         className: 'mdl-data-table__cell--non-numeric'
                     }
                 ],
@@ -1314,7 +1596,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                     {"data": "id"},
                     {"data": "fecha"},
                     {"data": "tipomantenimiento"},
-                    {"data": "serie"},
+//                    {"data": "serie"},
                     {"data": "costo"},
                     {"data": "proyecto"}
                     
@@ -1342,7 +1624,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
   $(document).on("click","#nuevoDestalleExpeMante",function() {
       $("#nuevoDestalleExpeMante").hide();
       $("#contenidoExpedienteMantenimiento").hide();
-      $("#formularioInsercionExpedienteMaquinaria").show();
+      $(".formularioInsercionExpedienteMaquinaria").show();
       $("#eliminarDatoExpedienteMantenimiento").hide();
         limparformulario();
 
@@ -1353,7 +1635,9 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
       
       $("#nuevoDestalleExpeMante").show();
       $("#contenidoExpedienteMantenimiento").show();
-      $("#formularioInsercionExpedienteMaquinaria").hide();
+      $(".formularioInsercionExpedienteMaquinaria").hide();
+      $("#detalleDimanicoExpedienteMantenimiento div").html("");
+      $("#totalCosto").val("");
         limparformulario();
 
       
@@ -1402,10 +1686,234 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
   
   
   //Insercion de nuevo expediente de mantenimiento
+  //Click en agregar mas a los detalles
+    var correlativoDetalleExpediente=0;
+   $(document).on("click",".addExpedienteDatosMantenimiento",function() {
+     correlativoDetalleExpediente=correlativoDetalleExpediente+1;
+          
+     var agregar = ' <div class="divDetalle" id="detalleDiv-'+correlativoDetalleExpediente+'"><div class="clearfix"></div><div class="form-column col-md-4"><div class="form-group required" style="margin-right: 2%;" >\n\
+                                    <div class="form-group"><label for="serie" class="control-label">Nombre</label>\n\
+                                        <div class="input-group"><div class="input-group-addon">#</div>\n\
+                                            <input type="text" class="form-control requeridoINEM nombres" id="nombres"  name="nombres" >\n\
+                                             </div>\n\
+                                            </div>\n\
+                                       </div>\n\
+                                  </div>\n\
+                                    <div class="form-column col-md-4">\n\
+                               <div class="form-group required" style="margin-right: 2%;" ><div class="form-group"><label class="control-label" for="exampleInputAmount">Costo</label>\n\
+                               <div class="input-group"><div class="input-group-addon">$</div>\n\
+                                    <input type="text" class="form-control requeridoINEM costos" id="costos"  name="costos" value="0">\n\
+                                        <div class="input-group-addon">.00</div>\n\
+                                     </div>\n\
+                                </div>\n\
+                              </div> \n\
+                            </div>\n\
+                     <div class="form-column col-md-3">\n\
+                            <div class="form-group" style="margin-right: 2%;">\n\
+                                    <label for="proveedor" class="control-label">Proveedor</label>\n\
+                                        <select id="proveedor-'+correlativoDetalleExpediente+'" name="proveedores" class="form-control clerSelect proveedores" style="width: 100%" >\n\
+                                        <option value="0">Proveedor...</option>\n\
+                                            </select>\n\
+                                        </div>\n\
+                                    </div> <div  id="'+correlativoDetalleExpediente+'" class="eliminarDivDetalleExpediente btn btn-danger col-md-1" style="margin-top: 25px;margin-left:-2px;border-radius: 0;">Delete</div>\n\
+                    <div class="clearfix"></div>\n\
+                        </div>';
+     
+     
+     $("#detalleDimanicoExpedienteMantenimiento").append(agregar);
+     
+     $('#proveedor-'+correlativoDetalleExpediente).select2({
+                ajax: {
+                    url: Routing.generate('buscarProveedor'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.abogadoid;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+//                templateSelection: formatRepoSelection,
+                formatInputTooShort: function () {
+                    return "Ingrese un caracter para la busqueda";
+                }
+            });
+     
+     
+
+   });
+   
+   //Eliminar fila de nuevo registro dentro de la edicion de un registro de Expediente
+   
+    $(document).on("click",".eliminarDivDetalleExpedienteEdicion",function() {
+         var idDetalleOrden = $(this).attr("id");
+
+         
+                    swal({   
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de remover?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                   
+                                                
+                                                                $("#detalleDiv-"+idDetalleOrden).remove();
+                                                                llenarTotalPagarEdicion();
+                                                          
+
+                                                            } else {
+
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                        });
+         
+         
+        });
+  
+   
+   
+    $(document).on("input",".costos",function() {
+        
+     
+          var x =$(this).val();
+       if (isNaN(x)!=true && x!=""){
+                         llenarTotalPagarIngreso();
+                      
+          }else{
+              $(this).val(0);
+               swal("Error!", "El campo costo no pueden ser letras o un campo vacio", "error");
+                 
+          }
+        
+    });
+    
+      $(document).on("input",".costosG",function() {
+          
+          var x =$(this).val();
+        
+        
+          if (isNaN(x)!=true && x!=""){
+                      llenarTotalPagarEdicion();
+                      
+          }else{
+              $(this).val(0);
+               swal("Error!", "El campo costo no pueden ser letras o un campo vacio", "error");
+                 
+          }
+        
+        
+        
+    });
+    
+     function llenarTotalPagarIngreso(){
+            var x=0;
+
+             $('.costos').each(
+                       function (){
+
+                       var subTotal =  $(this).val();
+                      
+                       
+                        x=x+parseFloat(subTotal);
+
+                       });
+            x=x.toFixed(2);
+            $("#totalCosto").val(x);
+            $("#costoTotalBase").val(x);
+            
+            
+        }
+    
+    
+    function llenarTotalPagarEdicion(){
+            var x=0;
+
+             $('.costosG').each(
+                       function (){
+
+                       var subTotal =  $(this).val();
+                        x=x+parseFloat(subTotal);
+                        
+                        
+
+                       });
+            x=x.toFixed(2);
+            $("#totalCostoE").val(x);
+            $("#costoTotalBaseE").val(x);
+            
+            
+        }
+    
+   
+   //Eliminacion de fila de registro de detalle
+  
+   $(document).on("click",".eliminarDivDetalleExpediente",function() {
+         var idDetalleOrden = $(this).attr("id");
+
+         
+           swal({
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de remover?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                   
+                                                
+                                                                $("#detalleDiv-"+idDetalleOrden).remove();
+                                                                llenarTotalPagarIngreso();
+                                                          
+
+                                                            } else {
+
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                        });
+         
+         
+        });
+  
+  
+  //Agregar expediente de mantenimiento
     $(document).on("click","#guardarExpediente",function() {
         
         
          var num=0;
+         
                 $('.requeridoINEM').each( function (){
             
                        var x=$(this).val();
@@ -1416,16 +1924,61 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
 
                        });
            
+        var valorDetalle = 0;
+        
+        
+          $('.nombres').each(function () {
+            valorDetalle = valorDetalle + 1;
+
+
+        });
+           
+        
         
         
         
         if (num==0){
             
-            var costo = $("#costo").val();
             
-            if (isNaN(costo)!=true){
+            if(valorDetalle!=0){
+
+
+         var controlCosto =0;
+                        
+            $('.costos').each(function () {
                 
+                var costo = $(this).val();
+                if (isNaN(costo) != true) {
+                    
+                    controlCosto=controlCosto;
+                } else {
+                    controlCosto=controlCosto+1;
+                   
+                }
+
+
+            });
+                
+                
+     if (controlCosto==0){
+                    
+          var costos = new Array();
+          var nombres = new Array();
+          var proveedores = new Array();
+          
+          $(".nombres").each(function(k, va) {
+                     nombres.push($(this).val());
+             });
             
+            
+               $(".costos").each(function(k, va) {
+                     costos.push($(this).val());
+             });
+            
+               $(".proveedores").each(function(k, va) {
+                     proveedores.push($(this).val());
+             });
+
             var frm = new FormData($("#formInsercionExpediente")[0]);
             
            
@@ -1445,50 +1998,59 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                      
                                                 
                                                      if (data.estado == true) {
-                                                      
-                                                    
+                                                         var idExpediente = data.idExpediente;
+                                                             $.ajax({
+                                                                type: 'POST',
+                                                                async: false,
+                                                                dataType: 'json',
+                                                                data: {nombres:nombres,costos:costos,
+                                                                            proveedores:proveedores,idExpediente:idExpediente},
+                                                                url: Routing.generate('insertarDetalleExpediente'),
+                                                                success: function (data)
+                                                                {
+                                                                    if (data.estado == true) {
+                                                                                         swal({
+                                                                                            title: "Datos de mantenimiento ingresados con exito",
+                                                                                            text: "¿Quieres seguir  ingresando datos de expediente de mantenimiento?",
+                                                                                            type: "success",
+                                                                                            showCancelButton: true,
+                                                                                            cancelButtonText: "Despues",
+                                                                                            confirmButtonText: "Seguir",
+                                                                                            confirmButtonColor: "#00A59D",
+                                                                                            closeOnConfirm: true,
+                                                                                            closeOnCancel: false
+                                                                                        },
+                                                                                                function (isConfirm) {
+                                                                                                    if (isConfirm) {
 
-                                                        swal({
-                                                            title: "Datos de mantenimiento ingresados con exito",
-                                                            text: "¿Quieres seguir  ingresando datos de expediente de mantenimiento?",
-                                                            type: "success",
-                                                            showCancelButton: true,
-                                                            cancelButtonText: "Despues",
-                                                            confirmButtonText: "Seguir",
-                                                            confirmButtonColor: "#00A59D",
-                                                            closeOnConfirm: true,
-                                                            closeOnCancel: false
-                                                        },
-                                                                function (isConfirm) {
-                                                                    if (isConfirm) {
-                                                                            
-                                                                            $("#nuevoDestalleExpeMante").show();
-                                                                            $("#contenidoExpedienteMantenimiento").show();
-                                                                            $("#formularioInsercionExpedienteMaquinaria").hide();
-                                                                            
-                                                                            
-                                                                            
-                                                                                
-                                                                                
-                                                                            
-                                                                                var tableExpedienteM = $('#listaExpedienteMantenimientos').DataTable();
-                                                                                var idMaqui = $("#idMaquina").val();
-                                                                                var url = Routing.generate('datosexpedientesmantenimientodata', {idMaquina: idMaqui});
-                                                                                tableExpedienteM.ajax.url(url).load();
-                                                                                
-                                                                                limparformulario();
-                                                                                
-                                                                                
-                                                                             
-                                                                             
-                                                                    } else {
-                                                                        var url = Routing.generate('dashboard_index');
-                                                                        window.open(url, "_self");
+                                                                                                            $("#nuevoDestalleExpeMante").show();
+                                                                                                            $("#contenidoExpedienteMantenimiento").show();
+                                                                                                            $(".formularioInsercionExpedienteMaquinaria").hide();
+                                                                                                            $("#detalleDimanicoExpedienteMantenimiento div").html("");
+                                                                                                                var tableExpedienteM = $('#listaExpedienteMantenimientos').DataTable();
+                                                                                                                var idMaqui = $("#idMaquina").val();
+                                                                                                                var url = Routing.generate('datosexpedientesmantenimientodata', {idMaquina: idMaqui});
+                                                                                                                tableExpedienteM.ajax.url(url).load();
 
-                                                                    }
-                                                                });
+                                                                                                                limparformulario();
+
+                                                                                                    } else {
+                                                                                                        var url = Routing.generate('dashboard_index');
+                                                                                                        window.open(url, "_self");
+
+                                                                                                    }
+                                                                                                });
+
+                                                                                }
+
+                                                                },
+                                                                error: function (xhr, status)
+                                                                {
 
 
+
+                                                                }
+                                                            });
 
                                                     }
 
@@ -1498,12 +2060,17 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                     
                                                 }
                                             });
-       }else{
+                                            
+                                            
+               }else{
+                   
+                    swal("Error!", "El campo costo no puede ser letras", "error");
+               }                                
       
-                    swal("Error!", "El costo de la factura no pueden ser letras", "error");
-                    
-      }   
-       
+       }else{
+             swal("Error!", "Debes agregar un detalle", "error");
+           
+       }
        
       }else{
       
@@ -1583,12 +2150,70 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
         
         if (num==0){
             
-            var costo = $("#costoE").val();
-            
-            if (isNaN(costo)!=true){
+        var controlCosto =0;
+            $('.costosG').each(function () {
                 
-          
+                var costo = $(this).val();
+                if (isNaN(costo) != true) {
+                    
+                    controlCosto=controlCosto;
+                } else {
+                    controlCosto=controlCosto+1;
+                   
+                }
 
+
+            });
+           
+        if (controlCosto==0) {
+            //Valores que ya existen
+          var costos = new Array();
+          var nombres = new Array();
+          var proveedores = new Array();
+          var idRegistros = new Array();
+          
+                $(".nombresE").each(function (k, va) {
+                    nombres.push($(this).val());
+                });
+
+
+                $(".costosE").each(function (k, va) {
+                    costos.push($(this).val());
+                });
+
+                $(".proveedoresE").each(function (k, va) {
+                    proveedores.push($(this).val());
+                });
+                
+                $(".idRegistros").each(function (k, va) {
+                    idRegistros.push($(this).val());
+                });
+                
+                
+
+            
+            //Nuevo ingreso en la edicion
+                var costosNuevosE = new Array();
+                var nombresNuevosE = new Array();
+                var proveedoresNuevosE = new Array();
+            
+            
+            
+             $(".nombresENuevo").each(function (k, va) {
+                    nombresNuevosE.push($(this).val());
+                });
+
+
+                $(".costosENuevo").each(function (k, va) {
+                    costosNuevosE.push($(this).val());
+                });
+
+                $(".proveedoresENuevo").each(function (k, va) {
+                    proveedoresNuevosE.push($(this).val());
+                });
+            
+            
+                 
             var frm = new FormData($("#formEdicionExpediente")[0]);
             
            
@@ -1608,45 +2233,60 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                      
                                                 
                                                      if (data.estado == true) {
-                                                      
-                                                    
 
-                                                        swal({
-                                                            title: "Datos de mantenimiento modificados con exito",
-                                                            text: "¿Quieres seguir  modificando datos de expediente de mantenimiento?",
-                                                            type: "success",
-                                                            showCancelButton: true,
-                                                            cancelButtonText: "Despues",
-                                                            confirmButtonText: "Seguir",
-                                                            confirmButtonColor: "#00A59D",
-                                                            closeOnConfirm: true,
-                                                            closeOnCancel: false
-                                                        },
-                                                                function (isConfirm) {
-                                                                    if (isConfirm) {
-                                                                            
-                                                                                $("#formularioEdicionExpedienteMaquinaria div").html("");
-                                                                                $("#cancelarInsercionExpeManetenimiento").click();
-                                                                                
-                                                                                var tableExpedienteM = $('#listaExpedienteMantenimientos').DataTable();
-                                                                                var idMaqui = $("#idMaquina").val();
-                                                                                var url = Routing.generate('datosexpedientesmantenimientodata', {idMaquina: idMaqui});
-                                                                                tableExpedienteM.ajax.url(url).load();
-                                                                                
-                                                                             
-                                                                                
-                                                                                
-                                                                             
-                                                                             
-                                                                    } else {
-                                                                        
-                                                                        var url = Routing.generate('dashboard_index');
-                                                                        window.open(url, "_self");
+                                                             var idExpediente = data.idExpediente;
+                                                             $.ajax({
+                                                                type: 'POST',
+                                                                async: false,
+                                                                dataType: 'json',
+                                                                data: {idExpediente:idExpediente,nombres:nombres,costos:costos,
+                                                                            proveedores:proveedores,idExpediente:idExpediente,costosNuevosE:costosNuevosE,
+                                                                        nombresNuevosE:nombresNuevosE,proveedoresNuevosE:proveedoresNuevosE,idRegistros:idRegistros},
+                                                                url: Routing.generate('modificarDetalleExpediente'),
+                                                                success: function (data)
+                                                                {
+                                                                    if (data.estado == true) {
+                                                                                         swal({
+                                                                                            title: "Datos de mantenimiento modificados con exito",
+                                                                                            text: "¿Quieres seguir  ingresando datos de expediente de mantenimiento?",
+                                                                                            type: "success",
+                                                                                            showCancelButton: true,
+                                                                                            cancelButtonText: "Despues",
+                                                                                            confirmButtonText: "Seguir",
+                                                                                            confirmButtonColor: "#00A59D",
+                                                                                            closeOnConfirm: true,
+                                                                                            closeOnCancel: false
+                                                                                        },
+                                                                                  function (isConfirm) {
+                                                                                           if (isConfirm) {
 
-                                                                    }
-                                                                });
+                                                                                                       $("#formularioEdicionExpedienteMaquinaria div").html("");
+                                                                                                       $("#cancelarInsercionExpeManetenimiento").click();
+
+                                                                                                       var tableExpedienteM = $('#listaExpedienteMantenimientos').DataTable();
+                                                                                                       var idMaqui = $("#idMaquina").val();
+                                                                                                       var url = Routing.generate('datosexpedientesmantenimientodata', {idMaquina: idMaqui});
+                                                                                                       tableExpedienteM.ajax.url(url).load();
+
+                                                                                               } else {
+
+                                                                                               var url = Routing.generate('admin_maquina_index');
+                                                                                               window.open(url, "_self");
+
+                                                                                           }
+                                                                                       });
 
 
+                                                                                }
+
+                                                                },
+                                                                error: function (xhr, status)
+                                                                {
+
+
+
+                                                                }
+                                                            });
 
                                                     }
 
@@ -1657,9 +2297,10 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                 }
                                             });
                                             
-               }else{
-                    swal("Error!", "El costo de la factura no puedeb ser letras", "error");
-               }                               
+          } else {
+                 
+                    swal("Error!", "El costo de la factura no puede ser letras", "error");
+                }                      
                     
       }else{
       
@@ -1713,11 +2354,25 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
         
         
     });
+    
+    
+   //Click en el boton cancelarEdicionDatoManetenimiento
+   
+     $(document).on("click","#cancelarEdicionDatoManetenimiento",function() {
+              
+            $('#edicionDatosMantenimiento').html('');
+                $("#almacenarEdicion").hide();        
+                
+            
+              
+         
+         
+     });
    
    
    
    
-  
+   
   //Fin del document Ready
  });
  

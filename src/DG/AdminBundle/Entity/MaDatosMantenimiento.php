@@ -41,6 +41,22 @@ class MaDatosMantenimiento
      * @ORM\Column(name="nombre", type="string", length=150, nullable=true)
      */
     private $nombre;
+    
+     /**
+     * @var string
+     * @ORM\Column(name="codigo", type="string", length=20,  nullable=false) 
+     */
+    private $codigo;
+    
+    
+    
+    /**
+     * @var string
+     * @ORM\Column(name="marca", type="string", length=30,  nullable=false) 
+     */
+    private $marca;
+    
+    
 
     /**
      * @var \MaMaquina
@@ -155,4 +171,55 @@ class MaDatosMantenimiento
     {
         return $this->maMaquina;
     }
+    
+     /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Cliente
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+    
+    
+     /**
+     * Set marca
+     *
+     * @param integer $marca
+     * @return Cliente
+     */
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return integer 
+     */
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+    
+    
+    
+    
 }
