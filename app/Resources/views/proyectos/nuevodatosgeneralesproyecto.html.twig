@@ -29,67 +29,13 @@
                                 {# Esto es lo que proporciona el auto complete de las direcciones #}
                                 <div class="form-column col-md-6" style="margin-bottom: -10px;">
                                     <div class="form-group">
-                                                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                                 
                                                       <div class="form-group required">
                                                           <label class="control-label">Direccion:</label>
-                                                          <input type="text"  name="direccionProyecto"class="form-control requerido" id="us3-address" />
-                                                          
+                                                          <input type="text"  name="direccionProyecto"class="form-control requerido" id="diereccion" />
                                                       </div>
-                                                      <div class="form-group " style="display: none;">
-                                                          <label class="col-sm-2 control-label">Radio:</label>
-
-                                                          <div class="col-sm-5">
-                                                              <input type="text" class="form-control" id="us3-radius"  />
-                                                          </div>
-                                                      </div>
-                                                      <div id="us3" style="width: 550px; height: 400px;display: none;"></div>
-
-                                                      <div class="clearfix">&nbsp;</div>
-                                                      <div class="m-t-small" style="display: none;">
-                                                          <label class="p-r-small col-sm-1 control-label">Lat.:</label>
-
-                                                          <div class="col-sm-3">
-                                                              <input type="text" class="form-control" style="width: 110px" id="us3-lat" />
-                                                          </div>
-                                                          <label class="p-r-small col-sm-2 control-label">Long.:</label>
-
-                                                          <div class="col-sm-3">
-                                                              <input type="text" class="form-control" style="width: 110px" id="us3-lon" />
-                                                          </div>
-                                                      </div>
-
-                                                      <script>
-                                                          var x = ($("input#us3-lat").val());
-                                                          var  y = ($("input#us3-lon").val());
-
-                                                           x =parseFloat($("input#us3-lat").val());
-                                                           y =parseFloat($("input#us3-lon").val());
-                                                     $(document).ready(function() {
-                                                         $("#guardarCambios").hide();
-                                                          $('#us3').locationpicker({
-                                                              location: {
-                                                                  latitude: x,
-                                                                  longitude: y	
-                                                              },
-                                                              radius: 0,
-                                                              inputBinding: {
-                                                                  latitudeInput: $('#us3-lat'),
-                                                                  longitudeInput: $('#us3-lon'),
-                                                                  radiusInput: $('#us3-radius'),
-                                                                  locationNameInput: $('#us3-address')
-                                                              },
-                                                              enableAutocomplete: true,
-                                                              onchanged: function (currentLocation, radius, isMarkerDropped) {
-
-                                                              }
-
-                                                          });
-
-                                                  });
-                                                      </script>
-                                                  </div>   
-                                         </div>
+                                    </div>
+                                </div>
+                                                  
                                         {#Termina plugin de localizacion #}
                                         
                                         <div class="form-column col-md-3">
@@ -132,6 +78,9 @@
                                                     </select>  
                                             </div>
                                         </div>
+                                        <input type="hidden" id="longitud" value="0">
+                                        <input type="hidden" id="latitude" value="0">
+                                        
                                       {#  <div class="form-column col-md-3"></div>#}
                                           <div class="clearfix"></div>
                                           
@@ -141,7 +90,10 @@
                                                 <label for="observacionesProyecto" class="control-label" >Observaciones</label>
                                                 <textarea name="observacionesProyecto" id="observacionesProyecto" class="form-control cler" maxlength="250"></textarea>
                                             </div>
-                                            <div class="form-group" >
+                                            
+                                        </div>
+                                            <div class="form-column col-md-4">
+                                               <div class="form-group" >
                                                 <div class="btn-group pull-left">
                                                     <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 5px;margin-bottom: 25px;" id="cancelarDatosGeneralesProyecto">Cancelar</a>
                                                 </div>
@@ -149,6 +101,121 @@
                                                     <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 5px;margin-bottom: 25px;" id="guardarDatosGeneralesProyecto">Guardar</a>
                                                 </div>
                                             </div>
-                                        </div>
+                                          </div>
+                                          <div class="clearfix"></div>
+                                          
+                                          <div class="form-column col-md-12">
+                                              <div class="bloque-main">
+                                                  <h5>Busca la direccion del proyecto</h5>           
+                                                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                                  <div class="form-horizontal" style="width: 100%">
+                                                      
+                                                      <div class="form-group" style="display: block;">
+                                                          <label class="col-sm-2 control-label">Direccion:</label>
+
+                                                          <div class="col-sm-8">
+                                                              <input type="text" class="form-control" id="us3-address" />
+                                                          </div>
+                                                          <div class="col-sm-2">
+                                                              <input type="button" class="btn btn-success" id="guardarCambios" value="Guardar Cambios">
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group" style="display: none;">
+                                                          <label class="col-sm-2 control-label">Radio:</label>
+
+                                                          <div class="col-sm-5">
+                                                              <input type="text" class="form-control" id="us3-radius"  />
+                                                          </div>
+                                                      </div>
+                                                      <div id="us3" style="width: 100%; height: 500px;"></div>
+
+                                                      <div class="clearfix">&nbsp;</div>
+                                                      <div class="m-t-small" style="display: none;">
+                                                          <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                                                          <div class="col-sm-3">
+                                                              <input type="text" class="form-control" style="width: 110px" id="us3-lat" />
+                                                          </div>
+                                                          <label class="p-r-small col-sm-2 control-label">Long.:</label>
+
+                                                          <div class="col-sm-3">
+                                                              <input type="text" class="form-control" style="width: 110px" id="us3-lon" />
+                                                          </div>
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                      <script>
+                                              
+                                                           var x =13.70036411285400400000;
+                                                           var y =-89.22023010253906000000;
+
+
+                                                     $(document).ready(function() {
+                                                         $("#guardarCambios").hide();
+ 
+                                                          $('#us3').locationpicker({
+                             
+
+                                                              location: {
+                               
+                                                                  latitude: x,
+                                                                  longitude: y	
+                                                              },
+                                                              radius: 0,
+                                                              inputBinding: {
+                                                                  latitudeInput: $('#us3-lat'),
+                                                                  longitudeInput: $('#us3-lon'),
+                                                                  radiusInput: $('#us3-radius'),
+                                                                  locationNameInput: $('#us3-address')
+                                                              },
+                                                              enableAutocomplete: true,
+                                                              onchanged: function (currentLocation, radius, isMarkerDropped) {
+                                                                  // Uncomment line below to show alert on each Location Changed event
+                                                                 alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude  +")");
+                                                                  var  latitud=currentLocation.latitude;
+                                                                  var longitud = currentLocation.longitude
+                                                                  $("#longitud").val(longitud);
+                                                                  $("#latitude").val(latitud);
+                                                                  
+                                 
+                                                                  var mapContext = $(this).locationpicker('map');
+                                                                  mapContext.map.setZoom(17);
+                                                                  
+                                                                 {#Habilitar cuendo ya este en la edicion del proyecto#}
+                                                                 {# $.ajax({
+                                                                         type: 'POST',
+                                                                         async: false,
+                                                                         dataType: 'json',
+                                                                         data: {longitudes:longitud , latitudes:latitud},
+                                                                         url: Routing.generate('ingresarDireccionGoogleProyecto'),
+                                                                         success: function (data)
+                                                                         {
+                                                                               $("#guardarCambios").show();
+                                                                                 console.log(true);
+                                                                         },
+                                                                         error: function (xhr, status)
+                                                                         {
+                                         
+                                                                                 Lobibox.notify("error", {
+                                                                                                          size: 'mini',
+                                                                                                          msg: 'Disculpe, existió un problema'
+                                                                                                      });
+                                                                         }
+                                                                 });#}
+                                 
+                                 
+                                 
+
+                                                              }
+                           
+
+                                                          });
+                         
+                                                      });
+                                                      </script>
+                                                  </div>
+
+                                              </div>
+                                                               
+                                          </div>  
                                             
-                                     </div>   
+     </div>   

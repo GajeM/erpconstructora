@@ -130,6 +130,11 @@ class MaExpedienteMantenimiento
      */
     private $estado;
     
+     /**
+     * @var string
+     * @ORM\Column(name="codigo", type="string", length=20,  nullable=false) 
+     */
+    private $codigo;
 
     /**
      * Get id
@@ -464,6 +469,28 @@ class MaExpedienteMantenimiento
         return $this->estado;
     }
     
+   /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Cliente
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
     
     
     

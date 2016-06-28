@@ -71,9 +71,13 @@
                                 {{parent()}}
 	
                                 <div class="btn-group pull-right">
-                                  <a href="{{path('nuevamaquina')}}" class="admin-menu-navi">
+                                    <a href="{{path('nuevamaquina')}}" class="admin-menu-navi">
                                         <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevaMaquina">Nuevo</button>
                                      </a>
+                                       <a href="#" class="admin-menu-navi">
+                                        <button class="btn btn-danger  btn-sm " style="margin-left: 5px;" id="eliminarMaquina">Delete</button>
+                                     </a>  
+                                        
                                 </div>
                                   	
 	</div>
@@ -138,24 +142,26 @@
      <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+         //Al momento de cargar
          
+         $("#eliminarMaquina").hide();
 
                     
                     
 		    $('#listaMaquinas').DataTable( {
-                                    
+                                     
 		        columnDefs: [
 		            {
-		                targets: [ 0, 1, 2 ],
+		                targets: [ 0, 1, 2 ,3],
 		                className: 'mdl-data-table__cell--non-numeric'
 		            }
 		        ],
                                         
                                         "pageLength": 10,
-                                        "lengthMenu": [ 20 ],
+                                        "lengthMenu": [ 10 ],
                                         "dom": "ftp",
                                         "processing": true,
-                                        "serverSide": true,
+{#                                        "serverSide": true,#}
                                         "ajax": {
                                             "url": '{{path('maquina_data')}}',
                                             "type": 'GET'
@@ -190,96 +196,105 @@
          
        var idEliminar=0;
        
-       $(document).on("click","tr",function() {
+     //seleccion de un Tr para una eliminacion
+   $(document).on("click","tbody>tr",function() {
+
+             var identificador =     $(this).attr("role");
        
-             var idCliente =  $(this).children().html();
-            $("tr").css('background-color', 'white');
-            $(this).css('background-color', '#E9E6E6');
-            
-            
-             
-           
-                
-       });
-         
-       $(document).on("dblclick","tr",function() {
-             var idCliente =  $(this).children().html();
-             
-               var numero = idCliente;
-                  var url=Routing.generate();
-                  window.open(url,"_self"); 
-             $("#eliminarCP").hide();   
-                
-       });
-     
- 
-   $("#eliminarCP").on("click",function (){
-    
-               var valor = new Array();
-          
-                            
-                  valor.push(idEliminar);
-
-
-//Funcion del POST que me permite inabilitar un Proveedor
-
-                    $.post( "", { idcliente: valor }, function( data ) {
-                        var par = new Array();
-                        par = data.query;
-
-                      
-                      
-                        if(data.flag === 0) {
-                            
-                            var table = $('#listaClientes').DataTable();
-                                 $("#eliminarCP").hide();
-                            table.ajax.reload( function ( json ) {
-                               
-                            } );
-                          
-                            
-                        }
-                        else{
-                                Lobibox.notify("error", {
-                                          size: 'mini',
-                                          msg: 'Error al elmonar los datos, espere un momento e intenta de nuevo'
-                                      });
-                                            location.reload();
-                        }
-                       
-                    }, "json"); 
-               
-               
-   });
-           
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-        
-        
+            if(identificador=="row"){
                     
+                    var idTabla = $(this).parent().parent().attr('id');
+                   
+                    if (idTabla=='listaMaquinas'){
+                     var idMaquina =  $(this).children().html();
+                
+                    idEliminar=idMaquina;
+                    $("tr").css('background-color', 'white');
+                    $("tr").css('border-color', '#262626');
+                    $(this).css('background-color', '#E9E6E6');
+                    $("#eliminarMaquina").show();
+             
+                        
+                    }
+                         
+             }
+           
+           
+                
+       });    
+       
+       
+        $(document).on("click","#eliminarMaquina", function(){
+               swal({
+                        title: "Eliminacion de maquina",
+                        text: "¿Seguro quieres eliminar el registro de maquina?<br>Los datos eliminados, no podran ser recuperados posteriormente.",
+                        type: "warning",
+                        html:true,
+                        showCancelButton: true,
+                        cancelButtonText: "No",
+                        confirmButtonText: "Si",
+                        confirmButtonColor: "RED",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    
+                                     $.ajax({
+                                        type: 'POST',
+                                        async: false,
+                                        dataType: 'json',
+                                        data: {idEliminar:idEliminar},
+                                        url: Routing.generate('eliminarMaquina'),
+                                        success: function (data)
+                                        {
+                                            if (data.estado==true){
+                                                                           
+                                                                                    
+                                                                            $("#eliminarMaquina").hide();
+                                                                            var table = $('#listaMaquinas').DataTable();
+
+                                                                            table.ajax.reload(function (json) {
+
+                                                                            });
+                                                                     
+
+                                            }
+
+
+                                        },
+                                        error: function (xhr, status)
+                                        {
+
+
+
+                                        }
+                                    });  
+
+                                } else {
+                                    
+
+                                }
+                            });
+       });
+       
+        
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+                    
+         
+     
+                 
 });
 
-
-
-               
-               
-               
-  
-           
-           
-               
-               
-               
-    
 </script>
   
      

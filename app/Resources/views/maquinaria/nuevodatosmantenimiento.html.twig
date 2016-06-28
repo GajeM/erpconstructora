@@ -1,13 +1,16 @@
-<div class="row" style="margin-left: 2%; ">
+<div class="row" style="margin-left: 2%; margin-right: 2%; " >
   
-      
-        <div class="col-md-12">
+        <div class="col-md-2">
+            <button style="margin-bottom: -10px;" class="btn btn-primary  btn-sm " id="nuevoRegistroDatoMantenimiento" title="Nuevo registro">Nuevo</button>
+        </div>
+        <div class="col-md-2">
+           <button style="margin-bottom: -10px;margin-left: -45px;" class="btn btn-danger  btn-sm pull-left " id="eliminarDatoMantenimiento" title="Eliminar Registro">Eliminar</button>
+        </div>
+
+    
+    <div class="col-md-12"  id="contenidoTablaExpedienteMantenimiento">
        
-            <div style="margin-bottom: -50px;margin-top: 10px;">
-                <img src="{{ asset('Resources/src/img/add.png') }}" title="Nuevo" class="addDatosMantenimiento">
-                <b class="addDatosMantenimiento">Agregar nuevo</b><br><br>
-                 <button class="btn btn-danger  btn-sm " style="margin-bottom: -10px;" id="eliminarDatoMantenimiento">Eliminar</button>
-            </div>
+          
                 
             <table id="listaDatosMantenimientos" class="mdl-data-table" cellspacing="0" width="100%">
 
@@ -15,48 +18,34 @@
 
                     <tr>
                         <th>ID Mantenimiento</th>
-                        <th>Repuesto/Trabajo realizar</th>
-                        <th>Numero</th>
-                        <th>Descripcion</th>
-                      
-
+                         <th>Repuesto/Trabajo realizar</th>
+                        <th>Numero Original</th>
+                        <th>Numero Comercial</th>
                     </tr>
                 </thead>
 
-                {#<tbody>
-                    <tr>
-                        <td>Guillermo Jandres</td>
-                        <td>Chiltiupan, La Libertad</td>
-                        <td>Edinburgh</td>
-                        <td><input type="button" value="Ver mas"></td>
-                      
-                    </tr>
-                    
-                </tbody>#}
-                
-               
             </table>
-            
-            
+
         </div>
-
-      
-
     <div class="clearfix"></div>
-    
+    <div style="margin-bottom: 10px;margin-top: 10px; margin-left: 10px;" id="addNewRowDatoMante">
+                <img src="{{ asset('Resources/src/img/add.png') }}" title="Nuevo" class="addDatosMantenimiento">
+                <b class="addDatosMantenimiento" id="newDatoMante">Agregar nuevo</b><br><br>
+                 
+     </div>
     
     <div id="contenidoDatosMantenimiento">
-            
+              
         
             
                              
      </div>
     
-        <div class="form-column col-md-4" style="margin-left: -120px;"><div class="form-group" id="almacenarInsersion" >
-                <div class="btn-group pull-right">
-                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarFormularioDatoManetenimiento">Cancelar</a>
-                </div>
+        <div class="form-column col-md-4 " style="margin-left: -120px;"><div class="form-group" id="almacenarInsersion" >
                 <div class="btn-group pull-right"><button class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarFormularioDatoManetenimiento">Guardar</button>
+                </div>
+                 <div class="btn-group pull-right">
+                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="cancelarFormularioDatoManetenimiento">Cancelar</a>
                 </div>
             </div>
         </div>

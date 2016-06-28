@@ -132,7 +132,7 @@ class MaquinaController extends Controller
              $objeto->setCapacidad($capacidad);
              $objeto->setMarca($marca);
              $objeto->setDecripcion($descripcion);
-
+             $objeto->setEstado(1);
             $em->persist($objeto);
             $em->flush();
 
@@ -375,7 +375,7 @@ class MaquinaController extends Controller
         if($busqueda['value']!=''){
           $value = $busqueda['value'];  
            
-          $sql = "SELECT da.id as id, da.codigo ,da.numero as numero, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da " 
+          $sql = "SELECT da.id as id, da.codigo ,da.numero_original as numeroOriginal, da.numero_comercial as numeroComercial,  da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da " 
                     ."WHERE  da.ma_maquina_id=".$idMa
                     ." AND (da.descripcion like '%".$value."%' or da.numero like '%".$value."%'   or da.codigo like '%".$value."%'  or da.nombre like '%".$value."%') ORDER BY da.codigo limit 5";
             $stmt = $em->getConnection()->prepare($sql);
@@ -388,7 +388,7 @@ class MaquinaController extends Controller
         else{
             
             
-              $sql = "SELECT da.id as id, da.codigo, da.numero as numero, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da "
+              $sql = "SELECT da.id as id, da.codigo, da.numero_original as numeroOriginal, da.numero_comercial as numeroComercial, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da "
                      . "WHERE da.ma_maquina_id=" . $idMa
                     . " ORDER BY da.codigo ASC";
             $stmt = $em->getConnection()->prepare($sql);
@@ -420,7 +420,9 @@ class MaquinaController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             $idMaquina = $request->get('idMaquina');
-            $numeros = $request->get('numeros');
+            $numerosOriginal = $request->get('numerosOriginal');
+            $numerosComercial= $request->get('numerosComercial');
+            
             $nombres = $request->get('nombres');
             $descripciones = $request->get('descripciones');
             $marcas = $request->get('marcas');
@@ -434,7 +436,8 @@ class MaquinaController extends Controller
               $codigo = $this->generarCorrelativos($identificador);
               $objeto = new MaDatosMantenimiento();
               $objeto->setNombre($nombres[$i]);
-              $objeto->setNumero($numeros[$i]);
+              $objeto->setNumeroComercial($numerosComercial[$i]);
+              $objeto->setNumeroOriginal($numerosOriginal[$i]);
               $objeto->setDescripcion($descripciones[$i]);
               $objeto->setMarca($marcas[$i]);
               $objeto->setMaMaquina($maquina[0]);
@@ -460,7 +463,8 @@ class MaquinaController extends Controller
     
        
         $em = $this->getDoctrine()->getManager();
-        // 1 para correlativo de expedientes mantenimientos
+        // 1 para correlativo de datos de  mantenimientos
+        //2 Para correlativos de Expedientes de mantenimientos
         
 
          if ($identificador==1){
@@ -470,6 +474,14 @@ class MaquinaController extends Controller
             $numero_base = $resultCorrelativo[0]['numero'];
             
             $primerLetras="NRM"; 
+         }else if($identificador==2){
+                $dqlNumerocorrelativo = "SELECT COUNT(u.id) as numero FROM DGAdminBundle:MaExpedienteMantenimiento u"
+            . " WHERE u.codigo like '%NRE%' ";
+            $resultCorrelativo = $em->createQuery($dqlNumerocorrelativo)->getArrayResult();
+            $numero_base = $resultCorrelativo[0]['numero'];
+            
+             $primerLetras="NRE"; 
+             
          }
         
         
@@ -496,14 +508,7 @@ class MaquinaController extends Controller
         }
         return $valor;
      }
-    
-    
-    
-    
-    
-    
-    
-    
+
      /**
      * @Route("/seleccionarDatosMantenimientoEdicion/", name="seleccionarDatosMantenimientoEdicion", options={"expose"=true})
      * @Method("POST")
@@ -522,14 +527,16 @@ class MaquinaController extends Controller
             $detalleDatoMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findByCodigo($idDatoMantenimiento);
             
             $nombre=$detalleDatoMantenimiento[0]->getNombre();
-            $numero =$detalleDatoMantenimiento[0]->getNumero();
+            $numeroOriginal =$detalleDatoMantenimiento[0]->getNumeroOriginal();
+            $numeroComercial =$detalleDatoMantenimiento[0]->getNumeroComercial();
             $descripcion =$detalleDatoMantenimiento[0]->getDescripcion();
-                        $marca=$detalleDatoMantenimiento[0]->getMarca();
+             $marca=$detalleDatoMantenimiento[0]->getMarca();
 
             
             $data['estado']=true;
             $data['nombre']=$nombre;
-            $data['numero']=$numero;
+            $data['numeroOriginal']=$numeroOriginal;
+            $data['numeroComercial']=$numeroComercial;
             $data['descripcion']=$descripcion;
             $data['marca']=$marca;
             
@@ -561,7 +568,9 @@ class MaquinaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $idDatoMantenimiento = $request->get('idDatoMantenimiento');
             $nombres = $request->get('nombres');
-            $numeros = $request->get('numeros');
+            $numerosOriginal = $request->get('numerosOriginal');
+            $numerosComercial = $request->get('numerosComercial');
+            
             $descripciones = $request->get('descripciones');
             $marcas = $request->get('marcas');
             
@@ -569,7 +578,8 @@ class MaquinaController extends Controller
     
             $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findByCodigo($idDatoMantenimiento);
             $objeto[0]->setNombre($nombres[0]);
-            $objeto[0]->setNumero($numeros[0]);
+            $objeto[0]->setNumeroOriginal($numerosOriginal[0]);
+            $objeto[0]->setNumeroComercial($numerosComercial[0]);
             $objeto[0]->setDescripcion($descripciones[0]);
             $objeto[0]->setMarca($marcas[0]);
             
@@ -602,7 +612,8 @@ class MaquinaController extends Controller
             
             $em = $this->getDoctrine()->getManager();
             $idDatoMantenimiento = $request->get('idDatoMantenimiento');
-            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findById($idDatoMantenimiento);
+
+            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findByCodigo($idDatoMantenimiento);
             
             $em->remove($objeto[0]);
             $em->flush();
@@ -619,7 +630,7 @@ class MaquinaController extends Controller
         
     } 
     
-  /**
+    /**
      * 
      *
      * @Route("/maquina/data", name="maquina_data")
@@ -662,8 +673,8 @@ class MaquinaController extends Controller
           $value = $busqueda['value'];  
            
           $sql = "SELECT cp.id as id, cp.alias as nombreMaquina, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
-                    . " WHERE upper(cp.alias)  LIKE '%" . strtoupper($value) . "%' OR  upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%" . $value . "%'  "
-                     . "OR upper(cp.marca)  LIKE '%" . strtoupper($value) . "%' "
+                    . " WHERE (upper(cp.alias)  LIKE '%" . strtoupper($value) . "%' OR  upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%" . $value . "%'  "
+                     . "OR upper(cp.marca)  LIKE '%" . strtoupper($value) . "%')  AND cp.estado=1  "
                     . "ORDER BY cp.nombre ASC";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -672,11 +683,13 @@ class MaquinaController extends Controller
         }
         else{
               $sql = "SELECT cp.id as id, cp.alias as nombreMaquina,cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
+                      . " WHERE cp.estado=1"
                     . " ORDER BY cp.nombre ASC";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
             $territorio['recordsFiltered'] = count($territorio['data']);
+       
         }
      
         
@@ -736,7 +749,7 @@ class MaquinaController extends Controller
         if($busqueda['value']!=''){
           $value = $busqueda['value'];  
            
-          $sql = "SELECT ma.id as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
+          $sql = "SELECT ma.codigo as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
                     . "INNER JOIN ma_tipo_mantenimiento tm on ma.ma_mantenimiento_id=tm.id"  
                     . " LEFT OUTER JOIN proyecto pro on ma.proyecto_id=pro.id "
                     ." WHERE ma.ma_maquina_id=".$idMa
@@ -749,7 +762,7 @@ class MaquinaController extends Controller
        
         }
         else{
-            $sql = "SELECT ma.id as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
+            $sql = "SELECT ma.codigo as id, ma.fecha as fecha, ma.serie as serie, ma.costo as costo, pro.nombre as proyecto, tm.nombre as tipomantenimiento FROM ma_expediente_mantenimiento ma "
                      . "INNER JOIN ma_tipo_mantenimiento tm on ma.ma_mantenimiento_id=tm.id"
                     . " LEFT OUTER JOIN proyecto pro on ma.proyecto_id=pro.id "
                     . "WHERE ma.ma_maquina_id=" . $idMa
@@ -841,8 +854,8 @@ class MaquinaController extends Controller
         } else {
             $proyecto = NULL;
         }
-
-
+        
+        
         $idMaquinaria = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquina);
         $tipoMantenimientoObj = $this->getDoctrine()->getRepository('DGAdminBundle:MaTipoMantenimiento')->findById($tipoMantenimiento);
         
@@ -866,7 +879,8 @@ class MaquinaController extends Controller
 
         }
          
-
+          $codigo = $this->generarCorrelativos(2);
+          $objetoM->setCodigo($codigo);
           $em->persist($objetoM);
           $em->flush();
 
@@ -1110,13 +1124,15 @@ class MaquinaController extends Controller
          if($isAjax){
             
             $em = $this->getDoctrine()->getManager();
-            $idRegistro = $request->get('idRegistro');
-            $imagen = $this->getDoctrine()->getRepository('DGAdminBundle:ImagenesDetalleMantenimiento')->findByMaExpedienteMantenimiento($idRegistro);
-       
+            $codigo = $request->get('idRegistro');
+            $detalleDatoExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findByCodigo($codigo);
+            $idRegistro= $detalleDatoExpedienteMantenimiento[0]->getId();
             
-            $detalleDatoExpedienteMantenimiento = $this->getDoctrine()->getRepository('DGAdminBundle:MaExpedienteMantenimiento')->findById($idRegistro);
-            $data['registro']=$idRegistro;
-            $data['total']=$detalleDatoExpedienteMantenimiento[0]->getCosto();
+            
+            $imagen = $this->getDoctrine()->getRepository('DGAdminBundle:ImagenesDetalleMantenimiento')->findByMaExpedienteMantenimiento($idRegistro);
+             
+             $data['registro']=$idRegistro;
+             $data['total']=$detalleDatoExpedienteMantenimiento[0]->getCosto();
              $data['tipoMantenimientoId']=$detalleDatoExpedienteMantenimiento[0]->getMaMantenimiento()->getId();
              $data['tipoMantenimientoNombre']=$detalleDatoExpedienteMantenimiento[0]->getMaMantenimiento()->getNombre();
              $data['idMaquina']=$detalleDatoExpedienteMantenimiento[0]->getMaMaquina()->getId();
@@ -1192,9 +1208,6 @@ class MaquinaController extends Controller
            
         }
         
-        
-        
-            
      /**
      * @Route("/eliminarRegistroDetalleEspediente/", name="eliminarRegistroDetalleEspediente", options={"expose"=true})
      * @Method("POST")
@@ -1452,7 +1465,36 @@ class MaquinaController extends Controller
     }
     
       
-      
+       /**
+     * @Route("/eliminarMaquina/", name="eliminarMaquina", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function EliminarMaquinaAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idEliminar = $request->get('idEliminar');
+            $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findByNombre($idEliminar);
+            $objeto[0]->setEstado(0);
+            $em->merge($objeto[0]);
+            $em->flush();
+
+            $data['estado']=true;
+
+
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }   
       
       
       

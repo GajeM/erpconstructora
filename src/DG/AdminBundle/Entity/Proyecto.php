@@ -127,6 +127,22 @@ class Proyecto
      * @ORM\Column(name="codigo", type="string", length=20,  nullable=false) 
      */
     private $codigo;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", nullable=false)
+     */
+    private $longitude;
+    
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", nullable=false)
+     */
+    private $latitude;
+    
+    
 
     /**
      * Get id
@@ -441,9 +457,56 @@ class Proyecto
     {
         return $this->codigo;
     }
+    
+    
+     /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return CtlEmpresa
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
 
+        return $this;
+    }
 
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    
+    
+      /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return CtlEmpresa
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
 
     
     
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+    
+
 }

@@ -57,6 +57,19 @@ class MaDatosMantenimiento
     private $marca;
     
     
+       /**
+     * @var string
+     * @ORM\Column(name="numero_original", type="string", length=30,  nullable=false) 
+     */
+    private $numeroOriginal;
+    
+         /**
+     * @var string
+     * @ORM\Column(name="numero_comercial", type="string", length=30,  nullable=false) 
+     */
+    private $numeroComercial;
+    
+    
 
     /**
      * @var \MaMaquina
@@ -218,6 +231,60 @@ class MaDatosMantenimiento
     {
         return $this->marca;
     }
+    
+    
+      /**
+     * Set numeroOriginal
+     *
+     * @param integer $marca
+     * @return Cliente
+     */
+    public function setNumeroOriginal($numeroOriginal)
+    {
+        $this->numeroOriginal = $numeroOriginal;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return integer 
+     */
+    public function getNumeroOriginal()
+    {
+        return $this->numeroOriginal;
+    }
+    
+    
+    
+      /**
+     * Set numeroComercial
+     *
+     * @param integer $marca
+     * @return Cliente
+     */
+    public function setNumeroComercial($numeroComercial)
+    {
+        $this->numeroComercial = $numeroComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return integer 
+     */
+    public function getNumeroComercial()
+    {
+        return $this->numeroComercial;
+    }
+    
+    
+    
+    
+    
     
     
     

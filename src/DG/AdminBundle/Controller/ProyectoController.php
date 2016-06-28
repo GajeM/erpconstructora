@@ -282,7 +282,9 @@ class ProyectoController extends Controller
             
              
             $em = $this->getDoctrine()->getManager();
-
+            
+            $longitud = $request->get('longitud');
+            $latitud = $request->get('latitud');
             $nombreProyecto = $request->get('nombreProyecto');
             $idcliente = $request->get('idcliente');
             $contactoDirecto = $request->get('contactoDirecto');
@@ -314,6 +316,8 @@ class ProyectoController extends Controller
             $codigo = $this->generarCorrelativoProyecto();
             
             $objeto = new Proyecto();
+            $objeto->setLongitude($longitud);
+            $objeto->setLatitude($latitud);
             $objeto->setNombre($nombreProyecto);
             $objeto->setCodigo($codigo);
             $objeto->setFechaInicio(new \DateTime($fechaInicios));
@@ -337,6 +341,34 @@ class ProyectoController extends Controller
         
         
     }
+    
+     
+//     /**
+//     * @Route("/ingresarDireccionGoogleProyecto/", name="ingresarDireccionGoogleProyecto", options={"expose"=true})
+//     * @Method("POST")
+//     */
+//    
+//    
+//      public function IngresarDireccionGoogleProyectoAction(Request $request) {
+//        
+//        $isAjax = $this->get('Request')->isXMLhttpRequest();
+//
+//         if($isAjax){
+//            
+//             
+//            $em = $this->getDoctrine()->getManager();
+//       
+//            $data['estado']=false;
+//         
+//            return new Response(json_encode($data)); 
+//            
+//            
+//         }
+//        
+//        
+//        
+//    }
+//    
     
     
     

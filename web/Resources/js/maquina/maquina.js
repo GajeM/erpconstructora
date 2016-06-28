@@ -13,11 +13,13 @@
      $("#eliminarDatoMantenimiento").hide();
      $("#eliminarDatoExpedienteMantenimiento").hide();
      $(".formularioInsercionExpedienteMaquinaria").hide();
+     $("#addNewRowDatoMante").hide();
      
      
      
 $('#anhoMaquina').Zebra_DatePicker({
-    format: 'Y'
+    format: 'Y',
+     direction:false
 });
 
 
@@ -32,6 +34,29 @@ $('#fechaDE').Zebra_DatePicker({
         
     });
     
+     
+     
+           $(document).on("click","#nuevoRegistroDatoMantenimiento",function() {
+           
+           $("#nuevoRegistroDatoMantenimiento").hide();
+           $("#contenidoTablaExpedienteMantenimiento").hide();
+            $("#addNewRowDatoMante").show();
+            $("#newDatoMante").click();
+             
+           
+           
+       }); 
+       
+       function seleccionarRegistroDatoMantenimiento(){
+           
+            $("#nuevoRegistroDatoMantenimiento").hide();
+            $("#contenidoTablaExpedienteMantenimiento").hide();
+            $("#addNewRowDatoMante").hide();
+            $("#contenidoDatosMantenimiento").hide();
+           
+           
+       }
+     
      
  //Select2 del tipo de empresa    
      $('#tipoEquipo').select2({
@@ -179,13 +204,7 @@ $('#fechaDE').Zebra_DatePicker({
  
             
             
-       $(document).on("click","#guargarDatosGeneralesMaquina",function() {
-           
-                    
-           
-           
-           
-       }); 
+ 
      
     $(document).on("click","#guargarDatosGeneralesMaquina",function() {
        var idPrincipal = $("#idMaquina").val();
@@ -527,7 +546,6 @@ $('#fechaDE').Zebra_DatePicker({
                 "lengthMenu": [20],
                 "dom": "ftp",
                 "processing": true,
-                "serverSide": true,
                 "ajax": {
                     "url": url,
                     "type": 'GET'
@@ -536,8 +554,8 @@ $('#fechaDE').Zebra_DatePicker({
                 "columns": [
                     {"data": "codigo"},
                     {"data": "nombre"},
-                    {"data": "numero"},
-                    {"data": "descripcion"}
+                    {"data": "numeroOriginal"},
+                    {"data": "numeroComercial"}
                 ],
                 "language": {
                     "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -566,30 +584,36 @@ var numeroEliminacion=0;
       numeroEliminacion=numeroEliminacion+1;
       var formulario="";
       
-        formulario = '<div class="divMadreDatosMantenimiento" id="DatosMantenimiento-'+numeroEliminacion+'"><div class="form-column col-md-4"><div class="form-group" >\n\
-                            <label for="nombre" class="control-label">Nombre</label>\n\
-                                <input type="text" class="form-control nombreDato" id="nombre" placeholder="Nombre del producto" name="nombre" >\n\
+        formulario = '<div class="panel panel-default" id="DatosMantenimiento-'+numeroEliminacion+'"><div class="panel-body" ><div class="divMadreDatosMantenimiento" ><div class="form-column col-md-3"><div class="form-group required" >\n\
+                            <label for="nombre" class="control-label">Repuesto/Trabajo realizar</label>\n\
+                                <input type="text" class="form-control nombreDato requerido" id="nombre" placeholder="Repuesto o trabajo a realizar" name="nombre" >\n\
                                 </div>\n\
                            </div>\n\
-                            <div class="form-column col-md-4"><div class="form-group" >\n\
+                            <div class="form-column col-md-3"><div class="form-group" >\n\
                                 <label for="marca" class="control-label">Marca</label>\n\
                                 <input type="text" class="form-control marcaDato" id="marca" placeholder="Marca del producto" name="marca" >\n\
                                 </div>\n\
                            </div>\n\
                             <div class="form-column col-md-3"><div class="form-group" >\n\
-                            <label for="numero" class="control-label">Numero</label>\n\
-                                <input type="text" class="form-control numeroDato" id="numero" placeholder="# del producto" name="numero" >\n\
+                                <label for="marca" class="control-label">Numero original</label>\n\
+                                <input type="text" class="form-control numeroOriginal" id="numeroOriginal" placeholder="# Original" name="numeroOriginal" >\n\
                                 </div>\n\
                            </div>\n\
-                            <div class="col-md-1 fa fa-close eliminarDiv" id="'+numeroEliminacion+'" style="margin-top: 29px;margin-left:-15px;"></div>\n\
+                            <div class="form-column col-md-3"><div class="form-group" >\n\
+                                <label for="marca" class="control-label">Numero comercial</label>\n\
+                                <input type="text" class="form-control numeroComercial" id="numeroComercial" placeholder="# Comercial" name="numeroComercial" >\n\
+                                </div>\n\
+                           </div>\n\
                             <div class="clearfix"></div>\n\
-                            <div class="form-column col-md-6"><div class="form-group" >\n\
+                             <div class="form-column col-md-9"><div class="form-group" >\n\
                               <label for="descripcion" class="control-label">Descripcion</label>\n\
-                                        <textarea class="form-control descripcionDato" id="descripcion" placeholder="Descripcion del producto" name="descripcion" ></textarea>\n\
+                                        <textarea class="form-control descripcionDato" id="descripcion" placeholder="Descripcion del producto" name="descripcion" maxlength="350"></textarea>\n\
                              </div>\n\
                             </div>  \n\
-                                <div class="col-md-5"></div>\n\
-                                  </div><div class="clearfix"></div>';
+                                <div class="col-md-2" style="margin-top: 25px;margin-left:10px; border-radius: 0;">\n\
+                                     <div class="btn-group pull-right"><button class="btn btn-danger  btn-sm eliminarDiv" style="margin-left: 5px;margin-top: 35px;margin-right:-80px; " id="'+numeroEliminacion+'">Eliminar</button>\n\
+                                </div>\n\
+                             <div class="clearfix"></div></div></div></div>';
       
       
        $("#contenidoDatosMantenimiento").append(formulario);
@@ -629,6 +653,8 @@ var numeroEliminacion=0;
                                                             if (numeroEliminacion==0){
                                                                 
                                                                     $("#almacenarInsersion").hide();
+                                                                    $("#cancelarFormularioDatoManetenimiento").click();
+                                                                    
                                                                 
                                                             }
                                                           
@@ -640,19 +666,30 @@ var numeroEliminacion=0;
                                                             
                                                             
                                                         });
-         
-         
-        });
+
+                                            });
    
-  
-  
-  
-  
- 
   //Donde se envian los valores de que se quieren registrar
    $(document).on("click","#guardarFormularioDatoManetenimiento",function() {
+       
+         var num=0;
+         
+                $('.requerido').each( function (){
+            
+                       var x=$(this).val();
+            
+                       if(x=="" || x==null){
+                           num=num+1;
+                       }
+
+                       });
+       
+        if (num==0){
+            
         var nombres = new Array();
-        var numeros = new Array();
+        var numerosOriginal = new Array();
+        var numerosComercial = new Array();
+        
         var descripciones = new Array();
           var marcas = new Array();
             
@@ -660,8 +697,13 @@ var numeroEliminacion=0;
                      nombres.push($(this).val());
              });
              
-              $(".numeroDato").each(function(k, va) {
-                     numeros.push($(this).val());
+              $(".numeroOriginal").each(function(k, va) {
+                     numerosOriginal.push($(this).val());
+             });
+             
+             
+            $(".numeroComercial").each(function(k, va) {
+                     numerosComercial.push($(this).val());
              });
              
             $(".descripcionDato").each(function(k, va) {
@@ -678,7 +720,8 @@ var numeroEliminacion=0;
             type: 'POST',
             async: false,
             dataType: 'json',
-            data: {nombres:nombres,numeros:numeros,descripciones:descripciones,idMaquina:idMaquina,marcas:marcas},
+            data: {nombres:nombres,numerosOriginal:numerosOriginal,descripciones:descripciones,idMaquina:idMaquina,
+                marcas:marcas,numerosComercial:numerosComercial},
             url: Routing.generate('insertarDatosMantenimiento'),
             success: function (data)
             {
@@ -706,6 +749,7 @@ var numeroEliminacion=0;
                     },
                             function (isConfirm) {
                                 if (isConfirm) {
+                                    $("#cancelarFormularioDatoManetenimiento").click();
                                
 
                                 } else {
@@ -726,6 +770,11 @@ var numeroEliminacion=0;
                
             }
         });
+        
+   }else{
+         swal("Error!", "El campo repuesto o trabajo a realizar es requerido", "error");
+
+   }
                
    });
    
@@ -1174,6 +1223,8 @@ $('#fechaDEE').Zebra_DatePicker({
                     var idDatoMantenimiento = $(this).children().html();
                     idDetalle = idDatoMantenimiento;
                     $("#eliminarDatoMantenimiento").hide();
+                    seleccionarRegistroDatoMantenimiento();
+                    
 
 
                             $.ajax({
@@ -1187,23 +1238,28 @@ $('#fechaDEE').Zebra_DatePicker({
                                     if (data.estado == true) {
                                         var form = "";
 
-                                        form = '<div class="clearfix"></div><div class="form-column col-md-4"><div class="form-group" >\n\
+                                        form = '<div class="panel panel-default"><div class="panel-body" ><div class="form-column col-md-3"><div class="form-group required" >\n\
                                             <label for="nombre" class="control-label">Nombre</label>\n\
-                                                <input type="text" class="form-control nombreDatoE" id="nombre" placeholder="Nombre del producto" name="nombre" value="' + data.nombre + '" >\n\
+                                                <input type="text" class="form-control nombreDatoE requerido" id="nombre" placeholder="Nombre del producto" name="nombre" value="' + data.nombre + '" >\n\
                                                 </div>\n\
                                            </div>\n\
-                                            <div class="form-column col-md-4"><div class="form-group" >\n\
+                                            <div class="form-column col-md-3"><div class="form-group" >\n\
                                                 <label for="numero" class="control-label">Marca</label>\n\
                                                 <input type="text" class="form-control marcaDatoE" id="marcaDatoE" placeholder="Marca del producto" name="marcaDatoE" value="' + data.marca + '">\n\
                                                 </div>\n\
                                            </div>\n\
-                                            <div class="form-column col-md-4"><div class="form-group" >\n\
-                                            <label for="numero" class="control-label">Numero</label>\n\
-                                                <input type="text" class="form-control numeroDatoE" id="numero" placeholder="# del producto" name="numero" value="' + data.numero + '">\n\
+                                            <div class="form-column col-md-3"><div class="form-group" >\n\
+                                                <label for="marca" class="control-label">Numero original</label>\n\
+                                                <input type="text" class="form-control numeroOriginalE" id="numeroOriginalE" placeholder="# Original" name="numeroOriginalE" value="' + data.numeroOriginal + '">\n\
+                                                </div>\n\
+                                           </div>\n\
+                                            <div class="form-column col-md-3"><div class="form-group" >\n\
+                                                <label for="marca" class="control-label">Numero comercial</label>\n\
+                                                <input type="text" class="form-control numeroComercialE" id="numeroComercial" placeholder="# Comercial" name="numeroComercialE" value="' + data.numeroComercial + '">\n\
                                                 </div>\n\
                                            </div>\n\
                                             <div class="clearfix"></div>\n\
-                                            <div class="form-column col-md-6"><div class="form-group" >\n\
+                                            <div class="form-column col-md-9"><div class="form-group" >\n\
                                               <label for="descripcion" class="control-label">Descripcion</label>\n\
                                               <textarea class="form-control descripcionDatoE" id="descripcion" placeholder="Descripcion del producto" name="descripcion" >' + data.descripcion + '</textarea>\n\
                                              </div>\n\
@@ -1217,7 +1273,7 @@ $('#fechaDEE').Zebra_DatePicker({
                                                 </div>\n\
                                                 <div class="btn-group pull-right"><button class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 35px;" id="guardarEdicionDatoManetenimiento">Guardar</button>\n\
                                                 </div></div>\n\
-                                                </div> </div>';
+                                                </div> </div></div></div>';
 
 
                                         $("#edicionDatosMantenimiento").append(form);
@@ -1412,9 +1468,26 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
 
    //Donde se almacenan los valores de la edicion de los datos del mantenimiento    
   $(document).on("click","#guardarEdicionDatoManetenimiento",function() {
+      
+                 var num=0;
+         
+                $('.requerido').each( function (){
+            
+                       var x=$(this).val();
+            
+                       if(x=="" || x==null){
+                           num=num+1;
+                       }
+
+                       });
+       
+        if (num==0){
+        
+      
            
        var nombres = new Array();
-        var numeros = new Array();
+        var numerosOriginal = new Array();
+        var numerosComercial = new Array();
         var descripciones = new Array();
         var marcas = new Array();
 
@@ -1422,8 +1495,12 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             nombres.push($(this).val());
         });
 
-        $(".numeroDatoE").each(function (k, va) {
-            numeros.push($(this).val());
+        $(".numeroOriginalE").each(function (k, va) {
+            numerosOriginal.push($(this).val());
+        });
+        
+          $(".numeroComercialE").each(function (k, va) {
+            numerosComercial.push($(this).val());
         });
 
         $(".descripcionDatoE").each(function (k, va) {
@@ -1440,16 +1517,13 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             type: 'POST',
             async: false,
             dataType: 'json',
-            data: {idDatoMantenimiento: idDetalle,nombres:nombres,numeros:numeros,descripciones:descripciones
-            ,marcas:marcas},
+            data: {idDatoMantenimiento: idDetalle,nombres:nombres,numerosOriginal:numerosOriginal,descripciones:descripciones
+            ,marcas:marcas,numerosComercial:numerosComercial},
             url: Routing.generate('editarDatosMantenimientoEdicion'),
             success: function (data)
             {
                 if (data.estado == true) {
 
-                          
-
-                                        $('#edicionDatosMantenimiento').html('');
                                         
                                         var table = $('#listaDatosMantenimientos').DataTable();
                                         
@@ -1470,6 +1544,9 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                     },
                             function (isConfirm) {
                                 if (isConfirm) {
+                                    
+                                    $("#cancelarEdicionDatoManetenimiento").click();
+                                    
                                 
 
                                 } else {
@@ -1493,9 +1570,30 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             }
         });
 
-
+        }else{
+              swal("Error!", "El campo repuesto o trabajo a realizar es requerido, no puedes dejarlo vacio", "error");
+            
+        }
+        
+        
 
     });  
+    
+    
+    
+        function alcancelarEdicionDatoMantenimiento(){
+            
+            $('#edicionDatosMantenimiento').html('');
+            $("#almacenarInsersion").hide();
+            $("#nuevoRegistroDatoMantenimiento").show();
+            $("#contenidoTablaExpedienteMantenimiento").show();
+            $("#addNewRowDatoMante").hide();
+            $("#contenidoDatosMantenimiento").show();
+            
+            
+            
+        }
+    
   
   //Eliminacion de los datos del mantenimiento
    $(document).on("click","#eliminarDatoMantenimiento",function() {
@@ -1517,7 +1615,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                 });
                             
                   swal({
-                        title: "Datos de mantenimiento eliminados con exito",
+                        title: "Registro eliminado con exito",
                         text: "¿Quieres seguir  gestionando datos de mantenimiento?",
                         type: "success",
                         showCancelButton: true,
@@ -1530,10 +1628,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                             function (isConfirm) {
                                 if (isConfirm) {
                                 
-                                swal("Dato eliminado con exito!", "success")
-                                
-                                
-
+         
                                 } else {
                                     var url = Routing.generate('dashboard_index');
                                     window.open(url, "_self");
@@ -1561,7 +1656,10 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
     $(document).on("click","#cancelarFormularioDatoManetenimiento",function() {
         
             $('#contenidoDatosMantenimiento').html('');
-                $("#almacenarInsersion").hide();        
+            $("#almacenarInsersion").hide();
+            $("#nuevoRegistroDatoMantenimiento").show();
+            $("#contenidoTablaExpedienteMantenimiento").show();
+            $("#addNewRowDatoMante").hide();
                 
                 limparformulario();
         
@@ -1586,7 +1684,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                 "lengthMenu": [20],
                 "dom": "ftp",
                 "processing": true,
-                "serverSide": true,
+//                "serverSide": true,
                 "ajax": {
                     "url": url,
                     "type": 'GET'
@@ -2359,10 +2457,9 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
    //Click en el boton cancelarEdicionDatoManetenimiento
    
      $(document).on("click","#cancelarEdicionDatoManetenimiento",function() {
-              
-            $('#edicionDatosMantenimiento').html('');
-                $("#almacenarEdicion").hide();        
-                
+
+//            $("#almacenarEdicion").hide();        
+                alcancelarEdicionDatoMantenimiento();
             
               
          

@@ -263,8 +263,10 @@ $('#fechaInicio').Zebra_DatePicker({
                 
                 
                 var nombreProyecto,idcliente, contactoDirecto,direccionProyecto, estadoProyecto, tipoProyecto, fechaInicio,
-                        fechaFin, encargadoProyecto, observacionesProyecto;
-
+                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud;
+                
+                longitud= $("#longitud").val();
+                latitud= $("#latitude").val();
                 nombreProyecto = $("#nombreProyecto").val();
                 idcliente  = $("#idcliente").val();
                 contactoDirecto  = $("#contactoDirecto").val();
@@ -292,7 +294,8 @@ $('#fechaInicio').Zebra_DatePicker({
                                                  async: false,
                                                  dataType: 'json',
                                                  data: {nombreProyecto: nombreProyecto, idcliente: idcliente, contactoDirecto: contactoDirecto, direccionProyecto: direccionProyecto, estadoProyecto: estadoProyecto,
-                                                     tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto},
+                                                     tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto,
+                                                 longitud:longitud,latitud:latitud},
                                                  url: Routing.generate('insertarDatosGeneralesProyecto'),
                                                  success: function (data)
                                                  {
