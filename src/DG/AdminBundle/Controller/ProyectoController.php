@@ -20,26 +20,46 @@ class ProyectoController extends Controller
     /**
      * Lists all Proyecto entities.
      *
-     * @Route("/", name="admin_proyecto_index",options={"expose"=true})
+     * @Route("/{parametro}", name="admin_proyecto_index",options={"expose"=true})
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($parametro)
     {
 
 
         return $this->render('proyectos/index.html.twig', array(
-           
+           'parametro'=>$parametro
         ));
     }
+    
+    
+    /**
+     * Lists all Proyecto entities.
+     *
+     * @Route("/", name="admin_captura",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function indexCapturaAction()
+    {
+
+
+        return $this->render('proyectos/screenshot.html.twig', array(
+          
+        ));
+    }
+    
+    
+    
+    
     
     
     
      /**
      * 
      *
-     * @Route("/proyectos/data", name="proyecto_data")
+     * @Route("/proyectos/{tipoContrato}", name="proyecto_data",options={"expose"=true})
      */
-    public function DataProyectoAction(Request $request)
+    public function DataProyectoAction(Request $request, $tipoContrato)
     {
         
         /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -48,6 +68,9 @@ class ProyectoController extends Controller
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
+
+        
+        
         $entity = new Proyecto();
         
         $start = $request->query->get('start');
@@ -69,20 +92,15 @@ class ProyectoController extends Controller
         //echo count($arrayFiltro);
         $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
         
-        //SQL Nativo
-        
-        
+
          $ordenamientoVariable = $request->query->get('order');
         
-//        var_dump($ordenamientoVariable);
-//        die();
-        
+
         $columna = $ordenamientoVariable[0]['column'];
         $tipoOrdenamiento = $ordenamientoVariable[0]['dir'];
         
         if ($columna=='0'){
-            
-          
+
              $x='codigo';
             
         }else if ($columna=='2'){
@@ -108,8 +126,8 @@ class ProyectoController extends Controller
                     . "  FROM proyecto pro"
                     . " LEFT OUTER JOIN cliente cli ON pro.cliente_id = cli.id "
                     . " LEFT OUTER JOIN contacto  cont ON pro.contacto_id = cont.id "
-                    . "WHERE upper(pro.codigo)  LIKE '%".strtoupper($value)."%'  "
-                    . "ORDER BY pro.".$x." ".$tipoOrdenamiento;
+                    . "WHERE upper(pro.codigo)  LIKE '%".strtoupper($value)."%' AND pro.estado =1 AND pro.tipo_contrato=".$tipoContrato
+                    . " ORDER BY pro.".$x." ".$tipoOrdenamiento;
 
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -123,8 +141,8 @@ class ProyectoController extends Controller
                     . "DATE_FORMAT(pro.fecha_final,'%d-%m-%Y') as fechaFinal"
                     . "  FROM proyecto pro"
                     . " LEFT OUTER JOIN cliente cli ON pro.cliente_id = cli.id "
-                    . " LEFT OUTER JOIN contacto  cont ON pro.contacto_id = cont.id "
-                   . "ORDER BY pro.".$x." ".$tipoOrdenamiento;
+                    . " LEFT OUTER JOIN contacto  cont ON pro.contacto_id = cont.id WHERE pro.estado =1  AND pro.tipo_contrato=".$tipoContrato
+                   . " ORDER BY pro.".$x." ".$tipoOrdenamiento;
                
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -143,14 +161,19 @@ class ProyectoController extends Controller
       /**
      * Lists all Proyecto entities.
      *
-     * @Route("nuevoProyecto/", name="nuevoProyecto",options={"expose"=true})
+     * @Route("/nuevoProyecto/{parametro}", name="nuevoProyecto",options={"expose"=true})
      * @Method("GET")
      */
-    public function NuevoProyectoAction()
+    public function NuevoProyectoAction($parametro)
     {
 
-
+        $em = $this->getDoctrine()->getManager();
+        $tipoProyecto = $em->getRepository('DGAdminBundle:TipoProyecto')->findAll();
+         $estadoProyecto = $em->getRepository('DGAdminBundle:EstadoProyecto')->findAll();
         return $this->render('proyectos/nuevo.html.twig', array(
+            'tipoProyecto'=>$tipoProyecto,
+            'estadoProyecto'=>$estadoProyecto,
+            'parametro'=>$parametro
            
         ));
     }
@@ -162,13 +185,14 @@ class ProyectoController extends Controller
     /**
     * Ajax utilizado para buscar informacion de contactos
     * 
-    * @Route("/buscarCliente", name="buscarCliente",options={"expose"=true})
+    * @Route("/buscarCliente/data", name="buscarCliente",options={"expose"=true})
     */
     public function BuscarClienteAction(Request $request)
     {
         $busqueda = $request->query->get('q');
+        
+
         $page = $request->query->get('page');
-       
         $em = $this->getDoctrine()->getEntityManager();
         $dql = "SELECT cli.id clienteid, cli.nombre  "
                         . "FROM DGAdminBundle:Cliente cli "
@@ -263,10 +287,7 @@ class ProyectoController extends Controller
        
         return new Response(json_encode($abogado));
     }
-    
-    
-    
-    
+
     
      /**
      * @Route("/insertarDatosGeneralesProyecto/", name="insertarDatosGeneralesProyecto", options={"expose"=true})
@@ -283,6 +304,7 @@ class ProyectoController extends Controller
              
             $em = $this->getDoctrine()->getManager();
             
+            $tipoContrato = $request->get('tipoContrato');
             $longitud = $request->get('longitud');
             $latitud = $request->get('latitud');
             $nombreProyecto = $request->get('nombreProyecto');
@@ -329,6 +351,8 @@ class ProyectoController extends Controller
             $objeto->setTipoProyecto($objTipoProyecto[0]);
             $objeto->setObservaciones($observacionesProyecto);
             $objeto->setEstadoProyecto($objEstadoProyecto[0]);
+            $objeto->setEstado(1);
+            $objeto->setTipoContrato($tipoContrato);
             $em->persist($objeto);
             $em->flush();
             $data['estado'] = true;
@@ -451,26 +475,6 @@ class ProyectoController extends Controller
         
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

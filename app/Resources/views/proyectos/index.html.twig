@@ -31,6 +31,7 @@
      <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
      
      <script src="{{ asset('Resources/dropzone/dropzone.js') }}"></script>
+     <script src="{{ asset('Resources/js/proyecto/proyecto.js') }}"></script>
     
      
     
@@ -48,15 +49,16 @@
         </div>
  {% endblock%}
  {% block acciones %}
+                 <input type="hidden" name="tipoProyectoSeleccionado" value="{{parametro}}" id="tipoProyectoSeleccionado">
      
      	<div class="col-md-4" style="margin-top: 50px;">
                                 <!-- Boton Modificacion -->
                                 {{parent()}}
 	
                                 <div class="btn-group pull-right">
-                                    <a href="{{path('nuevoProyecto')}}" class="admin-menu-navi">
+                                   
                                         <button class="btn btn-primary  btn-sm " style="margin-left: 5px;" id="nuevoProyecto">Nuevo</button>
-                                     </a>
+                               
                                 </div>
                                   	
 	</div>
@@ -71,17 +73,18 @@
         {% block navegacion %}
             <hr style="margin-top: 0px !important;">
                 <div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
-                    
+                    {% if parametro is not null %}
+                      {% set parame = parametro %}
                     <ul style="list-style: none; padding: 0;">
-                        <a href="{{ path('admin_proyecto_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        <a href="{{ path('admin_proyecto_index', {parametro:parame}) }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
                      </ul>
+                    {% endif %}
                 </div>	
-
        {% endblock %}
 
 {% block cuerpo %}
     {{ parent()}}
-    <div class="col-md-10">
+    <div class="col-md-10" style="margin-top: 26px;">
      
               
  <div >
@@ -89,7 +92,6 @@
       <table id="listaProyectos" class="mdl-data-table" cellspacing="0" width="100%">
            
           <thead>
-
               <tr>
                   <th>#Proyecto</th>                               
                   <th>Nombre Proyecto</th>
@@ -98,7 +100,6 @@
                   <th>Direccion</th>
                   <th>Fecha de inicio</th>
                   <th>Fecha estimada de Finalizacion</th>
-
               </tr>
           </thead>
 
@@ -108,10 +109,6 @@
     
   </div>
 </div>
-    
-    
-    
-    
     
 {% endblock %}
 
@@ -123,10 +120,10 @@
      <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>#}
 	<script type="text/javascript">
 		$(document).ready(function() {
-         
+                                    var s = {{parametro}};
+                          
+                                    var url=Routing.generate('proyecto_data',{tipoContrato:s});
 
-                    
-                    
 		    $('#listaProyectos').DataTable( {
                                     
 		        columnDefs: [
@@ -141,19 +138,23 @@
                                              {
                                                 "targets": [1,3,4],
                                                  "orderable": false
+                                            },
+                                             {
+                                                "targets": [4],
+                                                "visible": false
                                             }
-                            
-                            
-                            
+
 		        ],
                                         
                                         "pageLength": 10,
                                         "lengthMenu": [ 20 ],
                                         "dom": "ftp",
                                         "processing": true,
+                                              "serverSide": true,
+                                        
                                        
                                         "ajax": {
-                                            "url": '{{path('proyecto_data')}}',
+                                            "url": url,
                                             "type": 'GET'
                                         },
                                         "columns": [
@@ -165,8 +166,7 @@
                                                 {"data":"direccion"},
                                                 {"data":"fechaInicio"},
                                                 {"data":"fechaFinal"}
-
-                                             
+            
                               ],
                                             "language": {
                                             "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -183,8 +183,7 @@
 
  
 		    } );
-                  
-                
+
 });
 
 

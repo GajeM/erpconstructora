@@ -64,11 +64,19 @@ class DashBoardController extends Controller
     }
     
     
-    
-    
-    
-    
-    
+     /**
+     * Lists all ClientePotencial entities.
+     *
+     * @Route("/proyecto", name="proyecto_dashboard",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function ProyectosAction()
+    {
+        
+        return $this->render('dashboard/dashboardproyecto.html.twig', array(
+            
+        ));
+    }
     
     
     

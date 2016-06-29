@@ -3,6 +3,10 @@
      
      //Select2 para clientes y contactos dentro de un nuevo proyecto
      
+     $("#tipoContrato").select2();
+     $('#estadoProyecto').select2();
+     $('#tipoProyecto').select2();
+            
      
        $('#contactoDirecto').select2({
                 ajax: {
@@ -86,78 +90,6 @@
                     
                 
             });
-
-
-
-             $('#estadoProyecto').select2({
-                ajax: {
-                    url: Routing.generate('buscarEstadoProyecto'),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term,
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        var select2Data = $.map(data.data, function (obj) {
-                            obj.id = obj.estadoId;
-                            obj.text = obj.nombre;
-
-                            return obj;
-                        });
-
-                        return {
-                            results: select2Data
-                        };
-                    },
-                    cache: true
-                },
-                escapeMarkup: function (markup) { return markup; },
-                minimumInputLength: 1,
-                templateResult: formatRepoEP,
-                templateSelection: formatRepoSelectionEP,
-                formatInputTooShort: function () {
-                    return "Ingrese un caracter para la busqueda";
-                }
-            });
-
-
- $('#tipoProyecto').select2({
-                ajax: {
-                    url: Routing.generate('buscarTipoProyecto'),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term,
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        var select2Data = $.map(data.data, function (obj) {
-                            obj.id = obj.estadoId;
-                            obj.text = obj.nombre;
-
-                            return obj;
-                        });
-
-                        return {
-                            results: select2Data
-                        };
-                    },
-                    cache: true
-                },
-                escapeMarkup: function (markup) { return markup; },
-                minimumInputLength: 1,
-                templateResult: formatRepoTP,
-                templateSelection: formatRepoSelectionTP,
-                formatInputTooShort: function () {
-                    return "Ingrese un caracter para la busqueda";
-                }
-            });
-            
             
             $('#encargadoProyecto').select2({
                 ajax: {
@@ -204,12 +136,10 @@
       
       
   });
-  
-  
-  
+
   $(document).on("click","#addNewCliente",function() {
       
-        var url = Routing.generate('nuevocliente');
+      var url = Routing.generate('nuevocliente');
         window.open(url, "_self");
 
       
@@ -263,14 +193,15 @@ $('#fechaInicio').Zebra_DatePicker({
                 
                 
                 var nombreProyecto,idcliente, contactoDirecto,direccionProyecto, estadoProyecto, tipoProyecto, fechaInicio,
-                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud;
+                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud,tipoContrato;
                 
+                tipoContrato=$("#tipoContrato").val();
                 longitud= $("#longitud").val();
                 latitud= $("#latitude").val();
                 nombreProyecto = $("#nombreProyecto").val();
                 idcliente  = $("#idcliente").val();
                 contactoDirecto  = $("#contactoDirecto").val();
-                direccionProyecto  = $("#us3-address").val();
+                direccionProyecto  = $("#direccionProyecto").val();
                 estadoProyecto  = $("#estadoProyecto").val();
                 tipoProyecto = $("#tipoProyecto").val();
                 fechaInicio = $("#fechaInicio").val();
@@ -295,7 +226,7 @@ $('#fechaInicio').Zebra_DatePicker({
                                                  dataType: 'json',
                                                  data: {nombreProyecto: nombreProyecto, idcliente: idcliente, contactoDirecto: contactoDirecto, direccionProyecto: direccionProyecto, estadoProyecto: estadoProyecto,
                                                      tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto,
-                                                 longitud:longitud,latitud:latitud},
+                                                 longitud:longitud,latitud:latitud,tipoContrato:tipoContrato},
                                                  url: Routing.generate('insertarDatosGeneralesProyecto'),
                                                  success: function (data)
                                                  {
@@ -328,62 +259,29 @@ $('#fechaInicio').Zebra_DatePicker({
                       
                     }
             });
-                
-                
-                
-                
-                        
-                
-                
-               
+
             }else{
                  swal("Error!", "No debes dejar datos requeridos vacios", "error");
-                
-                
-                
+ 
             }
 
-
-
-
         }
-           
-           
-           
-
            
        });
      
      
+   //Al dar click en nuevo proyecto  
+      $(document).on("click","#nuevoProyecto",function() {
+        var z= $("#tipoProyectoSeleccionado").val();  
+        var url=Routing.generate('nuevoProyecto',{parametro:z});
+        window.open(url, "_self");
+
+   });
+
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+//  Click en cancelar insercion datos generales del proyecto
+
+           
  });
 
 
@@ -431,48 +329,6 @@ function formatRepoC (data) {
             }   
         }
 
-//Estado de proyecto
-function formatRepoEP (data) {
-            if(data.nombre){
-                var markup = "<div class='select2-result-repository clearfix'>" +
-                             "<div class='select2-result-repository__meta'>" +
-                             "<div class='select2-result-repository__title'>" + data.nombre+ "</div>" +
-                             "</div></div>";
-            } else {
-                var markup = "Seleccione estado";
-            }
-
-            return markup;
-        }
-
-        function formatRepoSelectionEP (data) {
-            if(data.nombre){
-                return  data.nombre;
-            } else {
-                return "Seleccione estado";
-            }   
-        }
-//Tipo de proyecto
-function formatRepoTP (data) {
-            if(data.nombre){
-                var markup = "<div class='select2-result-repository clearfix'>" +
-                             "<div class='select2-result-repository__meta'>" +
-                             "<div class='select2-result-repository__title'>" + data.nombre+ "</div>" +
-                             "</div></div>";
-            } else {
-                var markup = "Tipo proyecto";
-            }
-
-            return markup;
-        }
-
-        function formatRepoSelectionTP (data) {
-            if(data.nombre){
-                return  data.nombre;
-            } else {
-                return "Tipo proyecto";
-            }   
-        }
 
 //Encargado de proyecto
 function formatRepoENP (data) {

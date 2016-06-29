@@ -25,13 +25,49 @@
                                         </select>  
                                      </div>
                                  </div>
-                                <div class="clearfix"></div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-column col-md-3">
+                                            <div class="form-group required" >
+                                                <label for="fechaInicio" class="control-label">Fecha Inicio del proyecto</label></br>
+                                                <input type="text" name="fechaInicio" id="fechaInicio" class="requerido form-control" >
+
+                                            </div>
+                                        </div>
+                                        <div class="form-column col-md-3">
+                                            <div class="form-group required" >
+                                                <label for="fechaFin" class="control-label">Fecha estimada de finalizacion</label></br>
+                                                <input type="text" name="fechaFin" id="fechaFin" class="requerido form-control" >
+                                            </div>
+                                        </div>
+                                         <div class="form-column col-md-3">
+                                            <div class="form-group required" >
+                                                <label for="encargadoProyecto" class="control-label">Encargado de proyecto</label>
+                                                    <select id="encargadoProyecto" name="encargadoProyecto" class="form-control requerido" style="width: 100%">
+                                                        <option value="" disabled selected>Seleccione un encargado de proyecto...</option>
+                                                    </select>  
+                                            </div>
+                                        </div>
+                                         <div class="form-column col-md-3">
+                                            <div class="form-group required" >
+                                                <label for="tipoContrato" class="control-label">Tipo de contrato</label>
+                                                <select id="tipoContrato" name="tipoContrato" class="form-control requerido" style="width: 100%">
+                                                    <option value="1">Contrato directo</option>
+                                                      <option value="2">Asocio</option>
+                                                        <option value="3">Sub contrato</option>
+                                                          <option value="4">Alquiler de Equipo</option>
+                                                </select>  
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="longitud" value="0">
+                                        <input type="hidden" id="latitude" value="0">
+                                        
+                                          <div class="clearfix"></div>
                                 {# Esto es lo que proporciona el auto complete de las direcciones #}
                                 <div class="form-column col-md-6" style="margin-bottom: -10px;">
                                     <div class="form-group">
                                                       <div class="form-group required">
                                                           <label class="control-label">Direccion:</label>
-                                                          <input type="text"  name="direccionProyecto"class="form-control requerido" id="diereccion" />
+                                                          <input type="text"  name="direccionProyecto"class="form-control requerido" id="direccionProyecto" />
                                                       </div>
                                     </div>
                                 </div>
@@ -42,7 +78,9 @@
                                             <div class="form-group required" >
                                                 <label for="estadoProyecto" class="control-label">Estado del proyecto</label>
                                                 <select id="estadoProyecto" name="estadoProyecto" class="form-control requerido" style="width: 100%">
-                                                    <option value="" disabled selected>Seleccione un estado del proyecto...</option>
+                                                     {% for data in estadoProyecto%}
+                                                          <option value="{{data.id}}">{{data.nombre}}</option>
+                                                    {% endfor %}
                                                 </select>  
                                             </div>
                                         </div>
@@ -50,36 +88,12 @@
                                             <div class="form-group required" >
                                                 <label for="tipoProyecto" class="control-label">Tipo de proyecto</label>
                                                 <select id="tipoProyecto" name="tipoProyecto" class="form-control requerido" style="width: 100%">
-                                                    <option value="" disabled selected>Seleccione un tipo de proyecto...</option>
+                                                    {% for data in tipoProyecto%}
+                                                          <option value="{{data.id}}">{{data.nombre}}</option>
+                                                    {% endfor %}
                                                 </select>  
                                             </div>
                                         </div>
-                                        <div class="clearfix"></div>
-                                        
-                                       
-                                        <div class="form-column col-md-4">
-                                            <div class="form-group required" >
-                                                <label for="fechaInicio" class="control-label">Fecha Inicio del proyecto</label></br>
-                                                <input type="text" name="fechaInicio" id="fechaInicio" class="requerido form-control" >
-
-                                            </div>
-                                        </div>
-                                        <div class="form-column col-md-4">
-                                            <div class="form-group required" >
-                                                <label for="fechaFin" class="control-label">Fecha estimada de finalizacion</label></br>
-                                                <input type="text" name="fechaFin" id="fechaFin" class="requerido form-control" >
-                                            </div>
-                                        </div>
-                                         <div class="form-column col-md-4">
-                                            <div class="form-group required" >
-                                                <label for="encargadoProyecto" class="control-label">Encargado de proyecto</label>
-                                                    <select id="encargadoProyecto" name="encargadoProyecto" class="form-control requerido" style="width: 100%">
-                                                        <option value="" disabled selected>Seleccione un encargado de proyecto...</option>
-                                                    </select>  
-                                            </div>
-                                        </div>
-                                        <input type="hidden" id="longitud" value="0">
-                                        <input type="hidden" id="latitude" value="0">
                                         
                                       {#  <div class="form-column col-md-3"></div>#}
                                           <div class="clearfix"></div>
@@ -93,14 +107,14 @@
                                             
                                         </div>
                                             <div class="form-column col-md-4">
-                                               <div class="form-group" >
-                                                <div class="btn-group pull-left">
-                                                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 5px;margin-bottom: 25px;" id="cancelarDatosGeneralesProyecto">Cancelar</a>
+                                               
+                                                <div class="btn-group pull-right">
+                                                    <a class="btn btn-default  btn-sm " style="margin-left: 5px;margin-top: 60px;margin-bottom: 25px;" id="cancelarDatosGeneralesProyecto">Cancelar</a>
                                                 </div>
-                                                <div class="btn-group pull-left">
-                                                    <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 5px;margin-bottom: 25px;" id="guardarDatosGeneralesProyecto">Guardar</a>
+                                                <div class="btn-group pull-right">
+                                                    <a  class="btn btn-success  btn-sm " style="margin-left: 5px;margin-top: 60px;margin-bottom: 25px;" id="guardarDatosGeneralesProyecto">Guardar</a>
                                                 </div>
-                                            </div>
+                                            
                                           </div>
                                           <div class="clearfix"></div>
                                           
@@ -111,7 +125,7 @@
                                                   <div class="form-horizontal" style="width: 100%">
                                                       
                                                       <div class="form-group" style="display: block;">
-                                                          <label class="col-sm-2 control-label">Direccion:</label>
+                                                          <label class="col-sm-2 control-label">Buscar:</label>
 
                                                           <div class="col-sm-8">
                                                               <input type="text" class="form-control" id="us3-address" />
@@ -170,9 +184,9 @@
                                                               enableAutocomplete: true,
                                                               onchanged: function (currentLocation, radius, isMarkerDropped) {
                                                                   // Uncomment line below to show alert on each Location Changed event
-                                                                 alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude  +")");
+                                                                 //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude  +")");
                                                                   var  latitud=currentLocation.latitude;
-                                                                  var longitud = currentLocation.longitude
+                                                                  var longitud = currentLocation.longitude;
                                                                   $("#longitud").val(longitud);
                                                                   $("#latitude").val(latitud);
                                                                   
@@ -216,6 +230,6 @@
 
                                               </div>
                                                                
-                                          </div>  
-                                            
+                                          </div> 
+                                           
      </div>   

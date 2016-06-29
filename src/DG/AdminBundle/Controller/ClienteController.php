@@ -319,6 +319,7 @@ class ClienteController extends Controller
     public function BuscarContactoAction(Request $request)
     {
         $busqueda = $request->query->get('q');
+
         $page = $request->query->get('page');
        
         $em = $this->getDoctrine()->getEntityManager();

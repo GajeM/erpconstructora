@@ -16,8 +16,8 @@
  <div class="row">
  {% block descripcion %}
         <div class="col-md-8">
-            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">CRM</p>
-            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Panel de control de CRM</p>
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Proyectos</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Panel de control de proyectos</p>
         </div>
  {% endblock%}
  {% block acciones %}
@@ -43,8 +43,8 @@
                 <div class="col-md-2 colorAnclas" style="border-right: 1px solid #f3f3f3;">
                     <!-- Left Navigation -->
                     <ul style="list-style: none; padding: 0;">
-                        <a href="{{ path('dashboard_index') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
-                        <a href="" class="leftnava colorAnclas"><li class="leftnav left ">Configuraci&oacute;n</li></a>
+                        <a href="{#{{ path('') }}#}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+                        
 
                     </ul>
                 </div>	
@@ -57,13 +57,13 @@
      
     <div class="col-md-10">
         <!-- Incio de Opcion de Modulo -->
-        <div class="row module first">
+        <div class="row module first" title="Click Aqui!!">
             <div class="row" >
-                <a href="{{ path('admin_cliente_index') }}">
+                <a href="{{ path('admin_proyecto_index',{parametro:1}) }}">
                     <div class="col-md-10 colorAnclas">
 
-                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Clientes</strong></p>
-                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de clientes</p>
+                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Contrato directo</strong></p>
+                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de contratos directos</p>
                     </div>
 
                 </a>
@@ -73,10 +73,10 @@
         <!-- Incio de Opcion de Modulo -->
         <div class="row module">
             <div class="row">
-                <a href="{{ path('admin_contacto_index') }}">
+                <a href="{{ path('admin_proyecto_index',{parametro:3}) }}">
                     <div class="col-md-10 colorAnclas">
-                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Contactos</strong></p>
-                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de contactos</p>
+                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Sub Contrato</strong></p>
+                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de sub contratos</p>
                     </div>
 
                 </a>   
@@ -86,27 +86,26 @@
         <!-- Incio de Opcion de Modulo -->
         <div class="row module">
             <div class="row">
-                <a href="{{ path('admin_clientepotencial_index') }}">
+                <a href="{{ path('admin_proyecto_index',{parametro:4}) }}">
 
                     <div class="col-md-10 colorAnclas">
-                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Clientes potenciales</strong></p>
-                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de clientes potenciales</p>
+                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Alquiler de equipo</strong></p>
+                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de proyectos de alquiler de equipo.</p>
                     </div>
 
                 </a> 
             </div>
         </div>
-        <!-- Fin de Opcion de Modulo -->
-        <!-- Incio de Opcion de Modulo -->
-        <div class="row module">
+           <div class="row module">
             <div class="row">
-                <a href="{{ path('admin_proveedor_index') }}">
+                <a href="{{ path('admin_proyecto_index',{parametro:2}) }}">
+
                     <div class="col-md-10 colorAnclas">
-                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Proveedores</strong></p>
-                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de proveedores</p>
+                        <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Asocio</strong></p>
+                        <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Gestion de proyectos de asocios con otras empresas.</p>
                     </div>
 
-                </a>
+                </a> 
             </div>
         </div>
         <!-- Fin de Opcion de Modulo -->
@@ -127,6 +126,7 @@
       
       
   {% endblock %} 
+
 
 
 

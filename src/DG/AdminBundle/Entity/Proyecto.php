@@ -143,6 +143,13 @@ class Proyecto
     private $latitude;
     
     
+     /**
+     * @var integer
+     * @ORM\Column(name="tipo_contrato", type="integer", nullable=false) 
+     */
+    private $tipoContrato;
+    
+    
 
     /**
      * Get id
@@ -496,8 +503,6 @@ class Proyecto
         return $this;
     }
 
-    
-    
     /**
      * Get longitude
      *
@@ -508,5 +513,28 @@ class Proyecto
         return $this->longitude;
     }
     
+    
+     /**
+     * Set estado
+     *
+     * @param string $tipoContrato
+     * @return Cliente
+     */
+    public function setTipoContrato($tipoContrato)
+    {
+        $this->tipoContrato = $tipoContrato;
 
+        return $this;
+    }
+
+    /**
+     * Get tipoContrato
+     *
+     * @return integer 
+     */
+    public function getTipoContrato()
+    {
+        return $this->tipoContrato;
+    }
+    
 }
