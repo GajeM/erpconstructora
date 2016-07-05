@@ -462,11 +462,8 @@ $('#fechaDE').Zebra_DatePicker({
                  
                  $("#datosGenerales").click();
                  
-                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: 'Primero tienes que ingresar los datos generales de la maquina.'
-                                    });
-                
+                 swal("Alerta!", "Primero tienes que ingresar los datos generales de la maquina.", "warning");
+                 
             }else{
                 
                 if (xPermisoTablaDatosMantenimiento==0){
@@ -491,10 +488,8 @@ $('#fechaDE').Zebra_DatePicker({
                  
                  $("#datosGenerales").click();
                  
-                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: 'Primero tienes que ingresar los datos generales de la maquina.'
-                                    });
+                   
+                 swal("Alerta!", "Primero tienes que ingresar los datos generales de la maquina.", "warning");
                 
             }else{
                 
@@ -517,10 +512,8 @@ $('#fechaDE').Zebra_DatePicker({
                  
                  $("#datosGenerales").click();
                  
-                    Lobibox.notify("warning", {
-                                        size: 'mini',
-                                        msg: 'Ingrese los datos generales de la maquina, por favor.'
-                                    });
+                    
+                 swal("Alerta!", "Primero tienes que ingresar los datos generales de la maquina.", "warning");
                 
             }
  
@@ -1297,13 +1290,7 @@ $('#fechaDEE').Zebra_DatePicker({
                  var url=Routing.generate('editarmaquina',{id:idMaquinaEditar});
             
                                     window.open(url, "_self");
-            
-            
-            
-            
-            
-            
-            
+
         }
    
 });
@@ -1770,6 +1757,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                  
              
         }else{
+            
         	flag = false;
                   swal("Error!", "Formato de archivo invalido", "error");
                   $(this).val("");

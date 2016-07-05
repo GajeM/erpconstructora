@@ -44,7 +44,7 @@ class MaquinaController extends Controller
     /**
      * Lists all MaMaquina entities.
      *
-     * @Route("/nuevamaquina", name="nuevamaquina")
+     * @Route("/nuevamaquina", name="nuevamaquina",options={"expose"=true})
      * @Method("GET")
      */
     public function NuevaMaquinaAction()
@@ -133,6 +133,8 @@ class MaquinaController extends Controller
              $objeto->setMarca($marca);
              $objeto->setDecripcion($descripcion);
              $objeto->setEstado(1);
+             
+             $objeto->setMaIdentificacionAlquiler(0);
             $em->persist($objeto);
             $em->flush();
 

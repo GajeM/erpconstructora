@@ -7,9 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ImagenesDetalleMantenimiento
  *
- * @ORM\Table(name="imagenes_detalle_mantenimiento", indexes={@ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_expediente_mantenimien_idx", columns={"ma_expediente_mantenimiento_id"}), @ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_maquina", columns={"id_maquina"})})
+ * @ORM\Table(name="imagenes_detalle_mantenimiento", indexes={@ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_expediente_mantenimien_idx", columns={"ma_expediente_mantenimiento_id"}), @ORM\Index(name="fk_imagenes_detalle_mantenimiento_ma_maquina", columns={"id_maquina"}), @ORM\Index(name="fk_imagenes_detalle_mantenimiento_proyecto", columns={"proyecto_id"})})
  * @ORM\Entity
  */
+
+
 class ImagenesDetalleMantenimiento
 {
     /**
@@ -56,7 +58,15 @@ class ImagenesDetalleMantenimiento
      */
     private $maMaquina;
     
-    
+     /**
+     * @var \Proyecto
+     *
+     * @ORM\ManyToOne(targetEntity="Proyecto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="proyecto_id", referencedColumnName="id")
+     * })
+     */
+    private $proyecto;
     
 
     /**
@@ -162,6 +172,28 @@ class ImagenesDetalleMantenimiento
     }
     
     
+    /**
+     * Set proyecto
+     *
+     * @param \DG\AdminBundle\Entity\Proyecto $proyecto
+     * @return Facturacion
+     */
+    public function setProyecto(\DG\AdminBundle\Entity\Proyecto $proyecto = null)
+    {
+        $this->proyecto = $proyecto;
+
+        return $this;
+    }
+
+    /**
+     * Get proyecto
+     *
+     * @return \DG\AdminBundle\Entity\Proyecto 
+     */
+    public function getProyecto()
+    {
+        return $this->proyecto;
+    }
     
     
     

@@ -129,15 +129,20 @@ class MaMaquina
      */
     private $tipoEquipo;
     
-       /**
+     /**
      * @var integer
      * @ORM\Column(name="estado", type="integer", nullable=false) 
      */
     private $estado;
 
-
-
     /**
+     * @var integer
+     * @ORM\Column(name="ma_identificacion_alquiler", type="integer", nullable=false) 
+     */
+    private $maIdentificacionAlquiler;
+    
+    
+     /**
      * Get id
      *
      * @return integer 
@@ -517,6 +522,29 @@ class MaMaquina
     
     
     
+     /**
+     * Set estado
+     *
+     * @param string $maIdenficacionAlquiler
+     * @return Cliente
+     */
+    public function setMaIdentificacionAlquiler($maIdentificacionAlquiler)
+    {
+        $this->maIdentificacionAlquiler = $maIdentificacionAlquiler;
+        return $this;
+    
+        
+    }
+
+    /**
+     * Get estado
+     *
+     * @return integer 
+     */
+    public function getMaIdentificacionAlquiler()
+    {
+        return $this->maIdentificacionAlquiler;
+    }
     
     
     

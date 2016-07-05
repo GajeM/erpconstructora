@@ -8,14 +8,12 @@
     <link rel="stylesheet" href="{{ asset('Resources/dataTable/material.min.css')}}"> 
     <link rel="stylesheet" href="{{ asset('Resources/dataTable/dataTable.material.min.css')}}"> 
     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
-    
-  
-    
 
     <link rel="stylesheet" href="{{asset('Resources/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css')}}">
-     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
-     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
-     <link rel="stylesheet" href="{{ asset('Resources/dropzone/dropzone.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/dropzone/dropzone.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/lobibox-master/dist/css/lobibox.min.css')}}"> 
      
      <style>
          
@@ -36,16 +34,18 @@
 {% endblock css%}
 {% block js %}
      {{parent()}}
-     <script type="text/javascript" src='http://maps.google.com/maps/api/js?key=AIzaSyATr6uedTPB7AVBBRNjCPmCJ_OEymxQUQI&sensor=false&libraries=places'></script>
-      <script src="{{ asset('Resources/localizacion/src/locationpicker.jquery.js') }}"></script>
      <script src="{{ asset('Resources/AdminLTE-2.3.0/dist/js/app.js') }}" type="text/javascript"></script>
      <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
-     <script src="{{ asset('Resources/js/proyecto/proyecto.js') }}"></script>
      <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script>
      <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script> 
-    <script src="{{ asset('Resources/dataTable/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
-    <script src="{{ asset('Resources/dropzone/dropzone.js') }}"></script>
+     <script src="{{ asset('Resources/dataTable/js/jquery.dataTables.min.js')}}"></script>
+     <script src="{{ asset('Resources/dataTable/js/dataTable.material.min.js')}}"></script>
+     <script src="{{ asset('Resources/dropzone/dropzone.js') }}"></script>
+                                {#Escrips js que son propios    #}
+     <script src="{{ asset('Resources/js/maquinaalquilada/maquinaalquilada.js') }}"></script>
+     <script src="{{ asset('Resources/js/proyecto/proyecto.js') }}"></script>
+     <script src="{{ asset('Resources/js/proyecto/asignacionMaquinaria.js') }}"></script>
+     <script src="{{ asset('Resources/lobibox-master/dist/js/lobibox.min.js') }}"></script>
 
     
 {% endblock %}
@@ -109,10 +109,10 @@
                     <div class="tab-content no-padding">
                        
                            <div class="chart tab-pane active colorDiv" id="divDatosGeneralesProyecto" >
-                           {% include ':proyectos:nuevodatosgeneralesproyecto.html.twig' %}                       
+                            {% include ':proyectos:nuevodatosgeneralesproyecto.html.twig' %}                       
                             </div>
                           <div class="chart tab-pane colorDiv" id="divDatosMaquinariaProyecto" >
-                                   
+                            {% include ':proyectos:maquinariaproyecto.html.twig' %}                           
                         </div>
                          <div class="chart tab-pane colorDiv" id="divRecursosHumanos" >
                                    
@@ -125,12 +125,6 @@
                 </div>
             </section>
         </div>
-
-
-
-
-
-
     </div>
 
 

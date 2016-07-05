@@ -163,38 +163,75 @@ $('#fechaInicio').Zebra_DatePicker({
 });            
                     
 
-  
-
-
-
 //Terminacion de inicializacion de los select2 que sirven para el ingreso de datos generales de una empresa
 //Insercion de datos generales de un proyecto
-
-     
        $(document).on("click","#guardarDatosGeneralesProyecto",function() {
            
+           
+        var num = 0;
+
+        $('.requerido').each(function () {
+
+            var x = $(this).val();
+
+            if (x == "" || x == null) {
+                num = num + 1;
+            }
+
+        });
+
+        if (num == 0) {
+
+            var dataImagen =  $("#imagenMapa").attr("src");
+            if (dataImagen=="")
+            {
+                //Solicitar permiso de guardar porque no se ha elegido una imagen del mapa de la ubicacion del proyecto
+                                     swal({
+                                                    title: "Advertencia",
+                                                    text: "No has capturado la imagen del mapa, ¿Quieres guardar los registros del proyecto sin una imagen del  mapa de su ubicación?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                
+                                                               guardarDatosGenerales();
+                                                                
+                                                                
+                                                            } else {
+                                                                
+
+                                                            }
+                                                        });      
+
+            }else{
+                   guardarDatosGenerales();
+            }
+            
+              }else{
+                 swal("Error!", "No debes dejar datos requeridos vacios", "error");
+ 
+            }
+            
+        
+       });
+       
+       
+        function guardarDatosGenerales(){
+            
+            
             var idPrincipal = $("#idProyecto").val();
-             if (idPrincipal==0){
-                 
-                  var num=0;
+             if (idPrincipal==0 ){
 
-                    $('.requerido').each(function () {
-
-                   var x = $(this).val();
-
-                   if (x == "" || x == null) {
-                       num = num + 1;
-                   }
-
-               });
-
-            if (num == 0) {
-                
-                
-                
                 var nombreProyecto,idcliente, contactoDirecto,direccionProyecto, estadoProyecto, tipoProyecto, fechaInicio,
-                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud,tipoContrato;
+                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud,tipoContrato,dataImagen;
                 
+                dataImagen =  $("#imagenMapa").attr("src");
                 tipoContrato=$("#tipoContrato").val();
                 longitud= $("#longitud").val();
                 latitud= $("#latitude").val();
@@ -214,7 +251,7 @@ $('#fechaInicio').Zebra_DatePicker({
                                     type: 'POST',
                                     async: false,
                                     dataType: 'json',
-                                    data: {nombreProyecto:nombreProyecto},
+                                    data: {nombreProyecto:nombreProyecto,i:0},
                                     url: Routing.generate('validarNombreProyecto'),
                                     success: function (data)
                                     {
@@ -225,15 +262,16 @@ $('#fechaInicio').Zebra_DatePicker({
                                                  async: false,
                                                  dataType: 'json',
                                                  data: {nombreProyecto: nombreProyecto, idcliente: idcliente, contactoDirecto: contactoDirecto, direccionProyecto: direccionProyecto, estadoProyecto: estadoProyecto,
-                                                     tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto,
-                                                 longitud:longitud,latitud:latitud,tipoContrato:tipoContrato},
+                                                 tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto,
+                                                 longitud:longitud,latitud:latitud,tipoContrato:tipoContrato,dataImagen:dataImagen},
                                                  url: Routing.generate('insertarDatosGeneralesProyecto'),
                                                  success: function (data)
                                                  {
                                                      if (data.estado == true) {
-
+                                                         
+                                                        $("#idProyecto").val(data.idProyecto);
                                                          swal("Exito!", "Datos ingresados con exito", "success");
-
+                                                         
                                                      }
 
 
@@ -260,14 +298,87 @@ $('#fechaInicio').Zebra_DatePicker({
                     }
             });
 
-            }else{
-                 swal("Error!", "No debes dejar datos requeridos vacios", "error");
- 
-            }
+          
+
+        }else{
+            //Edicion de los datos generales de la empresa
+            
+             var nombreProyecto,idcliente, contactoDirecto,direccionProyecto, estadoProyecto, tipoProyecto, fechaInicio,
+                        fechaFin, encargadoProyecto, observacionesProyecto,longitud,latitud,tipoContrato,dataImagen,idProyecto;
+                
+                dataImagen =  $("#imagenMapa").attr("src");
+                tipoContrato=$("#tipoContrato").val();
+                longitud= $("#longitud").val();
+                latitud= $("#latitude").val();
+                nombreProyecto = $("#nombreProyecto").val();
+                idcliente  = $("#idcliente").val();
+                contactoDirecto  = $("#contactoDirecto").val();
+                direccionProyecto  = $("#direccionProyecto").val();
+                estadoProyecto  = $("#estadoProyecto").val();
+                tipoProyecto = $("#tipoProyecto").val();
+                fechaInicio = $("#fechaInicio").val();
+                fechaFin = $("#fechaFin").val();
+                encargadoProyecto = $("#encargadoProyecto").val();
+                observacionesProyecto = $("#observacionesProyecto").val();
+                
+                
+                
+                $.ajax({
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: 'json',
+                                    data: {nombreProyecto:nombreProyecto,i:1},
+                                    url: Routing.generate('validarNombreProyecto'),
+                                    success: function (data)
+                                    {
+                                         if (data.estado==true){
+                                             
+                                                $.ajax({
+                                                 type: 'POST',
+                                                 async: false,
+                                                 dataType: 'json',
+                                                 data: {nombreProyecto: nombreProyecto, idcliente: idcliente, contactoDirecto: contactoDirecto, direccionProyecto: direccionProyecto, estadoProyecto: estadoProyecto,
+                                                 tipoProyecto: tipoProyecto, fechaInicio: fechaInicio, fechaFin: fechaFin, encargadoProyecto: encargadoProyecto, observacionesProyecto: observacionesProyecto,
+                                                 longitud:longitud,latitud:latitud,tipoContrato:tipoContrato,dataImagen:dataImagen,idProyecto:idPrincipal},
+                                                 url: Routing.generate('modificarDatosGeneralesProyecto'),
+                                                 success: function (data)
+                                                 {
+                                                     if (data.estado == true) {
+                                                         
+                                                        $("#idProyecto").val(data.idProyecto);
+                                                         swal("Exito!", "Datos modificados  con exito", "success");
+                                                         
+                                                     }
+
+
+                                                 },
+                                                 error: function (xhr, status)
+                                                 {
+
+                                                 }
+                                             });
+          
+                                         }else{
+                                             
+                                             swal("Error!", "Nombre de proyecto ya existe, intenta con otro", "error");
+                                          
+                                             $("#nombreProyecto").hover();
+                                             
+                                         }
+                                         
+
+                                    },
+                                    error: function (xhr, status)
+                                    {
+                      
+                                }
+                         });
+                    }
 
         }
-           
-       });
+        
+        
+       
      
      
    //Al dar click en nuevo proyecto  
@@ -278,9 +389,58 @@ $('#fechaInicio').Zebra_DatePicker({
 
    });
 
+//Permisos en las tabs
+
+      $(document).on("click","#datosMaquinaria",function() {
+          
+          var idProyecto= $("#idProyecto").val();
+          if (idProyecto==0){
+             
+              $("#datosGeneralesProyecto").click();
+                 
+                    swal("Alerta!", "Primero tienes que igresar los datos generales del proyecto.", "warning");
+          }
+          
+       
+
+   });
+
+
+
+      $(document).on("click","#datosRecursosHumanos",function() {
+          
+          var idProyecto= $("#idProyecto").val();
+          if (idProyecto==0){
+             
+              $("#datosGeneralesProyecto").click();
+                 
+                     swal("Alerta!", "Primero tienes que igresar los datos generales del proyecto.", "warning");
+                
+          }
+          
+       
+
+   });
+     
+   
+    $(document).on("click","#datosReportesDiarios",function() {
+          
+          var idProyecto= $("#idProyecto").val();
+          if (idProyecto==0){
+             
+              $("#datosGeneralesProyecto").click();
+                 
+                      swal("Alerta!", "Primero tienes que igresar los datos generales del proyecto.", "warning");
+                
+          }
+          
+       
+
+   });
+     
      
 //  Click en cancelar insercion datos generales del proyecto
-
+//Fin document ready
            
  });
 
