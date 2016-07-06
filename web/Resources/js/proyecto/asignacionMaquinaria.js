@@ -31,18 +31,18 @@
                                     <div class="form-column col-md-3">\n\
                                         <div class="form-group" style="margin-right: 2%;">\n\
                                         <label for="maquina-" class="control-label">Maquina</label>\n\
-                                        <select id="maquina-'+correlativo+'" name="maquina" class="form-control maquina" style="width: 100%">\n\
+                                        <select id="maquina-'+correlativo+'" name="maquina" class="form-control maquina requeridoMP" style="width: 100%">\n\
                                         <option value="0" selected eneable>Maquina...</option>\n\
                                    </select>\n\
                               </div>\n\
                             </div>\n\
                               <div class="col-md-9"></div>\n\
                                <div class="clearfix"></div>\n\
-                                <div class="form-column col-md-3">\n\
+                                <div class="form-column col-md-3 operariosMaquinaCant">\n\
                                             <label for="operarioMaquina" class="control-label">Operario</label>\n\
                                              <div id="radiosOperarios">\n\
-                                            <label class="radio-inline"><input type="radio" name="operarioMaquina-'+correlativo+'" class="operarioMaquina">Si</label>\n\
-                                            <label class="radio-inline"><input type="radio" name="operarioMaquina-'+correlativo+'" class="operarioMaquina">No</label>\n\
+                                            <label class="radio-inline"><input type="radio" name="operarioMaquina-'+correlativo+'" class="operarioMaquina" checked="checked" value="1">Si</label>\n\
+                                            <label class="radio-inline"><input type="radio" name="operarioMaquina-'+correlativo+'" class="operarioMaquina" value="0">No</label>\n\
                                             </div>\n\
                                         </div>\n\
                                 </div>\n\
@@ -50,20 +50,20 @@
                                             <div class="form-group" >\n\
                                                      <label for="horasMinimas" class="control-label">Numero horas minimas</label>\n\
                                                     <div class="form-group"><div class="input-group"><div class="input-group-addon">#</div>\n\
-                                                    <input type="text" min="1" class="form-control horasMinimas" id="horasMinimas-'+correlativo+'"  placeholder="Horas minimas" name="horasMinimas" value="0"></div></div>\n\
+                                                    <input type="text" min="1" class="form-control horasMinimas requeridoMP" id="horasMinimas-'+correlativo+'"  placeholder="Horas minimas" name="horasMinimas" value="0"></div></div>\n\
                                               </div>\n\
                                     </div>\n\
                                      <div class="form-column col-md-3">\n\
-                                                    <label for="operarioMaquina" class="control-label">Tipo de cobro</label>\n\
+                                                    <label for="operarioMaquina" class="control-label" maquinaTipoCobro>Tipo de cobro</label>\n\
                                                     <div id="radiosOperarios">\n\
-                                                    <label class="radio-inline"><input type="radio" name="tipoCobro">Dia</label>\n\
-                                                    <label class="radio-inline"><input type="radio" name="tipoCobro">Hora</label>\n\
+                                                    <label class="radio-inline"><input type="radio" name="tipoCobro-'+correlativo+'" class="tipoCobro" checked="checked" value="2">Dia</label>\n\
+                                                    <label class="radio-inline"><input type="radio" name="tipoCobro-'+correlativo+'" class="tipoCobro" value="1">Hora</label>\n\
                                                 </div>\n\
                                         </div>\n\
                                            <div class="form-column col-md-3">\n\
                                             <div class="form-group" >\n\
                                                      <label for="costoMaquina" class="control-label">Precio</label>\n\
-                                                    <div class="form-group"><div class="input-group"><div class="input-group-addon">$</div><input type="text" min="1" class="form-control costoMaquina"  placeholder="costo" name="costoMaquina" value="0"></div></div>\n\
+                                                    <div class="form-group"><div class="input-group"><div class="input-group-addon">$</div><input type="text" min="1" class="form-control costoMaquina requeridoMP"  placeholder="costo" name="costoMaquina" value="0"></div></div>\n\
                                               </div>\n\
                                  </div>\n\
                                 <input type="hidden" id="idMaquinaSeleccionada-'+correlativo+'" name="" value="0">\n\
@@ -97,8 +97,11 @@
                     processResults: function (data, params) {
                         var select2Data = $.map(data.data, function (obj) {
                             obj.id = obj.maquinaid;
-                            obj.text = obj.nombre + ' - ' + obj.alias;
-
+                            if (obj.maIdentificacionAlquiler!=""){
+                                 obj.text = obj.maIdentificacionAlquiler+'-'+obj.nombre + ' - ' + obj.alias;
+                            }else{
+                                  obj.text = '#'+obj.nombre + ' - ' + obj.alias;
+                            }
                             return obj;
                         });
 
@@ -212,10 +215,118 @@
       });
       
  
- 
- 
+  $(document).on("click","#guardarFormularioMaquinariaProyecto",function() {
+                        var cont =0;
+                                                                $(".maquina").each(function () {
+                                                                    
+                                                                      var x =  $(this).val();
+                                                                      if (x==0){
+                                                                          cont=cont+1;
+                                                                           swal("Error!", "El campo de maquina no puede ir vacio", "error");
+                                                                          }
+                                                                      
+                                                                });
+                                                                
+                                                                 $(".requeridoMP").each(function () {
+                                                                    
+                                                                      var x =  $(this).val();
+                                                                      if (x=="" || x==0){
+                                                                          cont=cont+1;
+                                                                           swal("Error!", "El campo de maquina no puede ir vacio", "error");
+                                                                          }
+                                                                      
+                                                                }); 
+                                                                
+                                                      if (cont==0){
+                                                          guardarMaquinariaProyecto();
+                                                          
+                                                      }          
+                                                     
+  });
+  
+  
+    function guardarMaquinariaProyecto(){
+          
+            var maquinas = new Array();
+            var operarioMaquinas= new Array();
+            var tipoCobros = new Array();
+            var horasMinimas = new Array();
+            var costoMaquinas = new Array();
+            
+            $(".maquina").each(function(k, va) {
+                     maquinas.push($(this).val());
+             });
+             
+             
+              $(".operariosMaquinaCant").each(function(k, va) {
+                  var numero = k+1;
+                  operarioMaquinas.push($('input[name="operarioMaquina-'+numero+'"]:checked').val());
+  
+             });
+             
+               $(".maquinaTipoCobro").each(function(k, va) {
+                  var numero = k+1;
+                  tipoCobros.push($('input[name="tipoCobro-'+numero+'"]:checked').val());
+  
+                });
+               
+                 $(".horasMinimas").each(function(k, va) {
+                     horasMinimas.push($(this).val());
+                    });
+                    
+                     $(".costoMaquina").each(function(k, va) {
+                     costoMaquinas.push($(this).val());
+                     
+                    });
+                    
+                   $.ajax({
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: 'json',
+                                    data: {maquinas:maquinas,operarioMaquinas:operarioMaquinas,tipoCobros:tipoCobros,
+                                                horasMinimas:horasMinimas,costoMaquinas:costoMaquinas},
+                                    url: Routing.generate('insertarMaquinariaProyecto'),
+                                    success: function (data)
+                                    {
+                                         if (data.estado==true){
+                                             
+                                         var url=Routing.generate('admin_proveedor_index');
+                                        window.open(url,"_self"); 
+                                        
+                                                         
                                             
+                                             
+                                         }
+                                         else{
+                                             
+                                                Lobibox.notify("error", {
+                                          size: 'mini',
+                                          msg: 'Error al insertar los datos, espere un momento'
+                                      });
+                                            location.reload();
                                             
+                                             
+                                         }
+                                        
+                                             
+                    
+                                         
+                                          
+                                    },
+                                    error: function (xhr, status)
+                                    {
+                      
+                    }
+            });      
+                    
+                    
+                    
+                    
+        
+        
+        
+    }
+ 
   
   //Fin Document Ready    
  });
@@ -242,7 +353,7 @@ function formatRepo (data) {
                      if(data.nombre){
                 var markup = "<div class='select2-result-repository clearfix'>" +
                              "<div class='select2-result-repository__meta'>" +
-                             "<div class='select2-result-repository__title'>" + data.nombre + " - " + data.alias + "</div>" +
+                             "<div class='select2-result-repository__title'>"+ data.maIdentificacionAlquiler+' '+ data.nombre + " - " + data.alias + "</div>" +
                              "</div></div>";
             } 
             return markup;
@@ -250,7 +361,7 @@ function formatRepo (data) {
 
         function formatRepoSelection (data) {
             if(data.nombre){
-                return data.nombre + " - " + data.alias ;
+                return  data.maIdentificacionAlquiler+' '+data.nombre + " - " + data.alias ;
             } else {
                 return "Seleccione una maquina";
             }   

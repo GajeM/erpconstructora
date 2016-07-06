@@ -319,8 +319,12 @@
                                                                                     },
                                                                                             function (isConfirm) {
                                                                                                 if (isConfirm) {
+                                                                                                        
+                                                                                                               var table = $('#listaRegistrosCajachica').DataTable();
+                                                                                                                    $("#eliminarRegistroCCH").hide();
+                                                                                                               table.ajax.reload( function ( json ) {
 
-
+                                                                                                               } );
 
                                                                                                 } else {
                                                                                                         var url=Routing.generate('dashboard_index');

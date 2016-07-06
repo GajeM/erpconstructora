@@ -324,7 +324,12 @@
                                                                                             function (isConfirm) {
                                                                                                 if (isConfirm) {
 
+                                                                                                   var table = $('#listaRegistrosCajachicaIngresos').DataTable();
+                                                                                                        $("#eliminarRegistroCCH").hide();
+                                                                                                   table.ajax.reload( function ( json ) {
 
+                                                                                                   } );
+                                                                                                   
 
                                                                                                 } else {
                                                                                                         var url=Routing.generate('dashboard_index');

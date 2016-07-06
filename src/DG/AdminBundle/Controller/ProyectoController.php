@@ -208,7 +208,7 @@ class ProyectoController extends Controller
     /**
     * Ajax utilizado para buscar informacion de contactos
     * 
-    * @Route("/buscarEstadoProyecto", name="buscarEstadoProyecto",options={"expose"=true})
+    * @Route("/buscarEstadoProyecto/data", name="buscarEstadoProyecto",options={"expose"=true})
     */
     public function BuscarEstadoProyectoAction(Request $request)
     {
@@ -234,7 +234,7 @@ class ProyectoController extends Controller
      /**
     * Ajax utilizado para buscar informacion de contactos
     * 
-    * @Route("/buscarTipoProyecto", name="buscarTipoProyecto",options={"expose"=true})
+    * @Route("/buscarTipoProyecto/data", name="buscarTipoProyecto",options={"expose"=true})
     */
     public function BuscarTipoProyectoAction(Request $request)
     {

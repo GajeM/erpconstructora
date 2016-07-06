@@ -1,0 +1,226 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block css %}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
+    <link rel="stylesheet" href="{{ asset('Resources/js/registroCompras/stylemaquina.css')}}">
+    
+{% endblock css%}
+{% block js %}
+       {{parent()}}
+       <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
+       <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script> 
+
+            <style>
+                    .verReporteComisionesCliente:hover{
+                       cursor: pointer;
+                        background-color: #D72400 ;
+                 }  
+            
+          </style>
+{% endblock %}
+{% block descripcion_y_acciones %}
+
+    
+ <div class="row">
+ {% block descripcion %}
+     <div class="col-md-8">
+         <input type="hidden" id="idDistribuidor">
+         <input type="hidden" id="idDetalleRegistroCompra">
+         <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Caja chica</p>
+         <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Busca el reporte de los ingresos</p>
+     </div>
+ {% endblock%}
+ {% block acciones %}
+     
+     <div class="col-md-4" style="margin-top: 50px;">
+                               {{parent()}}
+		
+	</div>
+     
+ {% endblock %}
+		
+</div>
+
+{% endblock %}
+{% block navegacion_Y_body %}
+    	<div class="row">
+        {% block navegacion %}
+           <hr style="margin-top: 0px !important;">
+                <div class="col-md-2 colorAnclas" style="border-right: 1px solid #f3f3f3;">
+                    <!-- Left Navigation -->
+                    <ul style="list-style: none; padding: 0;">
+                        <a href="{{ path('dashboard_index') }}" class="leftnava colorAnclas"><li class="leftnav left ">Menu<span class="pull-right right"></span></li></a>
+                     </ul>
+                       <ul style="list-style: none; padding: 0;">
+                                <a href="{{ path('reportes_caja_chica') }}" class="leftnava colorAnclas"><li class="leftnav left active">Reportes<span class="pull-right right"></span></li></a>
+                        </ul>
+                </div>	
+       
+            
+            
+       {% endblock %}
+
+{% block cuerpo %}
+    {{parent()}}
+    <div class="col-md-10" id="contenidoIndexRegistroCompraCliente">
+       
+     
+
+<div class="row" style="margin-top: 10px; margin-right: 10px; display: none;" id="cont-error1">
+                                    <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <span class="sr-only">Error:</span>
+                                        <span id="error1"></span>
+                                    </div>
+</div>
+                                <form id="fConsultaFactura">
+                                    <div class="form-column col-sm-12" style=" padding: 20px;">
+                                        <div class="form-group">
+                                            <div class="row" style="margin-right: 2px;">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label>Seleccione periodo de busqueda:</label>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <input type="text"  name="txtFechaInicio" class="form-control input-sm txtFechaIni" data-rule-required="true"
+                                                                   style=" width: 100%;" id="txtFechaInicio"   placeholder="Fecha Registro">
+                                                        </div>
+                                                       <div class="col-sm-6"  >
+                                                           <input type="text"  name="txtFechaFin" id="txtFechaFin" class="form-control input-sm txtFechaFin " data-rule-required="true"
+                                                                   style=" width: 100%;"   placeholder="Fecha fin">
+                                                        </div>
+                                                        
+
+                                                    </div>
+                                                </div>
+                                               <div class="col-sm-1"  >
+                                                    <label style="color: #FFF;">Buscar</label>
+                                                    <a class="btn btn-sm btn-info btn-flat pull-left" id="btnBuscarReportesPorIngresosCajachica"><i class="fa  fa-search"></i>&nbsp;Ver</a>
+                                                </div>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </form>
+                                <br>
+                            
+    
+     </div>
+    <div class="col-md-2"></div>
+  
+
+{% endblock %}
+
+       </div>
+{% endblock %}
+ {% block js_extend %}
+
+  
+      <script  type="text/javascript">
+ $(document).ready(function(){
+              
+var fecha =new   Date();
+var dia = fecha.getDate();
+var mes = fecha.getMonth();
+var anho = fecha.getFullYear();
+
+    if (mes<10){
+        mes="0"+(mes+1);
+    }
+    
+    
+    if(dia<10){
+        dia = "0"+dia; 
+    }
+
+ var fechaFinal = anho+"-"+mes+"-"+dia;
+
+
+$('#txtFechaInicio').Zebra_DatePicker({
+     format: 'Y-m-d',
+    direction: -1,
+    pair: $('#txtFechaFin')
+});
+
+     
+  $('#txtFechaFin').Zebra_DatePicker({
+     format: 'Y-m-d',
+     direction: [true, fechaFinal]
+});       
+              
+
+            $(document).on("click", "#btnBuscarReportesPorIngresosCajachica", function(){
+               
+                    var fechaInicio = $("#txtFechaInicio").val();
+                    var fechaFin = $("#txtFechaFin").val();
+                    var idCliente = $("#clientes").val();
+                    
+                    if(idCliente==null){
+                        idCliente=0;
+                    }
+                    
+
+                    if(fechaInicio=="" && fechaFin==""){
+                            fechaInicio=0;
+                            fechaFin=0;                        
+
+                     }
+                                        var url=Routing.generate('verPDFIngresosCajaChica',{fechaInicio: fechaInicio, fechaFin: fechaFin});
+                                        window.open(url,"_blank"); 
+                                        
+                                        
+
+               
+            });
+            
+
+            
+           
+        });
+        
+      
+
+        
+      </script>
+      
+      
+  {% endblock %} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

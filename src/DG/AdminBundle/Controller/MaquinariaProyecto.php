@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DG\AdminBundle\Entity\Proyecto;
+use DG\AdminBundle\Entity\MaMaquina;
+use DG\AdminBundle\Entity\DetalleArrendamientoMaquina;
 use DG\AdminBundle\Entity\ImagenesDetalleMantenimiento;
 use DG\AdminBundle\Entity\DetalleProMaqPer;
 use Symfony\Component\HttpKernel\Exception;
@@ -27,7 +29,8 @@ class MaquinariaProyecto extends Controller
     * 
     * @Route("/buscarMaquina/data", name="buscarMaquina",options={"expose"=true})
     */
-    public function BuscarTipoEquipoAction(Request $request)
+    
+    public function BuscarMaquinaAction(Request $request)
     {
         $busqueda = $request->query->get('q');
         $idMaquinas = $request->query->get('x');
@@ -49,16 +52,22 @@ class MaquinariaProyecto extends Controller
         $page = $request->query->get('page');
        
         $em = $this->getDoctrine()->getEntityManager();
-        $dql = "SELECT ma.id maquinaid, ma.alias, ma.nombre "
-                        . "FROM DGAdminBundle:MaMaquina ma "
-                        . "WHERE (upper(ma.alias) LIKE upper(:busqueda) OR upper(ma.nombre) LIKE upper(:busqueda))  "
+
+            $sqlAbono = "SELECT ma.id maquinaid, ma.alias, ma.nombre, "
+                        . "CASE 
+                             WHEN ma.ma_identificacion_alquiler='1' THEN 'ALQ'
+                             WHEN ma.ma_identificacion_alquiler='0' THEN ''
+                           END  as maIdentificacionAlquiler "
+                        . " FROM ma_maquina ma "
+                        . "WHERE (ma.alias LIKE '%".$busqueda."%' OR ma.nombre LIKE '%".$busqueda."%') "
                         . " AND ma.estado=1 ".$variable
-                        . "ORDER BY ma.nombre ASC ";
-       
-        $maquina['data'] = $em->createQuery($dql)
-                ->setParameters(array('busqueda'=>"%".$busqueda."%"))
-                ->setMaxResults( 10 )
-                ->getResult();
+                        . "ORDER BY ma.nombre ASC";
+
+                $stmt = $em->getConnection()->prepare($sqlAbono);
+                $stmt->execute();
+                $maquina['data']= $stmt->fetchAll();
+        
+        
        
         return new Response(json_encode($maquina));
     }
@@ -78,6 +87,12 @@ class MaquinariaProyecto extends Controller
              
             $em = $this->getDoctrine()->getManager();
             
+            $tiempoCobro = $request->get('tiempoCobro');
+            $proveedorId= $request->get('proveedor');
+            $fechaInicioA= $request->get('fechaInicioA');
+            $fechaFinA= $request->get('fechaFinA');
+            $costoA= $request->get('costoA');
+
             $numeroSerie = $request->get('numeroSerie');
             $numeroEquipo = $request->get('numeroEquipo');
             $anho = $request->get('anho');
@@ -85,7 +100,6 @@ class MaquinariaProyecto extends Controller
             $modelo = $request->get('modelo');
             $tipoEquipo = $request->get('tipoEquipo');
             $color = $request->get('color');
-            $tamanho = $request->get('tamanho');
             $marca = $request->get('marca');
             $descripcion = $request->get('descripcion');
 
@@ -103,21 +117,29 @@ class MaquinariaProyecto extends Controller
              }else{
                  $objeto->setTipoEquipo(null);
              }
-             
-             $objeto->setVin($vin);
-             $objeto->setPlaca($placa);
              $objeto->setColor($color);
-             $objeto->setTamaño($tamanho);
-             $objeto->setCapacidad($capacidad);
              $objeto->setMarca($marca);
              $objeto->setDecripcion($descripcion);
              $objeto->setEstado(1);
-             
-             $objeto->setMaIdentificacionAlquiler(0);
-            $em->persist($objeto);
-            $em->flush();
-
+             $objeto->setMaIdentificacionAlquiler(1);
+             $em->persist($objeto);
+             $em->flush();
+            
+            
+            
             $idMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->find($objeto->getId());
+            $proveedor = $this->getDoctrine()->getRepository('DGAdminBundle:Proveedor')->find($proveedorId);
+            
+            $objeto2 = new DetalleArrendamientoMaquina();
+            $objeto2->setCosto($costoA);
+            $objeto2->setFechaFinal(new \DateTime($fechaFinA));
+            $objeto2->setFechaInicio(new \DateTime($fechaInicioA));
+            $objeto2->setMaquina($idMaquina);
+            $objeto2->setProveedor($proveedor);
+            $objeto2->setTiempo($tiempoCobro);
+            $em->persist($objeto2);
+            $em->flush();
+            
             $data['estado']=true;
             $data['idMaquina']=$idMaquina->getId();
             
@@ -129,6 +151,49 @@ class MaquinariaProyecto extends Controller
         
         
     }
+    
+    
+      /**
+     * @Route("/insertarMaquinariaProyecto/data/", name="insertarMaquinariaProyecto", options={"expose"=true})
+     * @Method("POST")
+     */
+       public function InsertarMaquinariaProyectoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+             
+            $em = $this->getDoctrine()->getManager();
+            
+            $maquinas = $request->get('maquinas');
+            var_dump($maquinas);
+            die();
+
+            
+            
+            
+//      
+//             $em->persist();
+//             $em->flush();
+//            
+//            
+//            
+//            $id = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->find($objeto->getId());
+//           
+
+            
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }
+    
+    
+    
     
     
     

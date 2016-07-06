@@ -2018,11 +2018,6 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
 
 
         });
-           
-        
-        
-        
-        
         if (num==0){
             
             
@@ -2168,11 +2163,6 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
    });
    
  //termina ingresar los datos de expediente
- 
- 
- 
- 
- 
  //Empieza la insercion de los datos a editar dentro de un expediente
 //Variable global
   
@@ -2212,14 +2202,8 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
 
         
     });
-  
-  
-  
-  
   //Insercion de nuevo expediente de mantenimiento
     $(document).on("click","#guardarExpedienteEdicion",function() {
-        
-        
                  var num=0;
                 $('.requeridoINEME').each( function (){
             
@@ -2230,10 +2214,6 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                        }
 
                        });
-           
-        
-        
-        
         if (num==0){
             
         var controlCosto =0;
@@ -2274,17 +2254,10 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                 $(".idRegistros").each(function (k, va) {
                     idRegistros.push($(this).val());
                 });
-                
-                
-
-            
             //Nuevo ingreso en la edicion
                 var costosNuevosE = new Array();
                 var nombresNuevosE = new Array();
                 var proveedoresNuevosE = new Array();
-            
-            
-            
              $(".nombresENuevo").each(function (k, va) {
                     nombresNuevosE.push($(this).val());
                 });
@@ -2396,12 +2369,6 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
       
        
    });
-   
-   
-    //Envio de imagenes de la maquinaria
-    
-    
- 
  var idMaquina=$("#idMaquina").val();
  var correlativoDiv=0; 
     var url = Routing.generate('insertarImagenesMaquinaria', {idMaquina: idMaquina});
@@ -2416,9 +2383,6 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                             </div>'
               $("#mostrarImagenes").append(formulario);
              $("#imgPrueba-"+correlativoDiv).attr("src","/erpconstructora/web/Photos/maquinaria/"+obj.nombreImagen);
-           
-               
-
     }
 
     });

@@ -172,7 +172,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                                                                                     type: 'POST',
                                                                                                     async: false,
                                                                                                     dataType: 'json',
-                                                                                                    data: {fechaRCCH: fechaRCCH, valor: valor, empleado: empleado, cantidadPor: cantidadPor, descripcionRCCH: descripcionRCCH, personaEntrega: personaEntrega},
+                                                                                                    data: {fechaRCCH: fechaRCCH, valor: valor, cantidadPor: cantidadPor, descripcionRCCH: descripcionRCCH, personaEntrega: personaEntrega},
                                                                                                     url: Routing.generate('insertarRegistroCCH'),
                                                                                                     success: function (data)
                                                                                                     {
@@ -288,14 +288,12 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                     </div>\n\
                                     <div class="col-md-9"></div>\n\
                                     <div class="clearfix"></div>\n\
-                                            <div class="form-column col-md-3">\n\
-                                                <div class="form-group required" style="margin-right: 2%;">\n\
-                                                <label for="tipoMantenimiento" class="control-label">Empleado</label>\n\
-                                                <select id="empleadoE" name="empleadoE" class="form-control requeridoE" style="width: 100%" >\n\
-                                                    <option selected value="'+data.empleadoId+'" selected>'+data.empleadoNombre+'</option>\n\
-                                                </select>\n\
-                                                </div>\n\
-                                            </div>\n\
+                                           <div class="form-column col-md-3">\n\
+                                        <div class="form-group required">\n\
+                                              <label class="control-label" for="valor">Entregado a: </label>\n\
+                                              <input type="text" class="form-control requerido" id="entregadoaE"  name="entregadoaE" value="'+data.recibio+'">\n\
+                                          </div>\n\
+                                  </div>\n\
                                 <div class="form-column col-md-3"><div class="form-group required" >\n\
                                    <div class="form-group">\n\
                                            <label class="control-label" for="valor">Valor</label>\n\
@@ -340,39 +338,39 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                     $("#contenedorInsercionEdicionRegistroCajachica").append(formulario);
                     
                     
-                $('#empleadoE').select2({
-                ajax: {
-                    url: Routing.generate('buscarEmpleado'),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            q: params.term,
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data, params) {
-                        var select2Data = $.map(data.data, function (obj) {
-                            obj.id = obj.abogadoid;
-                            obj.text = obj.nombres;
-
-                            return obj;
-                        });
-
-                        return {
-                            results: select2Data
-                        };
-                    },
-                    cache: true
-                },
-                escapeMarkup: function (markup) { return markup; },
-                minimumInputLength: 1,
-                templateResult: formatRepo,
-//                templateSelection: formatRepoSelection,
-                formatInputTooShort: function () {
-                    return "Ingrese un caracter para la busqueda";
-                }
-            });
+//                $('#empleadoE').select2({
+//                ajax: {
+//                    url: Routing.generate('buscarEmpleado'),
+//                    dataType: 'json',
+//                    delay: 250,
+//                    data: function (params) {
+//                        return {
+//                            q: params.term,
+//                            page: params.page
+//                        };
+//                    },
+//                    processResults: function (data, params) {
+//                        var select2Data = $.map(data.data, function (obj) {
+//                            obj.id = obj.abogadoid;
+//                            obj.text = obj.nombres;
+//
+//                            return obj;
+//                        });
+//
+//                        return {
+//                            results: select2Data
+//                        };
+//                    },
+//                    cache: true
+//                },
+//                escapeMarkup: function (markup) { return markup; },
+//                minimumInputLength: 1,
+//                templateResult: formatRepo,
+////                templateSelection: formatRepoSelection,
+//                formatInputTooShort: function () {
+//                    return "Ingrese un caracter para la busqueda";
+//                }
+//            });
 
                     $('#fechaRCCHE').Zebra_DatePicker({
                         format: 'd-m-Y',
@@ -396,7 +394,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
     
     
       $(document).on("click","#guardarEdicionCajaChica",function() {
-      
+         var personaRecibe = $("#entregadoaE").val();
           var num=0;
                 $('.requeridoE').each( function (){
             
@@ -414,7 +412,8 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                      var idRegistro = $("#idRegistro").val();
                      var fechaRCCH = $("#fechaRCCHE").val();
                      var valor= $("#valorE").val();
-                     var empleado = $("#empleadoE").val();
+                      var personaRecibe = $("#entregadoaE").val();
+                   //  var empleado = $("#empleadoE").val();
                      var cantidadPor = $("#cantidadPorE").val();
                      var descripcionRCCH = $("#descripcionRCCHE").val();
                      
@@ -435,7 +434,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                                                         type: 'POST',
                                                                         async: false,
                                                                         dataType: 'json',
-                                                                        data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
+                                                                        data: {fechaRCCH:fechaRCCH,valor:valor,personaRecibe:personaRecibe,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
                                                                         url: Routing.generate('editarRegistroCCH'),
                                                                         success: function (data)
                                                                         {
@@ -477,6 +476,7 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                                             });
 
                                                             }else{
+                                                             
                                                                    swal({
                                                                           title: "Advertencia",
                                                                           text: "<p style='text-align: justify;'>El saldo disponible dentro de caja chica es inferior a la cifra a retirar (saldo $ "+data.saldo+")<br>¿Quieres registrar el retiro y tener un saldo negativo?</p>",
@@ -496,39 +496,21 @@ $(document).on("click","#nuevoIngresoCCH",function() {
                                                                         type: 'POST',
                                                                         async: false,
                                                                         dataType: 'json',
-                                                                        data: {fechaRCCH:fechaRCCH,valor:valor,empleado:empleado,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
+                                                                        data: {personaRecibe:personaRecibe,fechaRCCH:fechaRCCH,valor:valor,cantidadPor:cantidadPor,descripcionRCCH:descripcionRCCH,idRegistro:idRegistro},
                                                                         url: Routing.generate('editarRegistroCCH'),
                                                                         success: function (data)
                                                                         {
                                                                              if (data.estado==true){
                                                                                    $(".saldo").text(data.saldo);
 
-                                                                              swal({
-                                                                                        title: "Datos  editados  con exito",
-                                                                                        text: "¿Quieres seguir modificando mas registros dentro de caja chica?",
-                                                                                        type: "success",
-                                                                                        showCancelButton: true,
-                                                                                        cancelButtonText: "Despues",
-                                                                                        confirmButtonText: "Seguir",
-                                                                                        confirmButtonColor: "#00A59D",
-                                                                                        closeOnConfirm: true,
-                                                                                        closeOnCancel: false
-                                                                                    },
-                                                                                            function (isConfirm) {
-                                                                                            if (isConfirm) {
+                                                                     
                                                                                                 var url = Routing.generate('caja_salida_index');
                                                                                                 window.open(url, "_self");
 
-
-                                                                                            } else {
-                                                                                                var url = Routing.generate('caja_chica_index');
-                                                                                                window.open(url, "_self");
-
-                                                                                            }
-                                                                                        });
+                                                                                              
 
 
-                                                    }
+                                                                                }
 
                                                 },
                                                 error: function (xhr, status)

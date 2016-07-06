@@ -69,14 +69,43 @@ class CajaChicaController extends Controller
     function llamarSaldoActual(){
           $em = $this->getDoctrine()->getEntityManager();
           
-          $sql = "SELECT sum(caj.cantidad_por)-(SELECT sum(caj.cantidad_por) as retiros FROM caja_chica caj
-                        WHERE caj.estado=1 AND caj.tipo_ingreso=2) as saldo FROM caja_chica caj
+          $sqlIngresos = " SELECT sum(caj.cantidad_por) as ingresos FROM caja_chica caj
                         WHERE caj.estado=1 AND caj.tipo_ingreso=1";
-          
-            $stmt = $em->getConnection()->prepare($sql);
+        
+            $stmt = $em->getConnection()->prepare($sqlIngresos);
             $stmt->execute();
             $numero =  $stmt->fetchAll();
-            $valor = $numero[0]['saldo'];
+            $ingresos = $numero[0]['ingresos'];
+            
+            
+            $sqlRetiros = " SELECT sum(caj.cantidad_por) as retiros FROM caja_chica caj
+                        WHERE caj.estado=1 AND caj.tipo_ingreso=2";
+            
+            $stmt2 = $em->getConnection()->prepare($sqlRetiros);
+            $stmt2->execute();
+            $numero2 =  $stmt2->fetchAll();
+            $retiros = $numero2[0]['retiros'];
+            
+            
+            if ($ingresos==null){
+                
+                $ing = 0;
+                
+            }else{
+                $ing=$ingresos;
+            }
+            
+            if ($retiros==null){
+                
+                $ret = 0;
+                
+            }else{
+                $ret= $retiros;
+            }
+            
+            $valor = $ing-$ret;
+            
+            
             return $valor;
         
     }
@@ -271,10 +300,6 @@ class CajaChicaController extends Controller
 
 
     
-    
-    
-    
-    
      /**
      * @Route("/eliminarRegistroCCH/", name="eliminarRegistroCCH", options={"expose"=true})
      * @Method("POST")
@@ -291,7 +316,7 @@ class CajaChicaController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             $idRegistro = $request->get('idEliminar');
-            $objeto=  $this->getDoctrine()->getRepository('DGAdminBundle:CajaChica')->findById($idRegistro);
+            $objeto=  $this->getDoctrine()->getRepository('DGAdminBundle:CajaChica')->findByCodigo($idRegistro);
             $em->remove($objeto[0]);
             $em->flush();
             $data['estado']=true;
@@ -334,8 +359,7 @@ class CajaChicaController extends Controller
             $data['concepto'] = $objeto[0]->getConcepto();
             $data['nombre'] = $objeto[0]->getNombre();
             $data['cantidadPor'] = $objeto[0]->getCantidadPor();
-            $data['empleadoId'] = $objeto[0]->getEmpleadoId()->getId();
-            $data['empleadoNombre'] = $objeto[0]->getEmpleadoId()->getNombres();
+            $data['recibio']= $objeto[0]->getPersonaQueRecibe();
             $data['idRegistro']=$objeto[0]->getId();
 
             $data['estado'] = true;
@@ -373,7 +397,10 @@ class CajaChicaController extends Controller
             $idRegistro= $request->get('idRegistro');
             
             $valor = $request->get('valor');
-            $empleado = $request->get('empleado');
+            $personaRecibe = $request->get('personaRecibe');
+            
+  
+            
             $cantidadPor = $request->get('cantidadPor');
             $descripcionRCCH = $request->get('descripcionRCCH');
 
@@ -382,9 +409,7 @@ class CajaChicaController extends Controller
             $objeto[0]->setConcepto($descripcionRCCH);
             $objeto[0]->setFecha(new \DateTime($fecha2));
             $objeto[0]->setValor($valor);
-            
-            $empleados = $this->getDoctrine()->getRepository('DGAdminBundle:Empleado')->findById($empleado);
-            $objeto[0]->setEmpleadoId($empleados[0]);
+            $objeto[0]->setPersonaQueRecibe($personaRecibe);
             $objeto[0]->setCantidadPor($cantidadPor);
             $em->merge($objeto[0]);
             $em->flush();
@@ -684,10 +709,37 @@ class CajaChicaController extends Controller
     }   
     
     
+     /**
+     * Lists all ClientePotencial entities.
+     *
+     * @Route("/reportes/cajachica", name="reportes_caja_chica",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function indexReportesCajaChicaAction()
+    {
+        
+        $saldo = $this->llamarSaldoActual();
+        return $this->render('cajachica/dashboardreportescajachica.html.twig', array(
+                      
+        ));
+    }
     
     
     
-    
+     /**
+     * Lists all ClientePotencial entities.
+     *
+     * @Route("/reportes/cajachica/ingresos", name="reporte_ingresos",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function indexReportesCajaChicaIngresosAction()
+    {
+        
+        $saldo = $this->llamarSaldoActual();
+        return $this->render('cajachica/reporteingresos.html.twig', array(
+                      
+        ));
+    }
     
     
     

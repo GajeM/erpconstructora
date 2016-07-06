@@ -154,9 +154,9 @@ $('#fechaDE').Zebra_DatePicker({
                                                                     {
                                                                        
                                                                         if (data.estado == true) {
-
-
-
+                                                                            
+                                                                            swal("Exito!", "Datos de maquinaria alquilada ingresados con exito", "success");
+                                                                            $("#idModalFormAlqularMaquina").modal('toggle');
 
                                                                        }
 
@@ -176,6 +176,7 @@ $('#fechaDE').Zebra_DatePicker({
 
 
         //Pestaña de Imagenes de las maquinas
+
         $(document).on("click","#imagenesMaquinas",function() {
             var valor = $("#idMaquina").val();
 
@@ -351,18 +352,13 @@ $('#fechaDE').Zebra_DatePicker({
     
     function limparformulario(){
         
-        $("#tipoMantenimiento").val(0).change();
-        $("#fechaDE").val("");
-        $("#serie").val("");
-        $("#costo").val("");
-        $("#numeroFactura").val("");
-        $("#proyecto").val(0).change();
-        $("#proveedor").val(0).change();
-        $("#fotoFactura").val("");
-        $("#descripcionDatoExpediente").val("");
-        $("#prevFactura").hide();
-        $("#eliminarDatoExpedienteMantenimiento").hide();
+        $('.requeridoMa').each(function () {
 
+            $(this).val("");
+
+        });
+        
+        
         
     }
     

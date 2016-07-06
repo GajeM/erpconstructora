@@ -1,0 +1,107 @@
+{% extends ':Layout:layout2.html.twig' %}
+
+{% block css %}
+    {{parent()}}
+{% endblock css%}
+{% block js %}
+     {{parent()}}
+     
+    
+{% endblock %}
+
+
+{% block descripcion_y_acciones %}
+
+    
+ <div class="row">
+ {% block descripcion %}
+        <div class="col-md-8">
+            <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Caja Chica</p>
+            <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Reportes</p>
+        </div>
+ {% endblock%}
+ {% block acciones %}
+     
+     	<div class="col-md-4" style="margin-top: 50px;">
+                              
+                                {{parent()}}
+
+	</div>
+     
+ {% endblock %}
+		
+		</div>
+
+{% endblock %}
+{% block navegacion_Y_body %}
+    	<div class="row">
+        {% block navegacion %}
+		<hr style="margin-top: 0px !important;">
+                <div class="col-md-2 colorAnclas" style="border-right: 1px solid #f3f3f3;">
+                    <!-- Left Navigation -->
+                    <ul style="list-style: none; padding: 0;">
+                        <a href="{{ path('dashboard_index') }}" class="leftnava colorAnclas"><li class="leftnav left ">Menu<span class="pull-right right"></span></li></a>
+                     </ul>
+                       <ul style="list-style: none; padding: 0;">
+                                <a href="{{ path('reportes_caja_chica') }}" class="leftnava colorAnclas"><li class="leftnav left active">Reportes<span class="pull-right right"></span></li></a>
+                        </ul>
+                </div>	
+       
+            
+            
+       {% endblock %}
+
+{% block cuerpo %}
+     
+   	<div class="col-md-10">
+				<!-- Incio de Opcion de Modulo -->
+                                <div class="row module first">
+                                    <div class="row" >
+                                        <a href="{{ path('reporte_ingresos') }}">
+                                            <div class="col-md-10 colorAnclas">
+                                                <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Reporte de transacciones de Ingresos</strong></p>
+                                                <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Reporte de todas las transacciones de ingresos</p>
+
+                                            </div>
+                                          
+                                        </a>
+                                    </div>
+                                </div>
+				<!-- Fin de Opcion de Modulo -->
+                                <!-- Incio de Opcion de Modulo -->
+                               <div class="row module">
+                                    <div class="row" >
+                                        <a href="{#{{ path('reporte_salidas') }}#}">
+                                            <div class="col-md-10 colorAnclas">
+                                                <p class="text-left" style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;"><strong>Reporte de transacciones de egresos</strong></p>
+                                                <p class="text-left" style="font-size: 12px; #8D99A6 !important;">Reporte de todas las transacciones de egresos</p>
+
+                                            </div>
+                                          
+                                        </a>
+                                    </div>
+                                </div>
+			
+				
+				
+				<!-- Fin de Opcion de Modulo -->
+			</div>
+    
+    
+    
+    
+    
+{% endblock %}
+
+       </div>
+{% endblock %}
+ 
+ {% block js_extend %}
+    
+     
+      
+      
+  {% endblock %} 
+
+
+

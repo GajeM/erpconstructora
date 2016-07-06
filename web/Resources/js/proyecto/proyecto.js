@@ -35,17 +35,11 @@
                 },
                 escapeMarkup: function (markup) { return markup; },
                 minimumInputLength: 1,
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection,
+                templateResult: formatRepoCont,
+                templateSelection: formatRepoSelectionCont,
                 formatInputTooShort: function () {
                     return "Ingrese un caracter para la busqueda";
-                },
-                
-                language: {
-             noResults: function() {
-                 return "<a href='#' id='addNewContacto'>Agregar Nuevo Contacto</a>";
-                    }
-                }, 
+                }
             });
 
 
@@ -431,10 +425,7 @@ $('#fechaInicio').Zebra_DatePicker({
               $("#datosGeneralesProyecto").click();
                  
                       swal("Alerta!", "Primero tienes que igresar los datos generales del proyecto.", "warning");
-                
           }
-          
-       
 
    });
      
@@ -446,7 +437,7 @@ $('#fechaInicio').Zebra_DatePicker({
 
 
 //Contacto
-function formatRepo (data) {
+function formatRepoCont (data) {
             if(data.nombre){
                 var markup = "<div class='select2-result-repository clearfix'>" +
                              "<div class='select2-result-repository__meta'>" +
@@ -459,7 +450,7 @@ function formatRepo (data) {
             return markup;
         }
 
-        function formatRepoSelection (data) {
+        function formatRepoSelectionCont (data) {
             if(data.nombre){
                 return  data.nombre;
             } else {
