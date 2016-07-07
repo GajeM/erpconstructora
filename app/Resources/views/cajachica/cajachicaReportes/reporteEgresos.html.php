@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="Es">
 <head>
-    <title>Reporte de ingresos en caja chica</title>
+    <title>Reporte de egresos en caja chica</title>
 	<style type="text/css">
 		body{font-size:0.80em;}
 		.Cabecera{}
@@ -42,13 +42,10 @@
       <div >
     
              <div style="height: 120px; margin-bottom: -20px;">
-             
-                 
-              
               <table>
                 
                     <tr>
-                        <td colspan="5" style="font-size: 18px; font-weight: 600;text-transform: uppercase;"> Reporte de ingresos en caja chica</td>
+                        <td colspan="5" style="font-size: 18px; font-weight: 600;text-transform: uppercase;"> Reporte de egresos en caja chica</td>
                     </tr>
                     <tr>
                       <td class="tdProductoE"><b>Rango de fechas:</b></td>

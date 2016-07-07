@@ -29,7 +29,7 @@
          <input type="hidden" id="idDistribuidor">
          <input type="hidden" id="idDetalleRegistroCompra">
          <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Caja chica</p>
-         <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Busca el reporte de los ingresos</p>
+         <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Busca el reporte de  egresos</p>
      </div>
  {% endblock%}
  {% block acciones %}
@@ -152,20 +152,12 @@ $('#txtFechaInicio').Zebra_DatePicker({
               
 
             $(document).on("click", "#btnBuscarReportesPorIngresosCajachica", function(){
-                    var contador=0;
+               var contador =0;
                     var fechaInicio = $("#txtFechaInicio").val();
                     var fechaFin = $("#txtFechaFin").val();
-           
                     
 
                     if(fechaInicio=="" && fechaFin==""){
-                            fechaInicio=0;
-                            fechaFin=0;                        
-
-                     }
-                                      
-                                        
-                   if(fechaInicio=="" && fechaFin==""){
                             fechaInicio=0;
                             fechaFin=0;
                             
@@ -177,16 +169,15 @@ $('#txtFechaInicio').Zebra_DatePicker({
                      }
                      if(contador==0){
                          
-                            var url=Routing.generate('verPDFIngresosCajaChica',{fechaInicio: fechaInicio, fechaFin: fechaFin});
-                            window.open(url,"_blank");  
+                          var url=Routing.generate('verPDFEgresosCajaChica',{fechaInicio: fechaInicio, fechaFin: fechaFin});
+                          window.open(url,"_blank"); 
                                      
                          
                      }else{
                          swal("Error!", "Debes seleccionar las dos fechas", "error");
                          
-                     }                      
-                                        
-                                        
+                     }
+                     
                                         
                                         
 

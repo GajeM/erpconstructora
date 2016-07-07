@@ -8,18 +8,20 @@
                       <meta name="robots" content="noindex">
                       
                         
-                            <!-- Stylesheet de Bootstrap -->
-                            <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
-                            <!-- Stylesheet Personales -->
-                            <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
+                      <!-- Stylesheet de Bootstrap -->
+                      <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
+                      <!-- Stylesheet Personales -->
+                      <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
+                      <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
                           
                             
                        
-                            <script type="text/javascript" src="{{ asset('Resources/jquery/jquery-1.11.3.min.js') }}"></script>
-                                    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-                                        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-                            <link rel="shortcut icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
-                            <link rel="icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
+                                 <script type="text/javascript" src="{{ asset('Resources/jquery/jquery-1.11.3.min.js') }}"></script>
+                                 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                                 <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+                                 <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
+                                 <link rel="shortcut icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
+                                 <link rel="icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
                     
                        
 
@@ -69,26 +71,27 @@
 						</span></a>
 					</div>
 					
-					<div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;">
-						<a href="pos.php" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
+                                                                                        <div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;" id="facturacion">
+						<a href="#" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
 							<p style="margin-botttom: 0px; padding-bottom: 0px;"><img src="{{ asset('Resources/src/img/icon13-04.png')}}"></p>
 							<p style="padding-top: 5px; margin-top: 0px;"><strong>Facturacion</strong></p>
 						</span></a>
 					</div>
 					
-					<div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;">
-						<a href="template.php" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
+                                                                                            <div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;" id="compras">
+						<a href="#" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
 							<p style="margin-botttom: 0px; padding-bottom: 0px;"><img src="{{ asset('Resources/src/img/icon13-05.png')}}"></p>
 							<p style="padding-top: 5px; margin-top: 0px;"><strong>Compras</strong></p>
 						</span></a>
 					</div>
 					<!-- Fin de Icono de Notificaciones -->
 					<!-- Inicio de Icono de Notificaciones -->
-                                                                                <div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;">
-                                                                                    <a href="template.php" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
+                                                                                <div class="col-md-2 col-xs-6 col-sm-2" style="margin-top: 20px;" id="comprasGasolinas">
+                                                                                    <a href="#" style="text-decoration: none; color: inherit; outline: 0; margin-top: 20px;"><span class="text-center">
                                                                                             <p style="margin-botttom: 0px; padding-bottom: 0px;"><img src="{{ asset('Resources/src/img/icon13-02.png')}}"></p>
                                                                                             <p style="padding-top: 5px; margin-top: 0px;"><strong>Compra de Gasolina</strong></p>
-                                                                                        </span></a>
+                                                                                        </span>
+                                                                                    </a>
                                                                                 </div>
 					<!-- Fin de Icono de Notificaciones -->
 					<!-- Inicio de Icono de Notificaciones -->
@@ -111,6 +114,42 @@
                 <!-- Include all compiled plugins (below), or include individual files as needed -->
                 <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
                 <script src="{{ asset('Resources/src/js/shortcut.js')}}"></script> <!-- http://www.openjs.com/scripts/events/keyboard_shortcuts/v1.php -->
+                <script type="text/javascript">
+                        $(document).ready(function(){
+
+                            $(document).on("click","#compras",function() {
+
+                              swal("Informacion", "Lo sentimos mucho, pero este modulo aun no se encuentra en funcionamiento, estamos trabajando en ello.", "info");
+
+
+
+                            });
+                            
+                             $(document).on("click","#comprasGasolinas",function() {
+
+                              swal("Informacion", "Lo sentimos mucho, pero este modulo aun no se encuentra en funcionamiento, estamos trabajando en ello.", "info");
+
+
+
+                            });
+                            
+                            $(document).on("click","#facturacion",function() {
+
+                              swal("Informacion", "Lo sentimos mucho, pero este modulo aun no se encuentra en funcionamiento, estamos trabajando en ello.", "info");
+
+
+
+                            });
+
+
+                        });
+                </script>
+    
+     
+                
+                
+                
+                
                 {#<script type="text/javascript">
                         $( document ).ready(function() {
                     shortcut.add("Ctrl+Shift+X",function() {

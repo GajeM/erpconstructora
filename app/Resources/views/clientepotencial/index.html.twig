@@ -6,12 +6,11 @@
     <link rel="stylesheet" href="{{ asset('Resources/dataTable/material.min.css')}}"> 
     <link rel="stylesheet" href="{{ asset('Resources/dataTable/dataTable.material.min.css')}}"> 
     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
-    
-    <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+    <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}"> 
 {% endblock css%}
 {% block js %}
      {{parent()}}
-     
+       <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
     
 {% endblock %}
 
@@ -83,27 +82,8 @@
                                                     
 				            </tr>
 				        </thead>
-				        <tfoot>
-				            <tr>
-                                                                                 <th>ID Cliente Potencial</th>
-				                <th>Nombre</th>
-                                                                                <th>Telefono Fijo</th>
-				                <th>Direccion</th>
-                                                                               
-                                                                               
-				            </tr>
-				        </tfoot>
-				        {#<tbody>
-				            <tr>
-				                <td>Guillermo Jandres</td>
-				                <td>Chiltiupan, La Libertad</td>
-				                <td>Edinburgh</td>
-				                <td><input type="button" value="Ver mas"></td>
-				              
-				            </tr>
-				            
-				        </tbody>#}
-				    </table>
+
+          </table>
 
     
   </div>
@@ -165,101 +145,104 @@
 
  
 		    } );
-//Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
+///Evento que me me pasa como parametro el id de un tr y de esta forma poder llenar el formulario de edicion      
          
        var idEliminar=0;
        
-       $(document).on("click","tr",function() {
-       
-             var idCliente =  $(this).children().html();
-            $("tr").css('background-color', 'white');
-            $(this).css('background-color', '#E9E6E6');
-            
-            
-             $("#eliminarCP").show();   
-             idEliminar=idCliente;
-           
+       $(document).on("click","tbody>tr",function() {
+          var rol = $(this).attr("role");
+            if(rol=="row"){
+
+                 var idCliente =  $(this).children().html();
+                $("tr").css('background-color', 'white');
+                $(this).css('background-color', '#E9E6E6');
+
+                 $("#eliminarCP").show();   
+                 idEliminar=idCliente;
+             }
                 
        });
          
-       $(document).on("dblclick","tr",function() {
-             var idCliente =  $(this).children().html();
-             
-               var numero = idCliente;
-                  var url=Routing.generate('editarClientePotencial',{id:numero});
-                  window.open(url,"_self"); 
-             $("#eliminarCP").hide();   
+       $(document).on("dblclick","tbody>tr",function() {
+              var rol = $(this).attr("role");
+            if(rol=="row"){
+                 var idCliente =  $(this).children().html();
+
+                   var numero = idCliente;
+                      var url=Routing.generate('editarClientePotencial',{id:numero});
+                      window.open(url,"_self"); 
+                 $("#eliminarCP").hide();   
+             }
                 
        });
      
- 
    $("#eliminarCP").on("click",function (){
-    
-               var valor = new Array();
-          
-                            
-                  valor.push(idEliminar);
+       
+                  swal({
+                                                    title: "Advertencia",
+                                                    text: "¿Estas seguro de eliminar el registro de cliente potencial?",
+                                                    type: "warning",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "No",
+                                                    confirmButtonText: "Si",
+                                                    confirmButtonColor: "#00A59D",
+                                                    closeOnConfirm: true,
+                                                    closeOnCancel: true
+                                                },
+                                                        function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                   
+
+                                                                        var valor = new Array();
 
 
-//Funcion del POST que me permite inabilitar un Proveedor
+                                                                           valor.push(idEliminar);
 
-                    $.post( "{{path('eliminarclientePotencial')}}", { idclientepotencial: valor }, function( data ) {
-                        var par = new Array();
-                        par = data.query;
 
-                      
-                      
-                        if(data.flag === 0) {
-                            
-                            var table = $('#listaClientesPotenciales').DataTable();
-                                 $("#eliminarCP").hide();
-                            table.ajax.reload( function ( json ) {
-                               
-                            } );
-                          
-                            
-                        }
-                        else{
-                                Lobibox.notify("error", {
-                                          size: 'mini',
-                                          msg: 'Error al elmonar los datos, espere un momento e intenta de nuevo'
-                                      });
-                                            location.reload();
-                        }
-                       
-                    }, "json"); 
-               
-               
+                                                         //Funcion del POST que me permite inabilitar un Proveedor
+
+                                                                             $.post( "{{path('eliminarclientePotencial')}}", { idclientepotencial: valor }, function( data ) {
+                                                                                 var par = new Array();
+                                                                                 par = data.query;
+
+
+
+                                                                                 if(data.flag === 0) {
+
+                                                                                     var table = $('#listaClientesPotenciales').DataTable();
+                                                                                          $("#eliminarCP").hide();
+                                                                                     table.ajax.reload( function ( json ) {
+
+                                                                                     } );
+
+
+                                                                                 }
+                                                                                 else{
+                                                                                         Lobibox.notify("error", {
+                                                                                                   size: 'mini',
+                                                                                                   msg: 'Error al elmonar los datos, espere un momento e intenta de nuevo'
+                                                                                               });
+                                                                                                     location.reload();
+                                                                                 }
+
+                                                                             }, "json"); 
+                                                          
+
+                                                            } else {
+                                                                
+                                                                 $("#eliminarCP").hide();  
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                  });
+       
+  
    });
            
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-        
-        
-                    
+                
 });
 
-
-
-               
-               
-               
-  
-           
-           
-               
-               
-               
-    
 </script>
   
      

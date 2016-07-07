@@ -735,12 +735,25 @@ class CajaChicaController extends Controller
     public function indexReportesCajaChicaIngresosAction()
     {
         
-        $saldo = $this->llamarSaldoActual();
-        return $this->render('cajachica/reporteingresos.html.twig', array(
+           return $this->render('cajachica/reporteingresos.html.twig', array(
                       
         ));
     }
     
+    
+    
+    /**
+     * Lists all ClientePotencial entities.
+     *
+     * @Route("/reportes/cajachica/egresos", name="reporte_egresos",options={"expose"=true})
+     * @Method("GET")
+     */
+    public function indexReportesCajaChicaEgresosAction()
+    {
+        return $this->render('cajachica/reportesegresos.html.twig', array(
+                      
+        ));
+    }
     
     
     

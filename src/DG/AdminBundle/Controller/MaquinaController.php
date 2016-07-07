@@ -676,7 +676,7 @@ class MaquinaController extends Controller
            
           $sql = "SELECT cp.id as id, cp.alias as nombreMaquina, cp.nombre as numeroMaquina,cp.numero_serie as numeroSerie, cp.marca as marca FROM ma_maquina cp"
                     . " WHERE (upper(cp.alias)  LIKE '%" . strtoupper($value) . "%' OR  upper(cp.nombre)  LIKE '%" . strtoupper($value) . "%'  or cp.numero_serie like '%" . $value . "%'  "
-                     . "OR upper(cp.marca)  LIKE '%" . strtoupper($value) . "%')  AND cp.estado=1  "
+                     . "OR upper(cp.marca)  LIKE '%" . strtoupper($value) . "%')  AND cp.estado=1  AND cp.ma_identificacion_alquiler= 0 "
                     . "ORDER BY cp.nombre ASC";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();

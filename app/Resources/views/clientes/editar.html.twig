@@ -2,12 +2,10 @@
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
-
     <link rel="stylesheet" href="{{ asset('Resources/select2/dist/css/select2.css')}}">
     <link rel="stylesheet" href="{{ asset('Resources/js/maquina/css/stylemaquina.css')}}">
+         <link rel="stylesheet" href="{{ asset('Resources/sweetalert-master/dist/sweetalert.css')}}">
+         <link rel="stylesheet" href="{{ asset('Resources/js/general/general.css')}}">
 
 
 {% endblock css%}
@@ -15,8 +13,8 @@
      {{parent()}}
     <script src="{{ asset('Resources/jQuery-Mask/src/jquery.mask.js') }}"></script>
     <script src="{{ asset('Resources/js/cliente/cliente.js') }}"></script>
-
-         <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script>
+    <script src="{{ asset('Resources/select2/dist/js/select2.js') }}"></script>
+    <script src="{{ asset('Resources/sweetalert-master/dist/sweetalert.min.js') }}"></script>
 {% endblock %}
 
 
@@ -79,14 +77,14 @@
                      <div class="form-group required">
                          <input type="hidden" id="idCliente" value="{{data.id}}">
                          <label for="fecha inicio" class="control-label">Nombre</label>
-                         <input type="text" class="form-control" id="nombreCp" 
+                         <input type="text" class="form-control requeridoE" id="nombreCp" 
                                 placeholder="Nombre del contacto" name="txtcontacto"  required value="{{data.nombre}}">
                      </div>
                      </div>
                      <div class="form-column col-md-6">
                             <div class="form-group required">
                  <label for="fecha inicio" class="control-label">Direccion</label>
-                    <input type="text" class="form-control" id="direccionCp" 
+                    <input type="text" class="form-control requeridoE" id="direccionCp" 
                            placeholder="Direccion" name="direccionCp"  required value="{{data.direccion}}">
                 </div>
                      </div>
@@ -97,21 +95,21 @@
                  <div class="col-md-3">
                      <div class="form-group required">
                     <label for="fecha inicio" class="control-label">Telefono</label>
-                    <input type="text" class="form-control telefono" id="telefonoCp" 
+                    <input type="text" class="form-control telefono requeridoE" id="telefonoCp" 
                            placeholder="0000-0000" name="txtrelacion" required value="{{data.telefono}}">
                 </div>
                  </div>
                    
                  <div class="col-md-3">
                     <div class="form-group">
-                       <label for="fecha inicio">Telefono Movil</label>
+                       <label for="fecha inicio" class="control-label">Telefono Movil</label>
                            <input type="text" class="form-control telefono" id="telefonoMCp" 
                                  value="{{data.movil}}"  >
                    </div>
                  </div>
                  <div class="col-md-3">
                        <div class="form-group">
-                           <label for="fecha inicio">NRC</label>
+                           <label for="fecha inicio" class="control-label">NRC</label>
                            <input type="text" class="form-control" id="nrcCP" 
                                   placeholder="0000-000000-000-0" name="nrcCP" value="{{data.nrc}}">
                        </div>
@@ -120,47 +118,67 @@
                    {#<div class="clearfix"></div>   #}
                    <div class="col-md-3">
                        <div class="form-group">
-                           <label for="fecha inicio">NIT</label>
+                           <label for="fecha inicio" class="control-label">NIT</label>
                            <input type="text" class="form-control" id="nitCP" 
                                   placeholder="0000-000000-000-0" name="nitCP" value="{{data.nit}}" >
                        </div>
                    </div>
                    
-                   <div class="col-md-4">
+                    <div class="col-md-4">
                     <div class="form-group">
-                    <label for="fecha inicio">Correo Electronico</label>
-                    <input type="text" class="form-control" id="correoCp" 
+                    <label for="fecha inicio" class="control-label ">Correo Electronico</label>
+                    <input type="text" class="form-control correo" id="correoCp" 
                            placeholder="example@yourdomian.com" name="correoCp" value="{{data.correoelectronico}}">
+                            <span class="msg error">Direccion de correo elctronico invalido</span>
                     </div>
                  </div>  
                   
                    <div class="col-md-4">
                        <div class="form-group">
-                           <label for="fecha inicio">Pagina Web</label>
+                           <label for="fecha inicio" class="control-label">Pagina Web</label>
                            <input type="text" class="form-control" id="paginaWebCp" 
                                   placeholder="Direccion web de contacto" name="paginaWebCp" value="{{data.paginaWeb}}">
                        </div>
                    </div>
                     <div class="col-md-4">
                        <div class="form-group">
-                           <label for="fecha inicio">Referido por</label>
+                           <label for="fecha inicio" class="control-label">Referido por</label>
                            <input type="text" class="form-control" id="referidoPor" 
                                   placeholder="Quien refirio al posible cliente" name="referidoPor" value="{{data.referidoPor}}">
                        </div>
                    </div> 
                     <div class="clearfix"></div>
-                     <div class="form-column col-md-4">
+                     
+                    {% if data.contactoId is not empty %}    
+                           
+                     <div class="form-column col-md-3">
                                      <div class="form-group" style="margin-right: 2%;">
                                         <label for="contactoDirecto" class="control-label">Contacto directo del cliente</label>
                                         <select id="contactoDirecto" name="contactoDirecto" class="form-control" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un contacto ...</option>
-                                        </select>  
+                                            {#<option value="">Seleccione un contacto ...</option>#}
+                                            <option selected value="{{data.contactoId.id}}"  selected>{{data.contactoId}}</option>
+                                          </select>  
                                             
                                     </div>
                       </div>
+              {% else %}                       
+                   <div class="form-column col-md-3">
+                                     <div class="form-group" style="margin-right: 2%;">
+                                        <label for="contactoDirecto" class="control-label">Contacto directo del cliente</label>
+                                        <select id="contactoDirecto" name="contactoDirecto" class="form-control" style="width: 100%">
+                                            {#<option value="">Seleccione un contacto ...</option>#}
+                                            <option selected value=""  selected>Seleccione un contacto...</option>
+                                          </select>  
+                                            
+                                    </div>
+                      </div>                  
+
+              {% endif %}                        
+                    
+                    
                     <div class="col-md-8">
                         <div class="form-group">
-                          <label for="fecha inicio">Descripcion</label>
+                          <label for="fecha inicio" class="control-label">Descripcion</label>
                           <textarea class="form-control" id="descripcionCp"></textarea>
                       </div>   
                     </div>

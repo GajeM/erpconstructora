@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use ERP\AdminBundle\Form\ClienteType;
 use Symfony\Component\HttpKernel\Exception;
 use Doctrine\ORM\Query\ResultSetMapping;
-include_once '../src/DG/AdminBundle/Resources/dompdf/dompdf_config.inc.php'; 
+include_once 'src/DG/AdminBundle/Resources/dompdf/dompdf_config.inc.php'; 
 /**
  * Cliente controller.
  *
@@ -31,7 +31,7 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
       
 
-         $sqlIngreso = "SELECT cch.codigo, cch.persona_que_recibe as recibe, cch.nombre as entrega, cch.cantidad_por as monto
+         $sqlIngreso = "SELECT cch.codigo, cch.persona_que_recibe as recibe, cch.nombre as entrega, cch.cantidad_por as monto, cch.fecha as fecha
                                     FROM caja_chica cch where cch.estado =1 and cch.tipo_ingreso=1 ";  
            
          
@@ -66,6 +66,50 @@ class ReportesController extends Controller
     } 
     
     
+    //Metodo de PDF que genera el reporte de Salidas de dinero de caja chica
+      /**
+     *
+     *
+     * @Route("/verPDFEgresosCajaChica/{fechaInicio}/{fechaFin}", name="verPDFEgresosCajaChica", options={"expose"=true})
+       * @Method({"GET", "POST"})
+     */
+    public function VerPDFEgresosCajaChica($fechaInicio ,$fechaFin) {
+        $em = $this->getDoctrine()->getManager();
+      
+
+         $sqlIngreso = "SELECT cch.codigo, cch.persona_que_recibe as recibe, cch.nombre as entrega, cch.cantidad_por as monto, cch.fecha as fecha
+                                    FROM caja_chica cch where cch.estado =1 and cch.tipo_ingreso=2 ";  
+           
+         
+         
+        if ($fechaInicio !=0 && $fechaFin!=0){
+            
+             $sqlIngreso.="and cch.fecha >= '$fechaInicio' and cch.fecha <= '$fechaFin' ";
+       
+            
+        }
+       
+        $sqlIngreso.="  order by cch.fecha desc ";
+  
+            $stmt = $em->getConnection()->prepare($sqlIngreso);
+            $stmt->execute();
+            $datos= $stmt->fetchAll();
+
+
+        ob_start();
+        $html = $this->renderView('cajachica/cajachicaReportes/reporteEgresos.html.php', array(
+            'datos'=>$datos,
+            'fechaInicio'=>$fechaInicio,
+            'fechaFin'=>$fechaFin
+           
+        ));
+        $pdf = new \DOMPDF();
+        $pdf->set_paper('A4', 'portrait');
+        $pdf->load_html($html);
+        $pdf->render();
+        $pdf->stream('ReporteComision.pdf', array('Attachment' => 0));
+        
+    } 
     
    
     

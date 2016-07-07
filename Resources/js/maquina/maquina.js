@@ -977,7 +977,7 @@ var numeroEliminacion=0;
                                         </div>\n\
                                         <div class="form-column col-md-4" >\n\
                                             <div class="form-group" >\n\
-                                            <img src="/erpconstructora/web/Photos/expediente/'+data.imagen+'"  style="max-height: 300px;max-width: 300px;'+imagenVisibilidad+'" id="prevFacturaE">\n\
+                                            <img src="/erpconstructora/Photos/expediente/'+data.imagen+'"  style="max-height: 300px;max-width: 300px;'+imagenVisibilidad+'" id="prevFacturaE">\n\
                                             <input type="hidden" value='+data.imagenIdRegistro+' name="idRegistroImagen">\n\
                                         </div>\n\
                                     </div>\n\
@@ -991,7 +991,7 @@ var numeroEliminacion=0;
                          </div>\n\
                         <div class="clearfix"></div>\n\
                            <div style="margin-bottom:0;margin-top: 10px;margin-left: 10px;"  class="formularioInsercionExpedienteMaquinaria">\n\
-                                   <img src="/erpconstructora/web/Resources/src/img/add.png" title="Nuevo detalle" class="addExpedienteDatosMantenimientoEdicion">\n\
+                                   <img src="/erpconstructora/Resources/src/img/add.png" title="Nuevo detalle" class="addExpedienteDatosMantenimientoEdicion">\n\
                                            <b class="addExpedienteDatosMantenimientoEdicion">Agregar detalle</b><br><br>\n\
                                                    </div>\n\
                                                         <div  id="detalleDimanicoExpedienteMantenimientoEdicion" style="margin-left:2%;margin-right:2%;">\n\
@@ -2382,7 +2382,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                                                 <img src="" style="max-height: 300px;max-width: 300px;margin-top:10px;" id="imgPrueba-'+correlativoDiv+'">\n\
                                             </div>'
               $("#mostrarImagenes").append(formulario);
-             $("#imgPrueba-"+correlativoDiv).attr("src","/erpconstructora/web/Photos/maquinaria/"+obj.nombreImagen);
+             $("#imgPrueba-"+correlativoDiv).attr("src","/erpconstructora/Photos/maquinaria/"+obj.nombreImagen);
     }
 
     });
