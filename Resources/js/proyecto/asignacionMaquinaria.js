@@ -7,7 +7,6 @@
   $(document).on("click","#nuevaAsignacionMaquinaria",function() {
       
                 clickNuevaAsignacion();
-                
                 $("#newMaquinaProyecto").click();
 
     });
@@ -214,6 +213,9 @@
                
       });
       
+//      horasMinimas
+      
+      
  
   $(document).on("click","#guardarFormularioMaquinariaProyecto",function() {
                         var cont =0;
@@ -232,13 +234,13 @@
                                                                       var x =  $(this).val();
                                                                       if (x=="" || x==0){
                                                                           cont=cont+1;
-                                                                           swal("Error!", "El campo de maquina no puede ir vacio", "error");
+                                                                           swal("Error!", "Los campos requeridos no pueden ir vacios", "error");
                                                                           }
                                                                       
                                                                 }); 
                                                                 
                                                       if (cont==0){
-                                                          guardarMaquinariaProyecto();
+                                                       guardarMaquinariaProyecto();
                                                           
                                                       }          
                                                      

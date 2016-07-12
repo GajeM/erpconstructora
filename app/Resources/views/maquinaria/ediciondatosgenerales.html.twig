@@ -2,7 +2,13 @@
  {% for data in datosGenerales %}
      
        <input type="hidden" name="idMaquina" id="idMaquina" value="{{data.id}}">
-                                
+                                 <div class="form-column col-md-4">
+                                    <div class="form-group" >
+                                        <label for="numeroEquipo" class="control-label required" style="padding-top: 1.5%;">N° de equipo</label>
+                                        <input type="text" class="form-control" id="numeroEquipo" 
+                                               placeholder="Numero de Equipo" name="numeroEquipo" required value="{{data.nombre}}">
+                                    </div>
+                                </div>
                                 <div class="form-column col-md-4">
                                     <div class="form-group">
                                         <label for="numeroSerie" class="control-label" style="padding-top: 1.5%;">Numero Serie</label>
@@ -10,14 +16,6 @@
                                                placeholder="N°  de serie" name="numeroSerie" required value="{{data.numeroSerie}}">
                                     </div>
                                 </div>
-                                <div class="form-column col-md-4">
-                                    <div class="form-group" >
-                                        <label for="numeroEquipo" class="control-label" style="padding-top: 1.5%;">N° de equipo</label>
-                                        <input type="text" class="form-control" id="numeroEquipo" 
-                                               placeholder="Numero de Equipo" name="numeroEquipo" required value="{{data.nombre}}">
-                                    </div>
-                                </div>
-
                                   <div class="form-column col-md-4" style="padding-top: 0%;">
                                     <div class="form-group">
                                         <label for="anhoMaquina" class="control-label">Año</label></br>
@@ -91,6 +89,8 @@
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
+                                                              <option value="Amarillo" >Amarillo</option>
+                                                                 <option value="Verde" >Verde</option>
                                                             
                                                              {% endif %}  
                                                           {% if data.color=='Naranja'  %}
@@ -100,6 +100,8 @@
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
+                                                              <option value="Amarillo" >Amarillo</option>
+                                                            <option value="Verde" >Verde</option>
                                                              {% endif %}  
                                                              {%  if data.color=='Celeste'  %}
                                                              <option value="{{data.color}}" >{{data.color}}</option>
@@ -108,6 +110,8 @@
                                                             <option value="Azul" >Azul</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
+                                                              <option value="Amarillo" >Amarillo</option>
+                                                                <option value="Verde" >Verde</option>
                                                                {% endif %}  
                                                              {%  if data.color=='Azul'  %}
                                                              <option value="{{data.color}}" >{{data.color}}</option>
@@ -116,6 +120,8 @@
                                                             <option value="Celeste" >Celeste</option>
                                                             <option value="Blanco" >Blanco</option>
                                                             <option value="Cafe" >Cafe</option>
+                                                              <option value="Amarillo" >Amarillo</option>
+                                                               <option value="Verde" >Verde</option>
                                                              {% endif %}  
                                                              {% if data.color=='Blanco'  %}
                                                                  <option value="{{data.color}}" >{{data.color}}</option>
@@ -124,6 +130,8 @@
                                                                  <option value="Celeste" >Celeste</option>
                                                                  <option value="Azul" >Azul</option>
                                                                  <option value="Cafe" >Cafe</option>
+                                                                   <option value="Amarillo" >Amarillo</option>
+                                                                    <option value="Verde" >Verde</option>
                                                                   {% endif %}  
                                                                {% if data.color=='Cafe'  %}
                                                                  <option value="{{data.color}}" >{{data.color}}</option>
@@ -132,8 +140,31 @@
                                                                  <option value="Celeste" >Celeste</option>
                                                                  <option value="Azul" >Azul</option>
                                                                  <option value="Blanco" >Blanco</option>
-                                                                  {% endif %}  
+                                                                 <option value="Amarillo" >Amarillo</option>
+                                                                <option value="Verde" >Verde</option>
+                                                                  {% endif %} 
                                                                   
+                                                                  
+                                                                   {% if data.color=='Amarillo'  %}
+                                                                 <option value="{{data.color}}" >{{data.color}}</option>
+                                                                 <option value="Negro" >Negro</option>
+                                                                 <option value="Naranja" >Naranja</option>
+                                                                 <option value="Celeste" >Celeste</option>
+                                                                 <option value="Azul" >Azul</option>
+                                                                 <option value="Blanco" >Blanco</option>
+                                                                   <option value="Cafe" >Cafe</option>
+                                                                    <option value="Verde" >Verde</option>
+                                                                  {% endif %} 
+                                                                  {% if data.color=='Verde'  %}
+                                                                 <option value="{{data.color}}" >{{data.color}}</option>
+                                                                 <option value="Negro" >Negro</option>
+                                                                 <option value="Naranja" >Naranja</option>
+                                                                 <option value="Celeste" >Celeste</option>
+                                                                 <option value="Azul" >Azul</option>
+                                                                 <option value="Blanco" >Blanco</option>
+                                                                   <option value="Cafe" >Cafe</option>
+                                                                    <option value="Amarillo" >Amarillo</option>
+                                                                  {% endif %} 
                                                                {% if data.color is null %}
                                                                 <option value='null' >Seleccione un color</option>
                                                                 <option value="Negro" >Negro</option>
@@ -142,6 +173,8 @@
                                                                 <option value="Azul" >Azul</option>
                                                                 <option value="Blanco" >Blanco</option>
                                                                 <option value="Cafe" >Cafe</option>
+                                                                <option value="Amarillo" >Amarillo</option>
+                                                                <option value="Verde" >Verde</option>
                                                               
                                                         {% endif %}  
                                            

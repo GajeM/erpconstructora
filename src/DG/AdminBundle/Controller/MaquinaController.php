@@ -150,9 +150,7 @@ class MaquinaController extends Controller
         
         
     }
-    
-    
-    
+
      /**
      * @Route("/validarMaquina/", name="validarMaquina", options={"expose"=true})
      * @Method("POST")
@@ -173,7 +171,7 @@ class MaquinaController extends Controller
             
 
             $dqlPlaca = "SELECT COUNT(ma.id) AS resP FROM DGAdminBundle:MaMaquina ma WHERE"
-                   . " ma.placa = :placa ";
+                   . " ma.placa = :placa AND  ma.placa !='' ";
 
             $resultadoPlaca = $em->createQuery($dqlPlaca)
                         ->setParameters(array('placa'=>$placa))
@@ -181,7 +179,7 @@ class MaquinaController extends Controller
             $rPlaca=$resultadoPlaca[0]['resP'];
             
              $dqlEquipo = "SELECT COUNT(ma.id) AS resE FROM DGAdminBundle:MaMaquina ma WHERE"
-                   . " ma.nombre = :numeroEquipo ";
+                   . " ma.nombre = :numeroEquipo AND  ma.nombre !='' ";
 
             $resultadoEquipo = $em->createQuery($dqlEquipo)
                         ->setParameters(array('numeroEquipo'=>$numeroEquipo))
@@ -191,7 +189,7 @@ class MaquinaController extends Controller
             $rEquipo=$resultadoEquipo[0]['resE'];
             
              $dqlSerie = "SELECT COUNT(ma.id) AS resS FROM DGAdminBundle:MaMaquina ma WHERE"
-                   . " ma.numeroSerie = :numeroSerie ";
+                   . " ma.numeroSerie = :numeroSerie AND  ma.numeroSerie !='' ";
 
             $resultadoSerie = $em->createQuery($dqlSerie)
                         ->setParameters(array('numeroSerie'=>$numeroSerie))
@@ -228,12 +226,9 @@ class MaquinaController extends Controller
                 }
 
             return new Response(json_encode($data)); 
-            
-            
+
          }
-        
-        
-        
+
     }
 
   
@@ -895,7 +890,7 @@ class MaquinaController extends Controller
           $extension= explode('/',$tipo);
         
           $fecha = date('Y-m-d His');
-          $nombreArchivo =$fecha.".".$extension[1];;
+          $nombreArchivo =$fecha.".".$extension[1];
           $nombreArchivo =str_replace(" ","", $nombreArchivo);
           
        

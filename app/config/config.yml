@@ -9,7 +9,7 @@ parameters:
     locale: en
     photo.expediente: %kernel.root_dir%/../Photos/expediente/
     photo.maquinaria: %kernel.root_dir%/../Photos/maquinaria/
-    photo.direccionesproyectos: %kernel.root_dir%/../web/Photos/direccionesproyectos/
+    photo.direccionesproyectos: %kernel.root_dir%/../Photos/direccionesproyectos/
 
 framework:
     #esi:             ~

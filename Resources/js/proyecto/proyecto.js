@@ -147,15 +147,15 @@
 
 $('#fechaInicio').Zebra_DatePicker({
      format: 'd-m-Y',
-     direction: true,
+     direction: -1,
                pair: $('#fechaFin')
 });            
             
  $('#fechaFin').Zebra_DatePicker({
       format: 'd-m-Y',
       direction: true
-});            
-                    
+});
+
 
 //Terminacion de inicializacion de los select2 que sirven para el ingreso de datos generales de una empresa
 //Insercion de datos generales de un proyecto

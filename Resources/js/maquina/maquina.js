@@ -225,12 +225,15 @@ $('#fechaDE').Zebra_DatePicker({
             tipoEquipo=$("#tipoEquipo").val();
             vin=$("#vin").val();
             placa=$("#placa").val();
-            color=$("#color").val();
+            color=$("#colorMaquina").val();
             tamanho=$("#tamanho").val();
             capacidad=$("#capacidad").val();
             marca=$("#marca").val();
             descripcion=$("#descripcionMaquina").val();
-             
+            
+            
+            if (numeroEquipo!=""){
+                
        $.ajax({
                                     type: 'POST',
                                     async: false,
@@ -256,37 +259,22 @@ $('#fechaDE').Zebra_DatePicker({
                                                    $("#idMaquina").val(data.idMaquina);
                                                    $("#idMaquinaNuevoExpedienteMantenimiento").val(data.idMaquina);
                                                    $("#idMaquinaInsercionImagen").val(data.idMaquina);
-                                                   location.reload();
+                                                 
                                                  
                                                     if (data.estado == true) {
-                                                   
-                                                       
-                                                        
+
                                                 swal({
-                                                    title: "Datos  ingresados con exito",
-                                                    text: "¿Quieres seguir completando los datos de la maquina ingresada?",
-                                                    type: "success",
-                                                    showCancelButton: true,
-                                                    cancelButtonText: "Despues",
-                                                    confirmButtonText: "Seguir",
-                                                    confirmButtonColor: "#00A59D",
-                                                    closeOnConfirm: true,
-                                                    closeOnCancel: false
-                                                },
-                                                        function (isConfirm) {
-                                                            if (isConfirm) {
-                                                                    
-                                                                    
-                            
-                                      
-                                                            } else {
-                                                                    var url=Routing.generate('dashboard_index');
-                                                                window.open(url,"_self"); 
-
-                                                            }
-                                                        });
-
-                                                   }
+                                                    title: "Exito!",
+                                                    text: "Datos generales guardados exitosamente",
+                                                    timer: 1500,
+                                                    type: 'success',
+                                                    showConfirmButton: false
+                                                });
+                                          
+                                            setTimeout( function(){ 
+                                                location.reload();
+                                            }  , 1000 );
+                                                 }
 
                                                 },
                                                 error: function (xhr, status)
@@ -323,6 +311,9 @@ $('#fechaDE').Zebra_DatePicker({
                       
                     }
             });
+        }else{
+            swal("Error!", "El numero de equipo es requerido", "error");
+        }
       
 
               
@@ -342,13 +333,13 @@ $('#fechaDE').Zebra_DatePicker({
             tipoEquipo=$("#tipoEquipo").val();
             vin=$("#vin").val();
             placa=$("#placa").val();
-            color=$("#color").val();
+            color=$("#colorMaquina").val();
             tamanho=$("#tamanho").val();
             capacidad=$("#capacidad").val();
             marca=$("#marca").val();
             descripcion=$("#descripcionMaquina").val();
 
-
+          
        $.ajax({
                                     type: 'POST',
                                     async: false,
@@ -892,13 +883,12 @@ var numeroEliminacion=0;
      
    //Construccion del div que me genera las cajas de edicion de un campo.
    
-    
-   
-   
-   
+
    $(document).on("dblclick","tbody>tr",function() {
        
+          var identificador =     $(this).attr("role");
        
+            if(identificador=="row"){
        var idTabla = $(this).parent().parent().attr('id');
        
         
@@ -1292,7 +1282,7 @@ $('#fechaDEE').Zebra_DatePicker({
                                     window.open(url, "_self");
 
         }
-   
+    }
 });
 
 
