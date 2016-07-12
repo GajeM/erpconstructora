@@ -35,7 +35,7 @@ class MaquinariaProyecto extends Controller
         $busqueda = $request->query->get('q');
         $idMaquinas = $request->query->get('x');
 
-        if ($idMaquinas==null){
+        if ($idMaquinas==null || $idMaquinas==0){
             $variable="";
             
         }else{

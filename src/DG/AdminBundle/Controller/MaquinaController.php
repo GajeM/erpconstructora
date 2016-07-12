@@ -374,7 +374,7 @@ class MaquinaController extends Controller
            
           $sql = "SELECT da.id as id, da.codigo ,da.numero_original as numeroOriginal, da.numero_comercial as numeroComercial,  da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da " 
                     ."WHERE  da.ma_maquina_id=".$idMa
-                    ." AND (da.descripcion like '%".$value."%' or da.numero like '%".$value."%'   or da.codigo like '%".$value."%'  or da.nombre like '%".$value."%') ORDER BY da.codigo limit 5";
+                    ." AND da.estado=1 AND (da.descripcion like '%".$value."%' or da.numero like '%".$value."%'   or da.codigo like '%".$value."%'  or da.nombre like '%".$value."%') ORDER BY da.codigo limit 5";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
@@ -387,7 +387,7 @@ class MaquinaController extends Controller
             
               $sql = "SELECT da.id as id, da.codigo, da.numero_original as numeroOriginal, da.numero_comercial as numeroComercial, da.descripcion as descripcion, da.nombre as nombre FROM ma_datos_mantenimiento da "
                      . "WHERE da.ma_maquina_id=" . $idMa
-                    . " ORDER BY da.codigo ASC";
+                    . " AND da.estado=1 ORDER BY da.codigo ASC";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $territorio['data'] = $stmt->fetchAll();
@@ -439,10 +439,10 @@ class MaquinaController extends Controller
               $objeto->setMarca($marcas[$i]);
               $objeto->setMaMaquina($maquina[0]);
               $objeto->setCodigo($codigo);
+              $objeto->setEstado(1);
               $em->persist($objeto);
               $em->flush();
-              
-              
+
             }
            
             $data['estado']=true;
@@ -612,12 +612,10 @@ class MaquinaController extends Controller
 
             $objeto = $this->getDoctrine()->getRepository('DGAdminBundle:MaDatosMantenimiento')->findByCodigo($idDatoMantenimiento);
             
-            $em->remove($objeto[0]);
+            $em->merge($objeto[0]->setEstado(0));
             $em->flush();
 
             $data['estado']=true;
-
-
             return new Response(json_encode($data)); 
             
             
@@ -1494,7 +1492,66 @@ class MaquinaController extends Controller
     }   
       
       
-      
+       /**
+     * @Route("/copiarRegistrosDeMantenimiento/data", name="copiarRegistrosDeMantenimiento", options={"expose"=true})
+     * @Method("POST")
+     */
+    
+    
+      public function CopiarRegistrosDatosMantenimientoAction(Request $request) {
+        
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+
+         if($isAjax){
+            
+            $em = $this->getDoctrine()->getManager();
+            $idMaquinaCopiarRegistros = $request->get('idMaquinaCopiarRegistros');
+            $idMaquinaNueva = $request->get('idMaquinaNueva');
+            
+            
+              $em = $this->getDoctrine()->getManager();
+            
+               $sql = "SELECT dat.nombre,dat.marca,dat.descripcion,dat.numero_comercial,dat.numero_original from ma_datos_mantenimiento dat
+                        INNER JOIN ma_maquina ma ON
+                        dat.ma_maquina_id=ma.id
+                        WHERE ma.id=".$idMaquinaCopiarRegistros
+                       . " AND dat.estado=1";
+               
+               $stmt = $em->getConnection()->prepare($sql);
+               $stmt->execute();
+               $data = $stmt->fetchAll();
+               $dimension = count($data);
+               
+               $objMaquina = $this->getDoctrine()->getRepository('DGAdminBundle:MaMaquina')->findById($idMaquinaNueva);
+                
+               for ($i=0;$i<$dimension;$i++){
+                   $codigo = $this->generarCorrelativos(1);
+                   $objDatoMantenimiento = new MaDatosMantenimiento();
+                   $objDatoMantenimiento->setNombre($data[$i]['nombre']);
+                   $objDatoMantenimiento->setDescripcion($data[$i]['descripcion']);
+                   $objDatoMantenimiento->setMarca($data[$i]['marca']);
+                   $objDatoMantenimiento->setEstado(1);
+                   $objDatoMantenimiento->setNumeroComercial($data[$i]['numero_comercial']);
+                   $objDatoMantenimiento->setNumeroOriginal($data[$i]['numero_original']);
+                   $objDatoMantenimiento->setMaMaquina($objMaquina[0]);
+                   $objDatoMantenimiento->setCodigo($codigo);
+                    $em->persist($objDatoMantenimiento);
+                    $em->flush();
+               }
+                         
+              
+
+            $data['estado']=true;
+
+
+            return new Response(json_encode($data)); 
+            
+            
+         }
+        
+        
+        
+    }    
       
       
       

@@ -1,21 +1,34 @@
 <div class="row" style="margin-left: 2%; margin-right: 2%; " >
   
-        <div class="col-md-2">
-            <button style="margin-bottom: -10px;" class="btn btn-primary  btn-sm " id="nuevoRegistroDatoMantenimiento" title="Nuevo registro">Nuevo</button>
-        </div>
-        <div class="col-md-2">
-           <button style="margin-bottom: -10px;margin-left: -45px;" class="btn btn-danger  btn-sm pull-left " id="eliminarDatoMantenimiento" title="Eliminar Registro">Eliminar</button>
-        </div>
-
-    
-    <div class="col-md-12"  id="contenidoTablaExpedienteMantenimiento">
-       
-          
+     
+      
+        <div class="form-column col-md-3" style="margin-top: -8px;" id="desdeMaquina">
+        
+                <label for="maquina-" class="control-label">Desde maquina</label>
+                <select id="idMaquinaSeleccionarDatosMantenimiento" name="idMaquinaSeleccionarDatosMantenimiento" class="form-control maquina requeridoMP" style="width: 100%">
+                    <option value="0" selected eneable>Maquina...</option>
+                </select>
                 
+                    
+         
+            
+        </div>
+        <div class="col-md-1" style="margin-top: -8px; "id="extraerRegistros">
+                        <label style="color: #FFF;">Buscar</label>
+                        <a class="btn btn-sm btn-info btn-flat pull-left" id="extraerEInsertarRegistros"><i class="fa  fa-search"></i>&nbsp;Extraer registros</a>
+
+         </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-1" style="margin-left: 95px;margin-top:8px;">
+            <button style="margin-bottom: -8px;" class="btn btn-primary  btn-sm " id="nuevoRegistroDatoMantenimiento" title="Nuevo registro">Nuevo</button>
+        </div>
+        <div class="col-md-1" style="margin-top:8px;">
+           <button style="margin-bottom: -8px;" class="btn btn-danger  btn-sm pull-left " id="eliminarDatoMantenimiento" title="Eliminar Registro">Eliminar</button>
+        </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12"  id="contenidoTablaExpedienteMantenimiento">
             <table id="listaDatosMantenimientos" class="mdl-data-table" cellspacing="0" width="100%">
-
                 <thead>
-
                     <tr>
                         <th>ID Mantenimiento</th>
                          <th>Repuesto/Trabajo realizar</th>
@@ -23,9 +36,7 @@
                         <th>Numero Comercial</th>
                     </tr>
                 </thead>
-
             </table>
-
         </div>
     <div class="clearfix"></div>
     <div style="margin-bottom: 10px;margin-top: 10px; margin-left: 10px;" id="addNewRowDatoMante">
@@ -51,7 +62,7 @@
         </div>
     
     
-     <div id="edicionDatosMantenimiento">
+     <div id="edicionDatosMantenimiento" >
                 
          
                 

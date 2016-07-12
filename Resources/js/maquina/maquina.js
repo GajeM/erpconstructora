@@ -42,7 +42,9 @@ $('#fechaDE').Zebra_DatePicker({
            $("#contenidoTablaExpedienteMantenimiento").hide();
             $("#addNewRowDatoMante").show();
             $("#newDatoMante").click();
-             
+             $("#desdeMaquina").hide();
+             $("#extraerRegistros").hide();
+             $("#eliminarDatoMantenimiento").hide();
            
            
        }); 
@@ -53,6 +55,9 @@ $('#fechaDE').Zebra_DatePicker({
             $("#contenidoTablaExpedienteMantenimiento").hide();
             $("#addNewRowDatoMante").hide();
             $("#contenidoDatosMantenimiento").hide();
+              $("#desdeMaquina").hide();
+             $("#extraerRegistros").hide();
+             $("#eliminarDatoMantenimiento").hide();
            
            
        }
@@ -1222,7 +1227,7 @@ $('#fechaDEE').Zebra_DatePicker({
                                         var form = "";
 
                                         form = '<div class="panel panel-default"><div class="panel-body" ><div class="form-column col-md-3"><div class="form-group required" >\n\
-                                            <label for="nombre" class="control-label">Nombre</label>\n\
+                                            <label for="nombre" class="control-label">Repuesto/Trabajo realizar</label>\n\
                                                 <input type="text" class="form-control nombreDatoE requerido" id="nombre" placeholder="Nombre del producto" name="nombre" value="' + data.nombre + '" >\n\
                                                 </div>\n\
                                            </div>\n\
@@ -1566,6 +1571,8 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             $("#contenidoTablaExpedienteMantenimiento").show();
             $("#addNewRowDatoMante").hide();
             $("#contenidoDatosMantenimiento").show();
+            $("#desdeMaquina").show();
+            $("#extraerRegistros").show();
             
             
             
@@ -1637,6 +1644,9 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             $("#nuevoRegistroDatoMantenimiento").show();
             $("#contenidoTablaExpedienteMantenimiento").show();
             $("#addNewRowDatoMante").hide();
+            $("#desdeMaquina").show();
+            $("#extraerRegistros").show();
+            $("#eliminarDatoMantenimiento").hide();
                 
                 limparformulario();
         
@@ -2403,14 +2413,112 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
 //            $("#almacenarEdicion").hide();        
                 alcancelarEdicionDatoMantenimiento();
             
-              
-         
          
      });
+
+     //Funcion del select para jalar los datos de Datos de repuestos
+     //Se inicaliza el select que llama a las maquinarias existenetes
+     
+      $('#idMaquinaSeleccionarDatosMantenimiento').select2({
+                ajax: {
+                    url: Routing.generate('buscarMaquina'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        
+                        return {
+                            q: params.term,
+                            page: params.page,
+                            x:0
+                           };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.maquinaid;
+                            if (obj.maIdentificacionAlquiler!=""){
+                                 obj.text = obj.maIdentificacionAlquiler+'-'+obj.nombre + ' - ' + obj.alias;
+                            }else{
+                                  obj.text = '#'+obj.nombre + ' - ' + obj.alias;
+                            }
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatRepoM,
+               templateSelection: formatRepoSelectionM,
+                formatInputTooShort: function () {
+                    
+                    return "Ingrese un caracter para la busqueda";
+                
+                }
+                
+            });
+     //Funcion de llamar los datos de mantenimiento de una maquina y replicarlos en otra
+        
+      $(document).on("change","#idMaquinaSeleccionarDatosMantenimiento",function() {
+          
+      $("#extraerRegistros").show();
+      
+    });
+    
    
    
    
-   
+       $(document).on("click","#extraerEInsertarRegistros",function() {
+          
+            var idMaquinaCopiarRegistros = $("#idMaquinaSeleccionarDatosMantenimiento").val();
+            if (idMaquinaCopiarRegistros==0){
+                
+                 swal("Información!", "Para poder extraer e insertar registros existentes de una maquina ya creada a una nueva,  primero debes seleccionar la maquina de la cual deseas copiar los registros.", "info");
+            }
+            else{
+                var idMaquinaNueva  =$("#idMaquina").val();
+                
+                
+                                                         $.ajax({
+                                                                    type: 'POST',
+                                                                    async: false,
+                                                                    dataType: 'json',
+                                                                    data: {idMaquinaCopiarRegistros:idMaquinaCopiarRegistros,idMaquinaNueva:idMaquinaNueva},
+                                                                    url: Routing.generate('copiarRegistrosDeMantenimiento'),
+                                                                    success: function (data)
+                                                                    {
+                                                                        if(data.estado == true){
+
+                                                                                                       var table = $('#listaDatosMantenimientos').DataTable();
+                                                                                                       var idMaqui = $("#idMaquina").val();
+                                                                                                       var url = Routing.generate('datosmantenimientodata', {idMaquina: idMaqui});
+                                                                                                       table.ajax.url(url).load();
+                                                                                                       
+                                                                               swal({
+                                                                                        title: "Exito!",
+                                                                                        text: "Datos generales guardados exitosamente",
+                                                                                        timer: 1500,
+                                                                                        type: 'success',
+                                                                                        showConfirmButton: false
+                                                                                    });
+
+                                                                        }
+                                                                       
+                                                                        
+                                                                     },
+                                                                        error: function (xhr, status)
+                                                                        {
+
+                                                                        }
+                                                                });
+                
+                
+                }
+      
+    });
    
   //Fin del document Ready
  });
@@ -2474,3 +2582,22 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
             reader.readAsDataURL(input.files[0]);
         }
     }
+    
+   //Las funciones de los select para la asignacion de maquinaria
+function formatRepoM (data) {
+                     if(data.nombre){
+                var markup = "<div class='select2-result-repository clearfix'>" +
+                             "<div class='select2-result-repository__meta'>" +
+                             "<div class='select2-result-repository__title'>"+ data.maIdentificacionAlquiler+' '+ data.nombre + " - " + data.alias + "</div>" +
+                             "</div></div>";
+            } 
+            return markup;
+        }
+
+        function formatRepoSelectionM (data) {
+            if(data.nombre){
+                return  data.maIdentificacionAlquiler+' '+data.nombre + " - " + data.alias ;
+            } else {
+                return "Seleccione una maquina";
+            }   
+        }
