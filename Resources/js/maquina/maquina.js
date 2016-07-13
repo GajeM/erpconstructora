@@ -3,6 +3,7 @@
   var idDetalleExpeMantenimiento =0;
   var xPermisoTablaDatosMantenimiento =0;
   var xPermisoTablaDatosExpedientesMant=0;
+  var maquinaActual=0;
   
 
   
@@ -463,6 +464,7 @@ $('#fechaDE').Zebra_DatePicker({
             }else{
                 
                 if (xPermisoTablaDatosMantenimiento==0){
+                    maquinaActual=$("#idMaquina").val();
                      llamarDataTableDatosMantenimiento();
                      xPermisoTablaDatosMantenimiento=xPermisoTablaDatosMantenimiento+1;
                 }
@@ -2429,7 +2431,7 @@ $(document).on("click","#cancelarInsercionExpeManetenimientoEdicion",function() 
                         return {
                             q: params.term,
                             page: params.page,
-                            x:0
+                            x:maquinaActual
                            };
                     },
                     processResults: function (data, params) {

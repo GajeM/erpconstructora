@@ -34,9 +34,14 @@ class MaquinariaProyecto extends Controller
     {
         $busqueda = $request->query->get('q');
         $idMaquinas = $request->query->get('x');
+        $dimension = count($idMaquinas);
 
         if ($idMaquinas==null || $idMaquinas==0){
             $variable="";
+            
+        }else if ($dimension==1){
+            
+            $variable=" AND ma.id != ".$idMaquinas." ";
             
         }else{
 
